@@ -35,4 +35,19 @@ class Ticket extends Model
     {
         return $this->belongsToMany('App\Tag');
     }
+
+    /**
+     * Get tag's area.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function area()
+    {
+        return $this->belongsTo('App\Area');
+    }
+
+    public function person ()
+    {
+        return $this->belongsTo('App\Person');
+    }
 }

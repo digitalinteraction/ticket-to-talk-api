@@ -11,7 +11,7 @@
 |
 */
 
-//API
+// API - AUTHENTICATION
 Route::group(
     [
         'prefix' => 'api',
@@ -40,6 +40,7 @@ Route::group(
     }
 );
 
+// API - ARTICLES
 Route::group(
     [
         'prefix' => 'api/articles',
@@ -84,6 +85,7 @@ Route::group(
     }
 );
 
+// API - TAGS
 Route::group(
     [
         'prefix' => 'api/tags',
@@ -123,6 +125,51 @@ Route::group(
             [
                 'as' => 'tag.destroy',
                 'uses' => 'TagController@destroy'
+            ]
+        );
+    }
+);
+
+// API - TICKETS
+Route::group(
+    [
+        'prefix' => 'api/tickets',
+        'namespace' => 'Api'
+    ],
+    function()
+    {
+        Route::post('store/',
+            [
+                'as' => 'ticket.store',
+                'uses' => 'TicketController@store'
+            ]
+        );
+
+        Route::get('show/',
+            [
+                'as' => 'ticket.show',
+                'uses' => 'TicketController@show'
+            ]
+        );
+
+        Route::get('all/',
+            [
+                'as' => 'ticket.getUserTickets',
+                'uses' => 'TicketController@getUserTickets'
+            ]
+        );
+
+        Route::post('update/',
+            [
+                'as' => 'ticket.update',
+                'uses' => 'TicketController@update'
+            ]
+        );
+
+        Route::delete('destroy/',
+            [
+                'as' => 'ticket.destroy',
+                'uses' => 'TicketController@destroy'
             ]
         );
     }

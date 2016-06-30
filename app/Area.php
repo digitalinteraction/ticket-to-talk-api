@@ -31,4 +31,9 @@ class Area extends Model
     {
         return $this->belongsToMany('App\User');
     }
+
+    public function tickets()
+    {
+        return $this->hasMany('App\Ticket');
+    }
 }

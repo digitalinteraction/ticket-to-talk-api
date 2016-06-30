@@ -25,4 +25,9 @@ class Person extends Model
     {
         return $this->belongsToMany('App\User')->withPivot('user_type');
     }
+
+    public function tickets()
+    {
+        return $this->hasMany('App\Ticket');
+    }
 }
