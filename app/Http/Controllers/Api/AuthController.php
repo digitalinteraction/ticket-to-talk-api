@@ -9,10 +9,13 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\RegisterRequest;
 use App\Http\Requests\LoginRequest;
 
+use Illuminate\Support\Facades\Input;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\JWTAuth;
 
 use App\User;
+use Tymon\JWTAuth\Token;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
@@ -81,5 +84,12 @@ class AuthController extends Controller
         }
 
         return response()->json(compact('token'));
+    }
+
+    public function getUser()
+    {
+        $token = Input::get('token');
+        $user = $this->jwtauth->authenticate($token);
+        return response()->json(compact('user'));
     }
 }

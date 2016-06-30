@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\User;
+use Tymon\JWTAuth\Facades\JWTAuth;
 use Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
@@ -68,5 +69,11 @@ class AuthController extends Controller
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
         ]);
+    }
+
+    protected function getUser()
+    {
+        $user = JWTAuth::parseToken()->authenticate();
+        return response()->json(compact('user'));
     }
 }

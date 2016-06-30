@@ -9,15 +9,6 @@ use App\Http\Controllers\Controller;
 
 class UserController extends Controller
 {
-
-    public function testHome() {
-        return response()->json(
-            [
-                'content' => 'hello world!'
-            ]
-        );
-    }
-
     public function testPost(Request $request)
     {
         dd($request);

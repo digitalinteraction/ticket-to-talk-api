@@ -31,10 +31,10 @@ Route::group(
             ]
         );
 
-        Route::post('/auth/test',
+        Route::get('/auth/test/',
             [
                 'as' => 'auth.test',
-                'uses' => 'UserController@testPost'
+                'uses' => 'AuthController@getUser'
             ]
         );
 

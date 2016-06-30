@@ -20,4 +20,9 @@ class Person extends Model
     protected $fillable = [
         'name', 'birthPlace', 'birthYear'
     ];
+
+    public function users()
+    {
+        return $this->belongsToMany('App\User')->withPivot('user_type');
+    }
 }

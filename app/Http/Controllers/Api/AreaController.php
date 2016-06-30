@@ -1,21 +1,28 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
+use App\Area;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 use App\Http\Requests;
 
-class TagController extends Controller
+class AreaController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Show all areas.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
-        //
+        $allAreas = Area::all();
+        return response()->json(
+            [
+                "areas" => $allAreas
+            ]
+        );
     }
 
     /**
@@ -36,18 +43,23 @@ class TagController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        dd($request->json()->all());
     }
 
     /**
-     * Display the specified resource.
+     * Get area by ID.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
      */
     public function show($id)
     {
-        //
+        $area = Area::findOrFail($id);
+        return response()->json(
+            [
+                "area" => $area
+            ]
+        );
     }
 
     /**

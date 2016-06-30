@@ -21,4 +21,14 @@ class Area extends Model
     protected $fillable = [
         'townCity', 'county', 'country'
     ];
+
+    /**
+     * Many to many relationship for all areas' users.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function users()
+    {
+        return $this->belongsToMany('App\User');
+    }
 }

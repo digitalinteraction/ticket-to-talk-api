@@ -20,4 +20,14 @@ class Tag extends Model
     protected $fillable = [
         'text',
     ];
+
+    /**
+     * Get all tickets attached to tags.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function tickets()
+    {
+        return $this->belongsToMany('App\Ticket');
+    }
 }

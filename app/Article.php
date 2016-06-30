@@ -20,4 +20,14 @@ class Article extends Model
     protected $fillable = [
         'title', 'link', 'notes'
     ];
+
+    public function user()
+    {
+        return $this->belongsTo('App\User');
+    }
+
+    public function sharedArticles()
+    {
+        return $this->belongsToMany('App\User')->withPivot('sender');
+    }
 }
