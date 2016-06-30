@@ -18,16 +18,16 @@ class Article extends Model
      * @var array
      */
     protected $fillable = [
-        'title', 'link', 'notes'
+        'title', 'link', 'notes', 'user_id'
     ];
 
-    public function user()
+    public function users()
     {
-        return $this->belongsTo('App\User');
+        return $this->belongsToMany('App\User');
     }
 
     public function sharedArticles()
     {
-        return $this->belongsToMany('App\User')->withPivot('sender');
+        return $this->belongsToMany('App\User', 'article_share')->withPivot('sender');
     }
 }

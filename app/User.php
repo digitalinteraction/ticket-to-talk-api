@@ -61,12 +61,26 @@ class User extends Authenticatable
      */
     public function articles()
     {
-        return $this->hasMany('App\Article');
+        return $this->belongsToMany('App\Article');
     }
 
-    ///TODO: create pivot table with extra column.
+    /**
+     * Get all articles the user has shared.
+     *
+     * @return $this
+     */
     public function sharedArticles()
     {
-        return $this->belongsToMany('App\User')->withPivot('sender');
+        return $this->belongsToMany('App\User', 'article_share')->withPivot('sender');
+    }
+
+    /**
+     * Get all of the user's tags.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function tags()
+    {
+        return $this->belongsToMany('App\User');
     }
 }

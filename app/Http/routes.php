@@ -37,8 +37,43 @@ Route::group(
                 'uses' => 'AuthController@getUser'
             ]
         );
+    }
+);
 
-//        Route::get('/', 'UserController@testHome');
+Route::group(
+    [
+        'prefix' => 'api/articles',
+        'namespace' => 'Api'
+    ],
+    function()
+    {
+        Route::post('store/',
+            [
+                'as' => 'article.store',
+                'uses' => 'ArticleController@store'
+            ]
+        );
+
+        Route::get('show/',
+            [
+                'as' => 'article.show',
+                'uses' => 'ArticleController@show'
+            ]
+        );
+
+        Route::post('update/',
+            [
+                'as' => 'article.update',
+                'uses' => 'ArticleController@update'
+            ]
+        );
+
+        Route::delete('destroy/',
+            [
+                'as' => 'article.destroy',
+                'uses' => 'ArticleController@destroy'
+            ]
+        );
     }
 );
 

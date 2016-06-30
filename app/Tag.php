@@ -30,4 +30,9 @@ class Tag extends Model
     {
         return $this->belongsToMany('App\Ticket');
     }
+
+    public function users()
+    {
+        return $this->belongsToMany('App\User');
+    }
 }
