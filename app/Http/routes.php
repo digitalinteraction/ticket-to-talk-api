@@ -11,6 +11,44 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+//API
+Route::group(
+    [
+        'prefix' => 'api',
+        'namespace' => 'Api'
+    ], function () {
+        Route::post('/auth/register',
+            [
+                'as' => 'auth.register',
+                'uses' => 'AuthController@register'
+            ]
+        );
+
+        Route::post('/auth/login',
+            [
+                'as' => 'auth.login',
+                'uses' => 'AuthController@login'
+            ]
+        );
+
+        Route::post('/auth/test',
+            [
+                'as' => 'auth.test',
+                'uses' => 'UserController@testPost'
+            ]
+        );
+
+//        Route::get('/', 'UserController@testHome');
+    }
+);
+
+//Route::get('/', function () {
+//    return view('welcome');
+//});
+//
+//
+//Route::get('/test', 'UserController@testHome');
+//
+//// Areas
+//Route::get('/areas', 'AreaController@index');
+//Route::get('/areas/{id}', 'AreaController@show');
