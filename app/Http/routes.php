@@ -61,6 +61,13 @@ Route::group(
             ]
         );
 
+        Route::get('all/',
+            [
+                'as' => 'article.getUserArticles',
+                'uses' => 'TagController@getUserArticles'
+            ]
+        );
+
         Route::post('update/',
             [
                 'as' => 'article.update',
@@ -77,13 +84,46 @@ Route::group(
     }
 );
 
-//Route::get('/', function () {
-//    return view('welcome');
-//});
-//
-//
-//Route::get('/test', 'UserController@testHome');
-//
-//// Areas
-//Route::get('/areas', 'AreaController@index');
-//Route::get('/areas/{id}', 'AreaController@show');
+Route::group(
+    [
+        'prefix' => 'api/tags',
+        'namespace' => 'Api'
+    ],
+    function()
+    {
+        Route::post('store/',
+            [
+                'as' => 'tag.store',
+                'uses' => 'TagController@store'
+            ]
+        );
+
+        Route::get('show/',
+            [
+                'as' => 'tag.show',
+                'uses' => 'TagController@show'
+            ]
+        );
+
+        Route::get('all/',
+            [
+                'as' => 'tag.getUserTags',
+                'uses' => 'TagController@getUserTags'
+            ]
+        );
+
+        Route::post('update/',
+            [
+                'as' => 'tag.update',
+                'uses' => 'TagController@update'
+            ]
+        );
+
+        Route::delete('destroy/',
+            [
+                'as' => 'tag.destroy',
+                'uses' => 'TagController@destroy'
+            ]
+        );
+    }
+);

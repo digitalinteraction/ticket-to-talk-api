@@ -252,4 +252,27 @@ class ArticleController extends Controller
             ]
         );
     }
+
+    public function getUserArticles()
+    {
+        $token = Input::get('token');
+        $user = $this->jwtauth->authenticate($token);
+
+        if (!$user)
+        {
+            return response()->json(
+                [
+                    "Status" => 402,
+                    "Message" => "User not authenticated.",
+                ]
+            );
+        }
+        return response()->json(
+            [
+                "status" => 200,
+                "message" => "All user articles",
+                "articles" => $user->articles
+            ]
+        );
+    }
 }

@@ -81,6 +81,6 @@ class User extends Authenticatable
      */
     public function tags()
     {
-        return $this->belongsToMany('App\User');
+        return $this->belongsToMany('App\Tag', 'tag_user');
     }
 }
