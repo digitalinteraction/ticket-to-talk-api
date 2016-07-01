@@ -49,12 +49,13 @@ class AuthController extends Controller
         return response()->json(
             [
                 'message' => 'user_created',
+                'user' => $newUser,
                 'token' => $this->jwtauth->fromUser($newUser)
             ]
         );
     }
 
-    public function login(Request $request)
+    public function login(LoginRequest $request)
     {
 //        return $request->getContent();
         // get user credentials
