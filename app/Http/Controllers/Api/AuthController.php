@@ -54,16 +54,18 @@ class AuthController extends Controller
         );
     }
 
-    public function login(LoginRequest $request)
+    public function login(Request $request)
     {
+//        return $request->getContent();
         // get user credentials
         $credentials = $request->only('email', 'password');
-        $token = null;
+        $val = null;
+//        return $request->email;
 
         try
         {
-            $token = $this->jwtauth->attempt($credentials);
-            if (!$token)
+            $val = $this->jwtauth->attempt($credentials);
+            if (!$val)
             {
                 return response()->json(
                     [
@@ -83,7 +85,10 @@ class AuthController extends Controller
             );
         }
 
-        return response()->json(compact('token'));
+        return response()->json(
+            $val,
+            200
+        );
     }
 
     public function getUser()

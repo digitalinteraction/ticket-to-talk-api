@@ -11,6 +11,23 @@
 |
 */
 
+// TODO: DELETE
+// API - TESTING
+Route::group(
+    [
+        'prefix' => 'api',
+        'namespace' => 'Api'
+    ], function () {
+        Route::get('/test/getTag',
+            [
+                'as' => 'auth.register',
+                'uses' => 'TestController@getTag',
+                'https' => true
+            ]
+        );
+    }
+);
+
 // API - AUTHENTICATION
 Route::group(
     [
@@ -170,6 +187,51 @@ Route::group(
             [
                 'as' => 'ticket.destroy',
                 'uses' => 'TicketController@destroy'
+            ]
+        );
+    }
+);
+
+// API - People
+Route::group(
+    [
+        'prefix' => 'api/people',
+        'namespace' => 'Api'
+    ],
+    function()
+    {
+        Route::post('store/',
+            [
+                'as' => 'person.store',
+                'uses' => 'PersonController@store'
+            ]
+        );
+
+        Route::get('show/',
+            [
+                'as' => 'person.show',
+                'uses' => 'PersonController@show'
+            ]
+        );
+
+        Route::get('all/',
+            [
+                'as' => 'person.getUserPeople',
+                'uses' => 'PersonController@getUserPeople'
+            ]
+        );
+
+        Route::post('update/',
+            [
+                'as' => 'people.update',
+                'uses' => 'PersonController@update'
+            ]
+        );
+
+        Route::delete('destroy/',
+            [
+                'as' => 'people.destroy',
+                'uses' => 'PersonController@destroy'
             ]
         );
     }

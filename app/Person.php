@@ -21,13 +21,33 @@ class Person extends Model
         'name', 'birthPlace', 'birthYear'
     ];
 
+    /**
+     * Get all users that have access to this person
+     *
+     * @return $this
+     */
     public function users()
     {
         return $this->belongsToMany('App\User')->withPivot('user_type');
     }
 
+    /**
+     * Get all tickets associated with this person.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function tickets()
     {
         return $this->hasMany('App\Ticket');
+    }
+
+    /**
+     * Get the person's address.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function address()
+    {
+        return $this->belongsTo('App\Area');
     }
 }
