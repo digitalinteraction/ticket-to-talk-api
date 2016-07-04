@@ -28,7 +28,7 @@ class Person extends Model
      */
     public function users()
     {
-        return $this->belongsToMany('App\User')->withPivot('user_type');
+        return $this->belongsToMany('App\User')->withPivot('user_type', 'relation');
     }
 
     /**

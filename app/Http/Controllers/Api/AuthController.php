@@ -96,6 +96,6 @@ class AuthController extends Controller
     {
         $token = Input::get('token');
         $user = $this->jwtauth->authenticate($token);
-        return response()->json(compact('user'));
+        return response()->json($user);
     }
 }

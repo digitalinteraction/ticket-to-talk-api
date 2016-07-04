@@ -70,6 +70,7 @@ class PersonController extends Controller
         $person->name = $request->name;
         $person->birthYear = $request->birthYear;
         $person->birthPlace = $request->birthPlace;
+        $person->relation = $request->relation;
 
         $saved = $person->save();
         $person->users()->attach($user->id, ['user_type' => 'admin']);
