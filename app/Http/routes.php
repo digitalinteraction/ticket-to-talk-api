@@ -82,7 +82,7 @@ Route::group(
         Route::get('all/',
             [
                 'as' => 'article.getUserArticles',
-                'uses' => 'TagController@getUserArticles'
+                'uses' => 'ArticleController@getUserArticles'
             ]
         );
 
@@ -192,7 +192,7 @@ Route::group(
     }
 );
 
-// API - People
+// API - PEOPLE
 Route::group(
     [
         'prefix' => 'api/people',
@@ -232,6 +232,44 @@ Route::group(
             [
                 'as' => 'people.destroy',
                 'uses' => 'PersonController@destroy'
+            ]
+        );
+    }
+);
+
+// API - USER
+Route::group(
+    [
+        'prefix' => 'api/user',
+        'namespace' => 'Api'
+    ],
+    function()
+    {
+        Route::get('show/',
+            [
+                'as' => 'user.show',
+                'uses' => 'PersonController@show'
+            ]
+        );
+
+        Route::post('update/',
+            [
+                'as' => 'user.update',
+                'uses' => 'PersonController@update'
+            ]
+        );
+
+        Route::delete('destroy/',
+            [
+                'as' => 'user.destroy',
+                'uses' => 'PersonController@destroy'
+            ]
+        );
+
+        Route::get('getpeople/',
+            [
+                'as' => 'user.getpeople',
+                'uses' => 'UserController@getAssociatedPeople'
             ]
         );
     }
