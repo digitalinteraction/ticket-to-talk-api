@@ -135,7 +135,7 @@ class PersonController extends Controller
                 return response()->json(
                     [
                         "status" => 200,
-                        "message" => "Tag Found",
+                        "message" => "Person Found",
                         "people" => $people,
                     ]
                 );
@@ -144,7 +144,7 @@ class PersonController extends Controller
         return response()->json(
             [
                 "status" => 500,
-                "message" => "Tag not found",
+                "message" => "Person not found",
             ]
         );
     }
@@ -181,5 +181,35 @@ class PersonController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function getUsers()
+    {
+        $token = Input::get('token');
+        $user = $this->jwtauth->authenticate($token);
+
+        if (!$user)
+        {
+            return response()->json(
+                [
+                    "Status" => 402,
+                    "Message" => "User not authenticated.",
+                ]
+            );
+        }
+
+        $personID = (int) Input::get('person_id');
+        $person = $user->people->find($personID);
+
+        if($person)
+        {
+            $users = $person->users;
+            return response()->json(
+                [
+                    "status" => 200,
+                    "users" => $users
+                ]
+            );
+        }
     }
 }

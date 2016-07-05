@@ -234,6 +234,13 @@ Route::group(
                 'uses' => 'PersonController@destroy'
             ]
         );
+
+        Route::get('getusers/',
+            [
+                'as' => 'people.getusers',
+                'uses' => 'PersonController@getUsers'
+            ]
+        );
     }
 );
 
