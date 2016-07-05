@@ -66,19 +66,34 @@ class TicketController extends Controller
             );
         }
 
+        $temp_ticket = new Ticket();
+        $temp_ticket->title = $request['ticket']['title'];
+
+        $tags = [];
+        foreach($request['tags'] as $tag)
+        {
+            array_push($tags, $tag);
+        }
+
+//        return response()->json(
+//            [
+//                "tags" => $tags
+//            ]
+//        );
+
         $ticket = new Ticket();
-        $ticket->title = $request->title;
-        $ticket->description = $request->description;
-        $ticket->mediaType = $request->mediaType;
-        $ticket->year = $request->year;
-        $ticket->pathToFile = $request->pathToFile;
-        $ticket->access_level = $request->access_level;
+        $ticket->title = $request['ticket']['title'];
+        $ticket->description = $request['ticket']['description'];
+        $ticket->mediaType = $request['ticket']['mediaType'];
+        $ticket->year = $request['ticket']['year'];
+        $ticket->pathToFile = $request['ticket']['pathToFile'];
+        $ticket->access_level = $request['ticket']['access_level'];
         $saved = $ticket->save();
 
         $area = new Area();
-        $area->townCity = $request->townCity;
-        $area->county = $request->county;
-        $area->country = $request->country;
+        $area->townCity = $request['area']['town_city'];
+        $area->county = $request['area']['county'];
+        $area->country = $request['area']['country'];
         $area->save();
 
         // TODO: attach ticket to person with privilege level

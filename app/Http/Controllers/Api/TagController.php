@@ -65,28 +65,32 @@ class TagController extends Controller
                 ]
             );
         }
-
         $tag = new Tag();
         $tag->text = $request->text;
-        $saved = $tag->save();
-        $tag->users()->attach($user->id);
+        $stored = $tag->checkForExistingTag();
+        if ($stored)
+        {
+            $user->tags()->attach($stored->id);
 
-        if ($saved) {
+            return response()->json(
+                [
+                    "status" => 200,
+                    "message" => "Tag saved",
+                    "tag" => $stored,
+                    'owner' => $user
+                ]
+            );
+        } else
+        {
+            $tag->save();
+            $user->tags()->attach($tag->id);
+
             return response()->json(
                 [
                     "status" => 200,
                     "message" => "Tag saved",
                     "tag" => $tag,
                     'owner' => $user
-                ]
-            );
-        } else
-        {
-            return response()->json(
-                [
-                    "status" => 500,
-                    "message" => "Error saving tag",
-                    "tag" => $tag
                 ]
             );
         }

@@ -212,4 +212,34 @@ class PersonController extends Controller
             );
         }
     }
+
+    public function getTickets()
+    {
+        $token = Input::get('token');
+        $user = $this->jwtauth->authenticate($token);
+
+        if (!$user)
+        {
+            return response()->json(
+                [
+                    "Status" => 402,
+                    "Message" => "User not authenticated.",
+                ]
+            );
+        }
+
+        $personID = (int) Input::get('person_id');
+        $person = $user->people->find($personID);
+
+        if($person)
+        {
+            $tickets = $person->tickets;
+            return response()->json(
+                [
+                    "status" => 200,
+                    "tickets" => $tickets
+                ]
+            );
+        }
+    }
 }

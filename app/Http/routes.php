@@ -237,8 +237,15 @@ Route::group(
 
         Route::get('getusers/',
             [
-                'as' => 'people.getusers',
+                'as' => 'people.get_users',
                 'uses' => 'PersonController@getUsers'
+            ]
+        );
+
+        Route::get('gettickets/',
+            [
+                'as' => 'people.get_tickets',
+                'uses' => 'PersonController@getTickets'
             ]
         );
     }

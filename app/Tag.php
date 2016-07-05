@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 /**
  * Model representing a tag.
@@ -34,5 +35,14 @@ class Tag extends Model
     public function users()
     {
         return $this->belongsToMany('App\User', 'tag_user');
+    }
+
+    public function checkForExistingTag()
+    {
+        $stored = DB::table('tags')->where('text', $this->text)->first();
+        if ($stored)
+        {
+            return $stored;
+        }
     }
 }
