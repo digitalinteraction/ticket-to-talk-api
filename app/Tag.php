@@ -29,7 +29,7 @@ class Tag extends Model
      */
     public function tickets()
     {
-        return $this->belongsToMany('App\Ticket');
+        return $this->belongsToMany('App\Ticket', 'ticket_tag');
     }
 
     public function users()

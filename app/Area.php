@@ -51,4 +51,13 @@ class Area extends Model
     {
         return $this->hasMany('App\Person');
     }
+
+    public function checkAreaExists()
+    {
+        $stored = DB::table('areas')->where('town_city', $this->town_city)->where('county', $this->county)->first();
+        if ($stored)
+        {
+            return $stored;
+        }
+    }
 }

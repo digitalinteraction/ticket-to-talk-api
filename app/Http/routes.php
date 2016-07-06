@@ -242,9 +242,9 @@ Route::group(
             ]
         );
 
-        Route::get('gettickets/',
+        Route::get('tickets/',
             [
-                'as' => 'people.get_tickets',
+                'as' => 'people.tickets',
                 'uses' => 'PersonController@getTickets'
             ]
         );

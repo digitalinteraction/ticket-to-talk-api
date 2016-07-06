@@ -31,7 +31,7 @@ class TicketController extends Controller
      */
     public function index()
     {
-        //
+
     }
 
     /**

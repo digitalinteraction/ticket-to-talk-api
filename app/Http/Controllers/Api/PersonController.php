@@ -228,18 +228,46 @@ class PersonController extends Controller
             );
         }
 
-        $personID = (int) Input::get('person_id');
-        $person = $user->people->find($personID);
+        $person_id = (int) Input::get('person_id');
+        $person = $user->people->find($person_id);
 
         if($person)
         {
-            $tickets = $person->tickets;
+            $tickets = [];
+            $areas = [];
+            $tags = [];
+            foreach($person->tickets as $ticket)
+            {
+                array_push($tickets, $ticket);
+                array_push($areas, $ticket->area);
+                foreach($ticket->tags as $tag)
+                {
+                    $already_added = false;
+                    foreach($tags as $t)
+                    {
+                        if ($t == $tag)
+                        {
+                            $already_added = true;
+                        }
+                    }
+                    if (!$already_added) 
+                    {
+                        array_push($tags, $tag);
+                    }
+                }
+            }
+
             return response()->json(
                 [
                     "status" => 200,
-                    "tickets" => $tickets
+                    "tickets" => $tickets,
+                    "areas" => $areas,
+                    "tags" => $tags
                 ]
             );
+        } else
+        {
+            return response()->json(500);
         }
     }
 }
