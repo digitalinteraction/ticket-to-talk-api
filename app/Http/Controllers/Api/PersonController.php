@@ -250,7 +250,7 @@ class PersonController extends Controller
                             $already_added = true;
                         }
                     }
-                    if (!$already_added) 
+                    if (!$already_added)
                     {
                         array_push($tags, $tag);
                     }

@@ -71,7 +71,7 @@ class User extends Authenticatable
      */
     public function sharedArticles()
     {
-        return $this->belongsToMany('App\User', 'article_share')->withPivot('sender');
+        return $this->belongsToMany('App\Article', 'article_share')->withPivot('sender_id');
     }
 
     /**

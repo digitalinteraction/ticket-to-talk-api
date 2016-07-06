@@ -275,4 +275,22 @@ class ArticleController extends Controller
             ]
         );
     }
+
+    public function shareArticle()
+    {
+        $token = Input::get('token');
+        $user = $this->jwtauth->authenticate($token);
+
+        if (!$user)
+        {
+            return response()->json(
+                [
+                    "Status" => 402,
+                    "Message" => "User not authenticated.",
+                ]
+            );
+        }
+
+
+    }
 }
