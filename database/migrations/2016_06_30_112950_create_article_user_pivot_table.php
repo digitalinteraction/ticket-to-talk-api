@@ -17,8 +17,6 @@ class CreateArticleUserPivotTable extends Migration
             $table->foreign('article_id')->references('id')->on('articles')->onDelete('cascade');
             $table->integer('user_id')->unsigned()->index();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->integer('sender_id')->unsigned()->index();
-            $table->foreign('sender_id')->references('id')->on('users')->onDelete('cascade');
             $table->primary(['article_id', 'user_id']);
         });
     }

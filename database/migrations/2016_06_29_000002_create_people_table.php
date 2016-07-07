@@ -12,14 +12,18 @@ class CreatePeopleTable extends Migration
      */
     public function up()
     {
-        Schema::create('person', function (Blueprint $table) {
+        Schema::create('people', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
             $table->string('birthYear');
             $table->string('birthPlace');
-            $table->integer('adminID')->unsigned();
-            $table->integer('addressID')->unsigned()->nullable();
+            $table->integer('admin_id')->unsigned();
+            $table->integer('address_id')->unsigned()->nullable();
             $table->timestamps();
+        });
+
+        Schema::table('people', function (Blueprint $table) {
+            $table->foreign('address_id')->references('id')->on('areas')->onDelete('cascade');
         });
     }
 
@@ -30,6 +34,10 @@ class CreatePeopleTable extends Migration
      */
     public function down()
     {
-        Schema::drop('person');
+        Schema::table('people', function (Blueprint $table) {
+            $table->dropForeign('person_areas_id_foreign');
+        });
+        
+        Schema::drop('people');
     }
 }
