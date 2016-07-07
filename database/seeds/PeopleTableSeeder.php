@@ -12,10 +12,17 @@ class PeopleTableSeeder extends Seeder
     public function run()
     {
         $faker = Faker\Factory::create('en_GB');
-        for ($i = 0; $i < 100; $i++)
+        for ($i = 0; $i < 5; $i++)
         {
             $person = new \App\Person();
             $person->name = $faker->name;
+            $person->birthPlace = $faker->city;
+            $person->birthYear = $faker->year($max = 1970);
+            $person->admin_id = 1;
+            $person->address_id = rand(1, 50);
+            $person->save();
+
+            echo $person, "\n";
         }
     }
 }
