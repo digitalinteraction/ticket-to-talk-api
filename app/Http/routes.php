@@ -286,5 +286,26 @@ Route::group(
                 'uses' => 'UserController@getAssociatedPeople'
             ]
         );
+
+        Route::get('invitations/get',
+            [
+                'as' => 'user.invitations.get',
+                'uses' => 'UserController@getInvitations'
+            ]
+        );
+
+        Route::post('invitations/send',
+            [
+                'as' => 'user.invitations.send',
+                'uses' => 'UserController@sendInvitation'
+            ]
+        );
+
+        Route::post('invitations/accept',
+            [
+                'as' => 'user.invitations.accept',
+                'uses' => 'UserController@acceptInvitation'
+            ]
+        );
     }
 );

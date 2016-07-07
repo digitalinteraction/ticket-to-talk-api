@@ -70,9 +70,9 @@ class AuthController extends Controller
             {
                 return response()->json(
                     [
-                        'invalid email or password'
-                    ],
-                    422
+                        "code" => "401",
+                        "message" => 'Invalid email or password'
+                    ]
                 );
             }
         }
@@ -80,15 +80,18 @@ class AuthController extends Controller
         {
             return response()->json(
                 [
-                    'failed to create token'
-                ],
-                500
+                    "code" => "500",
+                    "message" => 'Failed to create token'
+                ]
             );
         }
 
         return response()->json(
-            $val,
-            200
+            [
+                "code" => "200",
+                "message" => "Authenticated",
+                "token" => $val
+            ]
         );
     }
 

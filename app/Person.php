@@ -50,4 +50,9 @@ class Person extends Model
     {
         return $this->belongsTo('App\Area');
     }
+    
+    public function invited() 
+    {
+        return $this->belongsToMany('App\User', 'invitations')->withPivot('inviter_id', "user_type");
+    }
 }

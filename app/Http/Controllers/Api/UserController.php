@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Person;
 use App\User;
 use Illuminate\Http\Request;
 
@@ -110,37 +111,125 @@ class UserController extends Controller
      */
     public function getAssociatedPeople ()
     {
-//        dd(Input::get('token'));
         $token = Input::get('token');
-//        dd($token);
         $user = $this->jwtauth->authenticate($token);
 
         if (!$user)
         {
             return response()->json(
                 [
-                    "Status" => 402,
+                    "Status" => 401,
                     "Message" => "User not authenticated.",
                 ]
             );
         }
 
-//        $people = $user->people;
-        $people = [];
-        foreach($user->people as $person)
+        return response()->json(
+            [
+                "people" => $user->people
+            ], 200
+        );
+    }
+
+    /**
+     * Send an invitation to join a person.
+     * 
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function sendInvitation(Request $request)
+    {
+        $token = Input::get('token');
+        $user = $this->jwtauth->authenticate($token);
+
+        if (!$user)
         {
-            $related = [
-//                "relation" => $person->pivot->user_type,
-                "person" => $person->person
-            ];
-            array_push($people, $related);
+            return response()->json(
+                [
+                    "Status" => 401,
+                    "Message" => "User not authenticated.",
+                ]
+            );
+        }
+
+        $person = Person::find($request->person_id);
+        $invitee = User::where("email", $request->email)->get()->first();
+        
+        if(!$invitee) 
+        {
+            return response()->json(
+                [
+                    "Status" => 500,
+                    "Message" => "User not found.",
+                ]
+            );
+        }
+
+        $invitee->invitations()->attach($person->id, ["user_type" => $request->user_type, "inviter_id" => $user->id]);
+
+        return response()->json(
+            [
+                200
+            ]
+        );
+    }
+    /**
+     * Get all of the user's invitations.
+     * 
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getInvitations() 
+    {
+        $token = Input::get('token');
+        $user = $this->jwtauth->authenticate($token);
+
+        if (!$user)
+        {
+            return response()->json(
+                [
+                    "Status" => 401,
+                    "Message" => "User not authenticated.",
+                ]
+            );
         }
 
         return response()->json(
             [
-//                "user_type" => $people[0]->pivot->user_type,
-                "people" => $user->people
-            ], 200
+                "people" => $user->invitations
+            ]
+        );
+    }
+
+    /**
+     * Accept an invitation.
+     * 
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function acceptInvitation(Request $request)
+    {
+        $token = Input::get('token');
+        $user = $this->jwtauth->authenticate($token);
+
+        if (!$user)
+        {
+            return response()->json(
+                [
+                    "Status" => 401,
+                    "Message" => "User not authenticated.",
+                ]
+            );
+        }
+
+        $person = Person::find($request->person_id);
+        $user->invitations()->dettach($person->id);
+        $user->people()->attach($person->id, $request->user_type);
+
+        return response()->json(
+            [
+                "Status" => 200,
+                "person" => $user->people()->find($person->id)
+            ]
         );
     }
 }
