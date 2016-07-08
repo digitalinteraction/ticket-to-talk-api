@@ -309,3 +309,19 @@ Route::group(
         );
     }
 );
+
+// API - INSPIRATION
+Route::group(
+    [
+        'prefix' => 'api/inspiration',
+        'namespace' => 'Api'
+    ],
+    function () {
+        Route::get('/get',
+            [
+                'as' => 'inspiration.get',
+                'uses' => 'InspirationController@index'
+            ]
+        );
+    }
+);
