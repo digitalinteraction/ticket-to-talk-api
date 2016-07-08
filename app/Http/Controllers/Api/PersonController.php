@@ -236,6 +236,7 @@ class PersonController extends Controller
             $tickets = [];
             $areas = [];
             $tags = [];
+            $ticket_tags = [];
             foreach($person->tickets as $ticket)
             {
                 array_push($tickets, $ticket);
@@ -254,6 +255,13 @@ class PersonController extends Controller
                     {
                         array_push($tags, $tag);
                     }
+                    $ticket_tag =
+                        [
+                            "ticket_id" => $ticket->id,
+                            "tag_id" => $tag->id
+                        ];
+
+                    array_push($ticket_tags, $ticket_tag);
                 }
             }
 
@@ -262,7 +270,8 @@ class PersonController extends Controller
                     "status" => 200,
                     "tickets" => $tickets,
                     "areas" => $areas,
-                    "tags" => $tags
+                    "tags" => $tags,
+                    "ticket_tags" => $ticket_tags
                 ]
             );
         } else

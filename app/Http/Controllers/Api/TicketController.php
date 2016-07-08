@@ -75,12 +75,6 @@ class TicketController extends Controller
             array_push($tags, $tag);
         }
 
-//        return response()->json(
-//            [
-//                "tags" => $tags
-//            ]
-//        );
-
         $ticket = new Ticket();
         $ticket->title = $request['ticket']['title'];
         $ticket->description = $request['ticket']['description'];
@@ -106,7 +100,7 @@ class TicketController extends Controller
             return response()->json(
                 [
                     "status" => 200,
-                    "message" => "Tag saved",
+                    "message" => "Ticket saved",
                     "ticket" => $ticket,
                     'owner' => $user
                 ]
