@@ -20,8 +20,16 @@ Route::group(
     ], function () {
         Route::get('/test/getTag',
             [
-                'as' => 'auth.register',
+                'as' => 'test.getTag',
                 'uses' => 'TestController@getTag',
+                'https' => true
+            ]
+        );
+
+        Route::post('/test/receiveImage',
+            [
+                'as' => 'test.receiveImage',
+                'uses' => 'TestController@receiveImage',
                 'https' => true
             ]
         );
