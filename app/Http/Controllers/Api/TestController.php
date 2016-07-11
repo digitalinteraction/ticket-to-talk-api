@@ -19,10 +19,15 @@ class TestController extends Controller
     public function receiveImage(Request $request)
     {
         $data = base64_decode($request->image);
-//        $img = imagecreatefromstring($data);
-        $file = fopen("image.jpg", "wb");
+        $file = fopen("storage/photo/p1_t3.jpg", "wb");
         fwrite($file, $data);
         fclose($file);
+
+        return response()->json(
+            [
+                "Status" => 200
+            ]
+        );
 //        return $img;
 //        header('Content-Type: image/jpeg');
 //        imagejpeg($img);

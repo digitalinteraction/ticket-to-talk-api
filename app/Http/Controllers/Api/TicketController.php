@@ -80,21 +80,44 @@ class TicketController extends Controller
         $ticket->description = $request['ticket']['description'];
         $ticket->mediaType = $request['ticket']['mediaType'];
         $ticket->year = $request['ticket']['year'];
-        $ticket->pathToFile = $request['ticket']['pathToFile'];
+        $ticket->pathToFile = "null_path";
         $ticket->access_level = $request['ticket']['access_level'];
-        $saved = $ticket->save();
+        $ticket->person_id = $request['ticket']['person_id'];
+        $ticket->save();
 
         $area = new Area();
-        $area->townCity = $request['area']['town_city'];
+        $area->townCity = $request['area']['townCity'];
         $area->county = $request['area']['county'];
         $area->country = $request['area']['country'];
-        $area->save();
+        $stored = $area->checkAreaExists($area);
 
-        // TODO: attach ticket to person with privilege level
-        $person = Person::find($request->person_id);
-        $ticket->person()->associate($ticket->id);
-        $ticket->users()->attach($user->id, ['user_type' => 'admin']);
-        $ticket->area()->associate($area->id);
+        return response()->json(["ticket" => $ticket, "area" => $area]);
+        if($stored)
+        {
+            $ticket->area_id = $stored->id;
+            $ticket->save();
+        }
+        else
+        {
+            $area->save();
+            $ticket->area_id = $area->id;
+            $ticket->save();
+        }
+
+//        $ticket->users()->attach($user->id, ['user_type' => 'admin']);
+
+
+        
+        if (strcmp($ticket->mediaType, "Photo") == 0) 
+        {
+            $file_path = "storage/photo/t_" . $ticket->id ."jpg";
+            $data = base64_decode($request->image);
+            $file = fopen($file_path, "wb");
+            fwrite($file, $data);
+            fclose($file);
+            $ticket->pathToFile = $file_path;
+            $ticket->save();
+        }
 
         if ($saved) {
             return response()->json(

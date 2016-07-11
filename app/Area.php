@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 /**
  * Model representing an area.
@@ -52,12 +53,16 @@ class Area extends Model
         return $this->hasMany('App\Person');
     }
 
-    public function checkAreaExists()
+    public function checkAreaExists(Area $area)
     {
-        $stored = DB::table('areas')->where('town_city', $this->town_city)->where('county', $this->county)->first();
+        $stored = DB::table('areas')->where('townCity', $area->townCity)->where('county', $area->county)->get()->first();
         if ($stored)
         {
             return $stored;
+        }
+        else
+        {
+            return null;
         }
     }
 }
