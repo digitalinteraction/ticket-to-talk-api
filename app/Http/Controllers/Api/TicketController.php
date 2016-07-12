@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Area;
+use App\Tag;
 use App\Ticket;
 use App\User;
 use Illuminate\Http\Request;
@@ -72,7 +73,22 @@ class TicketController extends Controller
         $tags = [];
         foreach($request['tags'] as $tag)
         {
-            array_push($tags, $tag);
+            array_push($tags, $tag["id"]);
+        }
+
+        $area = new Area();
+        $area->townCity = $request['area']['townCity'];
+        $area->county = $request['area']['county'];
+        $area->country = $request['area']['country'];
+
+        $stored = $area->checkAreaExists($area);
+
+        if(!$stored)
+        {
+            $area->save();
+        } else
+        {
+            $area = $stored;
         }
 
         $ticket = new Ticket();
@@ -83,34 +99,16 @@ class TicketController extends Controller
         $ticket->pathToFile = "null_path";
         $ticket->access_level = $request['ticket']['access_level'];
         $ticket->person_id = $request['ticket']['person_id'];
+        $ticket->area_id = $area->id;
         $ticket->save();
 
-        $area = new Area();
-        $area->townCity = $request['area']['townCity'];
-        $area->county = $request['area']['county'];
-        $area->country = $request['area']['country'];
-        $stored = $area->checkAreaExists($area);
+        $ticket->tags()->attach($tags);
 
-        return response()->json(["ticket" => $ticket, "area" => $area]);
-        if($stored)
-        {
-            $ticket->area_id = $stored->id;
-            $ticket->save();
-        }
-        else
-        {
-            $area->save();
-            $ticket->area_id = $area->id;
-            $ticket->save();
-        }
+        $ticket->users()->attach($user->id, ['user_type' => 'admin']);
 
-//        $ticket->users()->attach($user->id, ['user_type' => 'admin']);
-
-
-        
         if (strcmp($ticket->mediaType, "Photo") == 0) 
         {
-            $file_path = "storage/photo/t_" . $ticket->id ."jpg";
+            $file_path = "storage/photo/t_" . $ticket->id .".jpg";
             $data = base64_decode($request->image);
             $file = fopen($file_path, "wb");
             fwrite($file, $data);
@@ -119,7 +117,7 @@ class TicketController extends Controller
             $ticket->save();
         }
 
-        if ($saved) {
+        if ($ticket->id != 0) {
             return response()->json(
                 [
                     "status" => 200,
