@@ -60,7 +60,7 @@ class PersonController extends Controller
         {
             return response()->json(
                 [
-                    "Status" => 402,
+                    "Status" => 401,
                     "Message" => "User not authenticated.",
                 ]
             );
@@ -70,20 +70,44 @@ class PersonController extends Controller
         $person->name = $request->name;
         $person->birthYear = $request->birthYear;
         $person->birthPlace = $request->birthPlace;
-        $person->relation = $request->relation;
-
-        $saved = $person->save();
-        $person->users()->attach($user->id, ['user_type' => 'admin']);
+        $person->admin_id = $user->id;
 
         // TODO: check area already exists
         $area = new Area();
         $area->townCity = $request->townCity;
         $area->county = $request->county;
         $area->country = $request->country;
-        $area->save();
 
-        $person->address()->associate($area->id);
+        $stored = $area->checkAreaExists($area);
+
+        if(!$stored)
+        {
+            $area->save();
+        } else
+        {
+            $area = $stored;
+        }
+
+        $person->address_id = $area->id;
         $person->save();
+        $person->users()->attach($user->id, ['user_type' => 'admin', "relation" => $request->relation]);
+
+//        return response()->json(
+//            [
+//                "user" => $user,
+//                "person" => $person,
+//                "area" => $area,
+//            ]
+//        );
+
+
+        $file_path = "storage/profile/p_" . $person->id .".jpg";
+        $data = base64_decode($request->image);
+        $file = fopen($file_path, "wb");
+        fwrite($file, $data);
+        fclose($file);
+        $person->pathToPhoto = $file_path;
+        $saved = $person->save();
 
 
         if ($saved) {

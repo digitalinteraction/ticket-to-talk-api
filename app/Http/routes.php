@@ -33,6 +33,14 @@ Route::group(
                 'https' => true
             ]
         );
+
+        Route::get('/test/getImage',
+            [
+                'as' => 'test.getImage',
+                'uses' => 'TestController@getImage',
+                'https' => true
+            ]
+        );
     }
 );
 

@@ -38,11 +38,19 @@ class AuthController extends Controller
             ]
         );
 
+        $file_path = "storage/profile/u_" . $newUser->id .".jpg";
+        $data = base64_decode($request->image);
+        $file = fopen($file_path, "wb");
+        fwrite($file, $data);
+        fclose($file);
+        $newUser->pathToPhoto = $file_path;
+        $newUser->save();
+
         if (!$newUser) {
             return response()->json(
                 [
                     'failed_to_create_new_user'
-                ]
+                ],500
             );
         }
 
