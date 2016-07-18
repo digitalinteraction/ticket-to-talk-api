@@ -71,6 +71,7 @@ class PersonController extends Controller
         $person->birthYear = $request->birthYear;
         $person->birthPlace = $request->birthPlace;
         $person->admin_id = $user->id;
+        $person->notes = $request->notes;
 
         // TODO: check area already exists
         $area = new Area();
