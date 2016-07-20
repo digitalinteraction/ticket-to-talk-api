@@ -61,7 +61,7 @@ class TicketController extends Controller
         {
             return response()->json(
                 [
-                    "Status" => 402,
+                    "Status" => 401,
                     "Message" => "User not authenticated."
                 ]
             );
@@ -123,7 +123,8 @@ class TicketController extends Controller
                     "status" => 200,
                     "message" => "Ticket saved",
                     "ticket" => $ticket,
-                    'owner' => $user
+                    'owner' => $user,
+                    "area" => $area
                 ]
             );
         } else

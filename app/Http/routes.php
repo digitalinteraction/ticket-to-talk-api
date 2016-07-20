@@ -41,6 +41,21 @@ Route::group(
                 'https' => true
             ]
         );
+
+        Route::get('/test/getImageBytes',
+            [
+                'as' => 'test.getImageBytes',
+                'uses' => 'TestController@getImageBytes',
+
+            ]
+        );
+
+        Route::post('/test/receiveAudio',
+            [
+                'as' => 'test.receiveAudio',
+                'uses' => 'TestController@receiveAudio'
+            ]
+        );
     }
 );
 
@@ -337,6 +352,22 @@ Route::group(
             [
                 'as' => 'inspiration.get',
                 'uses' => 'InspirationController@index'
+            ]
+        );
+    }
+);
+
+// API - MEDIA
+Route::group(
+    [
+        'prefix' => 'api/media',
+        'namespace' => 'Api'
+    ],
+    function () {
+        Route::get('/get',
+            [
+                'as' => 'media.get',
+                'uses' => 'MediaController@getMedia'
             ]
         );
     }

@@ -48,4 +48,34 @@ class TestController extends Controller
         }
         return response()->json(["image_bytes" => $byte_arr]);
     }
+
+    public function receiveAudio(Request $request)
+    {
+        $data = base64_decode($request->audio);
+        $file = fopen("storage/audio/sample.wav", "wb");
+        fwrite($file, $data);
+        fclose($file);
+
+        return response()->json([200]);
+    }
+
+    public function getImageBytes()
+    {
+        $fileName = Input::get("fileName");
+
+        return response()->file("storage/photo/" . $fileName);
+
+        $file = file_get_contents("storage/photo/" . $fileName);
+        $bytes = str_split($file);
+        foreach ($bytes as $key => $val)
+        {
+            $bytes[$key] = ord($val);
+        }
+
+        return response()->json(
+            [
+                "bytes" => $bytes
+            ]
+        );
+    }
 }
