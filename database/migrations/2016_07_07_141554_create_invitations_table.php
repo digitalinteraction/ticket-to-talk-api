@@ -30,6 +30,6 @@ class CreatePersonUserPivotTable extends Migration
      */
     public function down()
     {
-        Schema::drop('person_user');
+        Schema::drop('invitations');
     }
 }
