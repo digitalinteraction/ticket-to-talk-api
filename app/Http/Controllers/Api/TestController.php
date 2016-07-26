@@ -78,4 +78,11 @@ class TestController extends Controller
             ]
         );
     }
+
+    public function writeTextToFile()
+    {
+        $file = fopen("test.txt", "w");
+        fwrite($file, "Hello world!");
+        fclose($file);
+    }
 }
