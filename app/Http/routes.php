@@ -26,6 +26,13 @@ Route::group(
             ]
         );
 
+        Route::get('/test/write',
+            [
+                'as' => 'test.write',
+                'uses' => 'TestController@writeTextToFile',
+            ]
+        );
+
         Route::post('/test/receiveImage',
             [
                 'as' => 'test.receiveImage',
