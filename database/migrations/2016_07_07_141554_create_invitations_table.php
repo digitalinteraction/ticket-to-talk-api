@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePersonUserPivotTable extends Migration
+class CreateInvitationsTable extends Migration
 {
     /**
      * Run the migrations.
