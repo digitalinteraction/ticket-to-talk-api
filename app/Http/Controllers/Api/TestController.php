@@ -82,7 +82,7 @@ class TestController extends Controller
     public function writeTextToFile()
     {
 
-        $path = public_path('test.txt');
+        $path = public_path('storage/test.txt');
         $file = fopen($path, "w");
         echo fwrite($file, "Hello world!");
         fclose($file);
