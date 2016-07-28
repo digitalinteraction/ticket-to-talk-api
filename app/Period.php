@@ -43,4 +43,14 @@ class Period extends Model
             return null;
         }
     }
+
+    /**
+     * Get all of the people attached to this period.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function people()
+    {
+        return $this->belongsToMany('App\Person', 'period_person');
+    }
 }

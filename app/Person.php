@@ -24,7 +24,7 @@ class Person extends Model
     /**
      * Get all users that have access to this person
      *
-     * @return $this
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function users()
     {
@@ -50,9 +50,25 @@ class Person extends Model
     {
         return $this->belongsTo('App\Area');
     }
-    
+
+    /**
+     * Get all of the invitations for this person.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function invited() 
     {
         return $this->belongsToMany('App\User', 'invitations')->withPivot('inviter_id', "user_type");
     }
+
+    /**
+     * Get all of the periods attached to this person.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function periods()
+    {
+        return $this->belongsToMany('App\Period', 'period_person');
+    }
+
 }

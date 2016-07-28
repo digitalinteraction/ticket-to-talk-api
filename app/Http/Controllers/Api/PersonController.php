@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Area;
+use App\Period;
 use App\Person;
 use App\User;
 use Illuminate\Http\Request;
@@ -73,7 +74,6 @@ class PersonController extends Controller
         $person->admin_id = $user->id;
         $person->notes = $request->notes;
 
-        // TODO: check area already exists
         $area = new Area();
         $area->townCity = $request->townCity;
 
@@ -108,6 +108,7 @@ class PersonController extends Controller
         $person->pathToPhoto = $file_path;
         $saved = $person->save();
 
+        $person->periods()->attach([1,2,3,4]);
 
         if ($saved) {
             return response()->json(
