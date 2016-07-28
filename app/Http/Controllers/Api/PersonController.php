@@ -99,14 +99,25 @@ class PersonController extends Controller
 //            ]
 //        );
 
-
-        $file_path = public_path("storage/profile/p_" . $person->id .".jpg");
+        $file_path = "storage/profile/p_" . $person->id .".jpg";
+        $person->pathToPhoto = $file_path;
         $data = base64_decode($request->image);
-        $file = fopen($file_path, "wb");
+        $file = fopen(public_path($file_path), "wb");
         fwrite($file, $data);
         fclose($file);
-        $person->pathToPhoto = $file_path;
+
         $saved = $person->save();
+
+        if (count(Period::find([1,2,3,4])) == 0)
+        {
+            $texts = ["Childhood", "Teenager", "Adult", "Retirement"];
+            foreach ($texts as $text)
+            {
+                $period = new Period();
+                $period->text = $text;
+                $period->save();
+            }
+        }
 
         $person->periods()->attach([1,2,3,4]);
 
