@@ -100,7 +100,7 @@ class PersonController extends Controller
 //        );
 
 
-        $file_path = "storage/profile/p_" . $person->id .".jpg";
+        $file_path = public_path("storage/profile/p_" . $person->id .".jpg");
         $data = base64_decode($request->image);
         $file = fopen($file_path, "wb");
         fwrite($file, $data);
