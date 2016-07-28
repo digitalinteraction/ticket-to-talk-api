@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 /**
  * Class Period
@@ -33,7 +34,7 @@ class Period extends Model
      */
     public function checkPeriodExists(Period $period)
     {
-        $stored = DB::table('period')->where('text', $period->text)->get();
+        $stored = DB::table('periods')->where('text', $period->text)->get();
         if ($stored)
         {
             return $stored[0];
