@@ -40,6 +40,7 @@ class MediaController extends Controller
         }
 
         $fileName = Input::get("fileName");
-        return response()->file($fileName);
+        $path = public_path($fileName);
+        return response()->file($path);
     }
 }

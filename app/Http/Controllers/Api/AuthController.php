@@ -98,6 +98,7 @@ class AuthController extends Controller
             [
                 "code" => "200",
                 "message" => "Authenticated",
+                "user" => $this->jwtauth->authenticate($val),
                 "token" => $val
             ]
         );

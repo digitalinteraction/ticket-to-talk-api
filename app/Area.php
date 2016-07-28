@@ -55,7 +55,7 @@ class Area extends Model
 
     public function checkAreaExists(Area $area)
     {
-        $stored = DB::table('areas')->where('townCity', $area->townCity)->where('county', $area->county)->get();
+        $stored = DB::table('areas')->where('townCity', $area->townCity)->get();
         if ($stored)
         {
             return $stored[0];

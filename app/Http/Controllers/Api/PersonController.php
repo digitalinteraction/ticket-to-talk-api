@@ -76,8 +76,6 @@ class PersonController extends Controller
         // TODO: check area already exists
         $area = new Area();
         $area->townCity = $request->townCity;
-        $area->county = $request->county;
-        $area->country = $request->country;
 
         $stored = $area->checkAreaExists($area);
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Area;
+use App\Period;
 use App\Tag;
 use App\Ticket;
 use App\User;
@@ -78,8 +79,6 @@ class TicketController extends Controller
 
         $area = new Area();
         $area->townCity = $request['area']['townCity'];
-        $area->county = $request['area']['county'];
-        $area->country = $request['area']['country'];
 
         $stored = $area->checkAreaExists($area);
 
@@ -91,6 +90,18 @@ class TicketController extends Controller
             $area = $stored;
         }
 
+        $period = new Period();
+        $period->text = $request['period']['text'];
+
+        $stored = $period->checkPeriodExists($period);
+        if(!$stored)
+        {
+            $period->save();
+        } else
+        {
+            $period = $stored;
+        }
+
         $ticket = new Ticket();
         $ticket->title = $request['ticket']['title'];
         $ticket->description = $request['ticket']['description'];
@@ -100,6 +111,7 @@ class TicketController extends Controller
         $ticket->access_level = $request['ticket']['access_level'];
         $ticket->person_id = $request['ticket']['person_id'];
         $ticket->area_id = $area->id;
+        $ticket->period_id = $period->id;
         $ticket->save();
 
         $ticket->tags()->attach($tags);

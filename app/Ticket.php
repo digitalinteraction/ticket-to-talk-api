@@ -17,9 +17,7 @@ class Ticket extends Model
     ];
 
     /**
-     * Get all of the tickets attached users.
-     *
-     * @return $this
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function users()
     {
@@ -46,8 +44,20 @@ class Ticket extends Model
         return $this->belongsTo('App\Area');
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function person ()
     {
         return $this->belongsTo('App\Person');
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function period()
+    {
+        return $this->belongsTo('App\Ticket');
+    }
+
 }
