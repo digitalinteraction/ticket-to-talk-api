@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Invitation;
 use App\Person;
 use App\User;
 use Illuminate\Http\Request;
@@ -194,12 +195,28 @@ class UserController extends Controller
             );
         }
 
+        $invites = [];
+        foreach ($user->invitations as $inv)
+        {
+            $invite = new Invitation();
+            $person = Person::find($inv->pivot->person_id);
+            $name = User::find($inv->pivot->user_id)->name;
+            $group = $inv->pivot->user_type;
+
+            $invite->person = $person;
+            $invite->name = $name;
+            $invite->group = $group;
+
+            array_push($invites, $invite);
+        }
+
         return response()->json(
             [
-                "people" => $user->invitations
+                "invites" => $invites
             ]
         );
     }
+
 
     /**
      * Accept an invitation.
