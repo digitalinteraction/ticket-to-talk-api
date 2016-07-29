@@ -165,11 +165,12 @@ class UserController extends Controller
             );
         }
 
-        $invitee->invitations()->attach($person->id, ["user_type" => $request->user_type, "inviter_id" => $user->id]);
+        $invitee->invitations()->attach($person->id, ["user_type" => $request->group, "inviter_id" => $user->id]);
 
         return response()->json(
             [
-                200
+                "status" => 200,
+                "added" => true
             ]
         );
     }

@@ -47,7 +47,7 @@ class User extends Authenticatable
     /**
      * Get all people attached to the user's account
      *
-     * @return $this
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function people()
     {
@@ -67,7 +67,7 @@ class User extends Authenticatable
     /**
      * Get all articles the user has shared.
      *
-     * @return $this
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function sharedArticles()
     {
@@ -91,6 +91,6 @@ class User extends Authenticatable
      */
     public function invitations()
     {
-        return $this->belongsTo('App\Person', 'invitations')->withPivot("inviter_id", "user_type");
+        return $this->belongsToMany('App\Person', 'invitations')->withPivot("inviter_id", "user_type");
     }
 }
