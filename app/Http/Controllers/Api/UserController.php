@@ -125,9 +125,23 @@ class UserController extends Controller
             );
         }
 
+        $people = [];
+        $periods = [];
+
+        foreach ($user->people as $person)
+        {
+            array_push($people, $person);
+
+            foreach ($person->periods as $period)
+            {
+                array_push($periods, $period);
+            }
+        }
+
         return response()->json(
             [
-                "people" => $user->people
+                "people" => $people,
+                "periods" => $periods
             ], 200
         );
     }
