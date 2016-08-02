@@ -13,31 +13,24 @@ class InspirationTableSeeder extends Seeder
     public function run()
     {
         $inspirations = [];
-        $row = 1;
-        if (($handle = fopen("Inspiration.csv", "r")) !== FALSE) {
-            while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
-                $num = count($data);
-                $row++;
-                $ins = new Inspiration();
-                for ($c=0; $c < $num; $c++) {
-                    switch($c)
-                    {
-                        case(0):
-                            $ins->question = $data[$c];
-                            break;
-                        case(1):
-                            $ins->prompt = $data[$c];
-                            break;
-                        case(2):
-                            $ins->mediaType = $data[$c];
-                            break;
-                    }
-                }
-//                echo $ins, "\n";
-                array_push($inspirations, $ins);
-            }
-            fclose($handle);
+
+        $file = fopen("Inspiration.txt", "r");
+
+        while(! feof($file))
+        {
+            $rawIns = explode(" - ", fgets($file));
+//            print $rawIns[0] . "\n";
+//            print $rawIns[1] . "\n";
+//            print $rawIns[2] . "\n";
+
+            $ins = new Inspiration();
+            $ins->question = $rawIns[0];
+            $ins->prompt = $rawIns[1];
+            $ins->mediaType = $rawIns[2];
+
+            array_push($inspirations, $ins);
         }
+        fclose($file);
 
         $first = array_shift($inspirations);
         foreach ($inspirations as $ins)
