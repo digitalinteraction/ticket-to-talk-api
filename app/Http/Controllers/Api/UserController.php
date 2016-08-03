@@ -253,14 +253,15 @@ class UserController extends Controller
             );
         }
 
-        $person = Person::find($request->person_id);
-        $user->invitations()->dettach($person->id);
-        $user->people()->attach($person->id, $request->user_type);
+        $invite = $user->invitations()->find($request->person_id);
+        $user->people()->attach($request->person_id, $invite->pivot->user_type);
+
+        $user->invitations()->dettach($request->person_id);
 
         return response()->json(
             [
                 "Status" => 200,
-                "person" => $user->people()->find($person->id)
+                "person" => $user->people()->find($request->person_id)
             ]
         );
     }

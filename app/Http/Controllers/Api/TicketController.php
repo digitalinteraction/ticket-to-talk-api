@@ -130,7 +130,7 @@ class TicketController extends Controller
         } else if (strcmp($ticket->mediaType, "Song") == 0)
         {
             $file_path = "storage/audio/t_" . $ticket->id .".wav";
-            $data = base64_decode($request->image);
+            $data = base64_decode($request->audio);
             $file = fopen($file_path, "wb");
             fwrite($file, $data);
             fclose($file);
