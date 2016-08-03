@@ -218,6 +218,9 @@ class PersonController extends Controller
         //
     }
 
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function getUsers()
     {
         $token = Input::get('token');
@@ -234,7 +237,7 @@ class PersonController extends Controller
         }
 
         $personID = (int) Input::get('person_id');
-        $person = $user->people->find($personID);
+        $person = Person::find($personID);
 
         if($person)
         {
@@ -248,6 +251,9 @@ class PersonController extends Controller
         }
     }
 
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function getTickets()
     {
         $token = Input::get('token');
