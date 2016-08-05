@@ -207,15 +207,36 @@ class PersonController extends Controller
         //
     }
 
+
     /**
-     * Remove the specified resource from storage.
+     * Destroys the record of the person.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy($id)
+    public function destroy()
     {
-        //
+        $token = Input::get('token');
+        $user = $this->jwtauth->authenticate($token);
+
+        if (!$user)
+        {
+            return response()->json(
+                [
+                    "Status" => 402,
+                    "Message" => "User not authenticated.",
+                ]
+            );
+        }
+
+        $person = Person::find(Input::get("person_id"));
+        $person->delete();
+
+        return response()->json(
+            [
+                "status" => 200,
+                "message" => "person deleted."
+            ]
+        );
     }
 
     /**
