@@ -213,29 +213,9 @@ class ArticleController extends Controller
             );
         }
 
-        $articleID = (int) Input::get('article_id');
-        $found = false;
-        $article = null;
-        foreach($user->articles as $user_articles)
-        {
-            if ($articleID ==  $user_articles->id)
-            {
-                $article = $user_articles;
-                $found = true;
-            }
-        }
+        $article = $user->articles()->find(Input::get("article_id"));
+        $user->articles()->detach($article->id);
 
-        if(!$found)
-        {
-            return response()->json(
-                [
-                    "status" => 500,
-                    "message" => "Article not found",
-                ]
-            );
-        }
-
-        $article->delete();
         return response()->json(
             [
                 "status" => 200,
