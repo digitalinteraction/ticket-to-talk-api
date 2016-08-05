@@ -195,13 +195,34 @@ class TicketController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Deletes the ticket resource
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy($id)
+    public function destroy()
     {
-        //
+        $token = Input::get('token');
+        $user = $this->jwtauth->authenticate($token);
+
+        if (!$user)
+        {
+            return response()->json(
+                [
+                    "Status" => 401,
+                    "Message" => "User not authenticated."
+                ]
+            );
+        }
+
+        $ticket = Ticket::find(Input::get('ticket_id'));
+        $ticket->delete();
+
+        return response()->json(
+            [
+                "status" => 200,
+                "message" => "Ticket deleted"
+            ]
+        );
+
     }
 }
