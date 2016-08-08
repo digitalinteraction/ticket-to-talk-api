@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Conversation;
+use App\Person;
 use App\User;
 use Illuminate\Http\Request;
 
@@ -30,7 +31,27 @@ class ConversationController extends Controller
      */
     public function index()
     {
-        //
+        $token = Input::get('token');
+        $user = $this->jwtauth->authenticate($token);
+
+        if (!$user)
+        {
+            return response()->json(
+                [
+                    "Status" => 401,
+                    "Message" => "User not authenticated.",
+                ]
+            );
+        }
+
+        $conversations = Conversation::where("person_id", Input::get('person_id'))->get();
+
+        return response()->json(
+            [
+                "status" => 200,
+                "conversations" => $conversations
+            ]
+        );
     }
 
     /**
