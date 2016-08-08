@@ -96,6 +96,8 @@ class ConversationController extends Controller
         $conversation->person_id = $request->person_id;
         $conversation->save();
 
+        $conversation->date = $request->date;
+
         return response()->json(
             [
                 "status" => 200,
