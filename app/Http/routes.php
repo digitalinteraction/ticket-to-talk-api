@@ -400,5 +400,12 @@ Route::group(
                 'uses' => 'ConversationController@store'
             ]
         );
+
+        Route::get('/destroy',
+            [
+                'as' => 'conversation.destroy',
+                'uses' => 'ConversationController@destroy'
+            ]
+        );
     }
 );

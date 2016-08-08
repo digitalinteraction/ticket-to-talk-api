@@ -142,13 +142,34 @@ class ConversationController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Delete the conversation
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy($id)
+    public function destroy()
     {
-        //
+        $token = Input::get('token');
+        $user = $this->jwtauth->authenticate($token);
+
+        if (!$user)
+        {
+            return response()->json(
+                [
+                    "Status" => 401,
+                    "Message" => "User not authenticated.",
+                ]
+            );
+        }
+
+        $conversation_id = Input::get('conversation_id');
+        $conversation = Conversation::find($conversation_id);
+        $conversation->delete();
+
+        return response()->json(
+            [
+                "status" => 200,
+                "message" => "conversation deleted."
+            ]
+        );
     }
 }
