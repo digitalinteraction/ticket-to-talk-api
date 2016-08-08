@@ -86,8 +86,12 @@ class ConversationController extends Controller
             );
         }
 
+        $dt = explode(" ", $request->date);
+        $date = explode("/", $dt[0]);
+        $time = explode(":", $dt[1]);
+
         $conversation = new Conversation();
-        $conversation->date = new Carbon($request->date);
+        $conversation->date = Carbon::create($date[2], $date[1], $date[0], $time[0], $time[1], $time[2]);
         $conversation->notes = $request->notes;
         $conversation->person_id = $request->person_id;
         $conversation->save();
