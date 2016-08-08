@@ -379,3 +379,26 @@ Route::group(
         );
     }
 );
+
+// API - CONVERSATIONS
+Route::group(
+    [
+        'prefix' => 'api/conversations',
+        'namespace' => 'Api'
+    ],
+    function () {
+        Route::get('/get',
+            [
+                'as' => 'conversation.get',
+                'uses' => 'ConversationController@index'
+            ]
+        );
+
+        Route::post('/store',
+            [
+                'as' => 'conversation.store',
+                'uses' => 'ConversationController@store'
+            ]
+        );
+    }
+);

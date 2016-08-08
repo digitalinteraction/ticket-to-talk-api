@@ -2,13 +2,27 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Conversation;
+use App\User;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Input;
+use Tymon\JWTAuth\JWTAuth;
 
 class ConversationController extends Controller
 {
+
+    private $user;
+    private $jwtauth;
+
+    public function  __construct(User $user, JWTAuth $jwtauth)
+    {
+        $this->user = $user;
+        $this->jwtauth = $jwtauth;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -37,7 +51,32 @@ class ConversationController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $token = Input::get('token');
+        $user = $this->jwtauth->authenticate($token);
+
+        if (!$user)
+        {
+            return response()->json(
+                [
+                    "Status" => 401,
+                    "Message" => "User not authenticated.",
+                ]
+            );
+        }
+
+        $conversation = new Conversation();
+        $conversation->date = $request->date;
+        $conversation->notes = $request->notes;
+        $conversation->person_id = $request->person_id;
+        $conversation->save();
+
+        return response()->json(
+            [
+                "status" => 200,
+                "conversation" => $conversation
+            ]
+        );
+
     }
 
     /**

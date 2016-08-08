@@ -71,4 +71,14 @@ class Person extends Model
         return $this->belongsToMany('App\Period', 'period_person');
     }
 
+    /**
+     * Get all of the conversations belonging to this person.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function conversations()
+    {
+        return $this->hasMany('App\Conversation');
+    }
+
 }

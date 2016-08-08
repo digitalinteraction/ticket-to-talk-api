@@ -60,4 +60,13 @@ class Ticket extends Model
         return $this->belongsTo('App\Ticket');
     }
 
+    /**
+     * Get all of the conversations this ticket is used in.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function conversations()
+    {
+        return $this->belongsToMany('App\Conversation', 'conversation_ticket');
+    }
 }
