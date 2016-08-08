@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Conversation;
 use App\Person;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -86,7 +87,7 @@ class ConversationController extends Controller
         }
 
         $conversation = new Conversation();
-        $conversation->date = $request->date;
+        $conversation->date = new Carbon($request->date);
         $conversation->notes = $request->notes;
         $conversation->person_id = $request->person_id;
         $conversation->save();
