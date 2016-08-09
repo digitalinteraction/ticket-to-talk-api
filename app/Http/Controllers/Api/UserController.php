@@ -254,9 +254,9 @@ class UserController extends Controller
         }
 
         $invite = $user->invitations()->find($request->person_id);
-        $user->people()->attach($request->person_id, $invite->pivot->user_type);
+        $user->people()->attach($request->person_id, ["user_type" => $invite->pivot->user_type, "relation" => $request->relation]);
 
-        $user->invitations()->dettach($request->person_id);
+        $user->invitations()->detach($request->person_id);
 
         return response()->json(
             [
