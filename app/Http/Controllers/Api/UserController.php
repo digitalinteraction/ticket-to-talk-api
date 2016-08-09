@@ -288,5 +288,12 @@ class UserController extends Controller
         }
 
         $user->invitations()->detach($request->person_id);
+
+        return response()->json(
+            [
+                "Status" => 200,
+                "Message" => "Invitation rejected"
+            ]
+        );
     }
 }
