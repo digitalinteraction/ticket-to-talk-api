@@ -345,6 +345,13 @@ Route::group(
                 'uses' => 'UserController@acceptInvitation'
             ]
         );
+
+        Route::post('invitations/reject',
+            [
+                'as' => 'user.invitations.reject',
+                'uses' => 'UserController@rejectInvitation'
+            ]
+        );
     }
 );
 
