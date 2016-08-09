@@ -265,4 +265,28 @@ class UserController extends Controller
             ]
         );
     }
+
+    /**
+     * Reject an invitation
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function rejectInvitation(Request $request)
+    {
+        $token = Input::get('token');
+        $user = $this->jwtauth->authenticate($token);
+
+        if (!$user)
+        {
+            return response()->json(
+                [
+                    "Status" => 401,
+                    "Message" => "User not authenticated.",
+                ]
+            );
+        }
+
+        $user->invitations()->detach($request->person_id);
+    }
 }
