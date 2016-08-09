@@ -86,7 +86,7 @@ class ConversationController extends Controller
             );
         }
 
-        $dt = explode(" ", $request->date);
+        $dt = explode(" ", $request->datetime);
         $date = explode("/", $dt[0]);
         $time = explode(":", $dt[1]);
 
@@ -96,7 +96,7 @@ class ConversationController extends Controller
         $conversation->person_id = $request->person_id;
         $conversation->save();
 
-        $conversation->date = $request->date;
+        $conversation->date = $request->datetime;
 
         return response()->json(
             [
@@ -150,7 +150,7 @@ class ConversationController extends Controller
     {
         $token = Input::get('token');
         $user = $this->jwtauth->authenticate($token);
-
+        
         if (!$user)
         {
             return response()->json(
