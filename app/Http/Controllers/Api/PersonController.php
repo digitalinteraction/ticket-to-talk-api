@@ -89,7 +89,7 @@ class PersonController extends Controller
 
         $person->address_id = $area->id;
         $person->save();
-        $person->users()->attach($user->id, ['user_type' => 'admin', "relation" => $request->relation]);
+        $person->users()->attach($user->id, ['user_type' => 'Admin', "relation" => $request->relation]);
 
 //        return response()->json(
 //            [
