@@ -32,11 +32,21 @@ class Tag extends Model
         return $this->belongsToMany('App\Ticket', 'ticket_tag');
     }
 
+    /**
+     * Gets all users that have used this tag.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function users()
     {
         return $this->belongsToMany('App\User', 'tag_user');
     }
 
+    /**
+     * check if the tag already exists.
+     *
+     * @return mixed
+     */
     public function checkForExistingTag()
     {
         $stored = DB::table('tags')->where('text', $this->text)->first();

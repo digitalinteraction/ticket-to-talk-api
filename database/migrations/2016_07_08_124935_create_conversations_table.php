@@ -14,10 +14,14 @@ class CreateConversationsTable extends Migration
     {
         Schema::create('conversations', function (Blueprint $table) {
             $table->increments('id');
-            $table->string("title");
             $table->text("notes");
             $table->date("date");
+            $table->integer("person_id")->unsigned()->nullable();
             $table->timestamps();
+        });
+
+        Schema::table('conversations', function (Blueprint $table) {
+            $table->foreign("person_id")->references("id")->on("people")->onDelete("cascade");
         });
     }
 
@@ -28,6 +32,7 @@ class CreateConversationsTable extends Migration
      */
     public function down()
     {
+
         Schema::drop('conversations');
     }
 }
