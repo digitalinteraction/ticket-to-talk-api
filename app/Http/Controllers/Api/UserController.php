@@ -254,9 +254,9 @@ class UserController extends Controller
         }
 
         $invite = $user->invitations()->find($request->person_id);
-        $user->people()->attach($request->person_id, $invite->pivot->user_type);
+        $user->people()->attach($request->person_id, ["user_type" => $invite->pivot->user_type, "relation" => $request->relation]);
 
-        $user->invitations()->dettach($request->person_id);
+        $user->invitations()->detach($request->person_id);
 
         return response()->json(
             [
@@ -264,5 +264,29 @@ class UserController extends Controller
                 "person" => $user->people()->find($request->person_id)
             ]
         );
+    }
+
+    /**
+     * Reject an invitation
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function rejectInvitation(Request $request)
+    {
+        $token = Input::get('token');
+        $user = $this->jwtauth->authenticate($token);
+
+        if (!$user)
+        {
+            return response()->json(
+                [
+                    "Status" => 401,
+                    "Message" => "User not authenticated.",
+                ]
+            );
+        }
+
+        $user->invitations()->detach($request->person_id);
     }
 }
