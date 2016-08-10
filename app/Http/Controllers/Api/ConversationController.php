@@ -150,7 +150,7 @@ class ConversationController extends Controller
     {
         $token = Input::get('token');
         $user = $this->jwtauth->authenticate($token);
-        
+
         if (!$user)
         {
             return response()->json(
