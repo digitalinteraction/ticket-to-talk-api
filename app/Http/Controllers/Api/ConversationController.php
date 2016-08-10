@@ -47,6 +47,17 @@ class ConversationController extends Controller
 
         $conversations = Conversation::where("person_id", Input::get('person_id'))->get();
 
+        foreach ($conversations as $conversation)
+        {
+            $ticket_id_string = "";
+            foreach ($conversation->tickets as $ticket)
+            {
+                $ticket_id_string = $ticket_id_string . $ticket->id . ' ';
+            }
+
+            $conversation->ticket_id_string = $ticket_id_string;
+        }
+
         return response()->json(
             [
                 "status" => 200,
@@ -169,6 +180,70 @@ class ConversationController extends Controller
             [
                 "status" => 200,
                 "message" => "conversation deleted."
+            ]
+        );
+    }
+
+    /**
+     * Add a ticket to the conversation
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function addTicket(Request $request)
+    {
+        $token = Input::get('token');
+        $user = $this->jwtauth->authenticate($token);
+
+        if (!$user)
+        {
+            return response()->json(
+                [
+                    "Status" => 401,
+                    "Message" => "User not authenticated.",
+                ]
+            );
+        }
+
+        $conversation = Conversation::find($request->conversation_id);
+        $conversation->tickets()->attach($request->ticket_id);
+
+        return response()->json(
+            [
+                "status" => 200,
+                "message" => "ticket added to conversation"
+            ]
+        );
+    }
+
+    /**
+     * Removes a ticket from the conversation
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function removeTicket(Request $request)
+    {
+        $token = Input::get('token');
+        $user = $this->jwtauth->authenticate($token);
+
+        if (!$user)
+        {
+            return response()->json(
+                [
+                    "Status" => 401,
+                    "Message" => "User not authenticated.",
+                ]
+            );
+        }
+
+        $conversation = Conversation::find($request->conversation_id);
+        $conversation->tickets()->detach($request->ticket_id);
+
+        return respsone()->json(
+            [
+                "status" => 200,
+                "message" => "ticket removed from conversation"
             ]
         );
     }

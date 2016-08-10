@@ -401,6 +401,20 @@ Route::group(
             ]
         );
 
+        Route::post('/tickets/add',
+            [
+                'as' => 'conversation.tickets.add',
+                'uses' => 'ConversationController@addTicket'
+            ]
+        );
+
+        Route::post('/tickets/remove',
+            [
+                'as' => 'conversation.tickets.remove',
+                'uses' => 'ConversationController@removeTicket'
+            ]
+        );
+
         Route::get('/destroy',
             [
                 'as' => 'conversation.destroy',
