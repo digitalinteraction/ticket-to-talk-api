@@ -240,7 +240,7 @@ class ConversationController extends Controller
         $conversation = Conversation::find($request->conversation_id);
         $conversation->tickets()->detach($request->ticket_id);
 
-        return respsone()->json(
+        return response()->json(
             [
                 "status" => 200,
                 "message" => "ticket removed from conversation"
