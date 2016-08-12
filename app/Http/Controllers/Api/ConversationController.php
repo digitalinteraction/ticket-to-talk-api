@@ -25,6 +25,7 @@ class ConversationController extends Controller
         $this->jwtauth = $jwtauth;
     }
 
+
     /**
      * Display a listing of the resource.
      *
