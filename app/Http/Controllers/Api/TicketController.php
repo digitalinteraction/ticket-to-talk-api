@@ -71,11 +71,11 @@ class TicketController extends Controller
         $temp_ticket = new Ticket();
         $temp_ticket->title = $request['ticket']['title'];
 
-        $tags = [];
-        foreach($request['tags'] as $tag)
-        {
-            array_push($tags, $tag["id"]);
-        }
+//        $tags = [];
+//        foreach($request['tags'] as $tag)
+//        {
+//            array_push($tags, $tag["id"]);
+//        }
 
         $area = new Area();
         $area->townCity = $request['area']['townCity'];
@@ -102,6 +102,8 @@ class TicketController extends Controller
             $period = $stored;
         }
 
+//        return response()->json(["message" => "passed"]);
+
         $ticket = new Ticket();
         $ticket->title = $request['ticket']['title'];
         $ticket->description = $request['ticket']['description'];
@@ -114,29 +116,30 @@ class TicketController extends Controller
         $ticket->period_id = $period->id;
         $ticket->save();
 
-        $ticket->tags()->attach($tags);
+//        $ticket->tags()->attach($tags);
 
         $ticket->users()->attach($user->id, ['user_type' => 'admin']);
 
-        if (strcmp($ticket->mediaType, "Photo") == 0) 
+        $file_path = "";
+        switch ($request['ticket']['mediaType'])
         {
-            $file_path = "storage/photo/t_" . $ticket->id .".jpg";
-            $data = base64_decode($request->image);
-            $file = fopen($file_path, "wb");
-            fwrite($file, $data);
-            fclose($file);
-            $ticket->pathToFile = $file_path;
-            $ticket->save();
-        } else if (strcmp($ticket->mediaType, "Song") == 0)
-        {
-            $file_path = "storage/audio/t_" . $ticket->id .".wav";
-            $data = base64_decode($request->audio);
-            $file = fopen($file_path, "wb");
-            fwrite($file, $data);
-            fclose($file);
-            $ticket->pathToFile = $file_path;
-            $ticket->save();
+            case "Sound":
+                $file_path = "storage/audio/t_" . $ticket->id .".wav";
+                break;
+            case "Picture":
+                $file_path = "storage/photo/t_" . $ticket->id .".jpg";
+                break;
+            case "Video":
+                break;
         }
+
+        $data = base64_decode($request->media);
+        $file = fopen($file_path, "wb");
+        fwrite($file, $data);
+        fclose($file);
+        $ticket->pathToFile = $file_path;
+        $ticket->save();
+
 
         if ($ticket->id != 0) {
             return response()->json(
