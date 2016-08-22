@@ -120,26 +120,33 @@ class TicketController extends Controller
 
         $ticket->users()->attach($user->id, ['user_type' => 'admin']);
 
-        $file_path = "";
-        switch ($request['ticket']['mediaType'])
+        if(strcmp("YouTube", $request['ticket']['mediaType']) == 0)
         {
-            case "Sound":
-                $file_path = "storage/audio/t_" . $ticket->id .".wav";
-                break;
-            case "Picture":
-                $file_path = "storage/photo/t_" . $ticket->id .".jpg";
-                break;
-            case "Video":
-                break;
+            $ticket->pathToFile = $request['ticket']['pathToFile'];
+            $ticket->save();
         }
+        else
+        {
+            $file_path = "";
+            switch ($request['ticket']['mediaType'])
+            {
+                case "Sound":
+                    $file_path = "storage/audio/t_" . $ticket->id .".wav";
+                    break;
+                case "Picture":
+                    $file_path = "storage/photo/t_" . $ticket->id .".jpg";
+                    break;
+                case "Video":
+                    break;
+            }
 
-        $data = base64_decode($request->media);
-        $file = fopen($file_path, "wb");
-        fwrite($file, $data);
-        fclose($file);
-        $ticket->pathToFile = $file_path;
-        $ticket->save();
-
+            $data = base64_decode($request->media);
+            $file = fopen($file_path, "wb");
+            fwrite($file, $data);
+            fclose($file);
+            $ticket->pathToFile = $file_path;
+            $ticket->save();
+        }
 
         if ($ticket->id != 0) {
             return response()->json(
