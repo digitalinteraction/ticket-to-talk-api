@@ -65,7 +65,7 @@ class User extends Authenticatable
     }
 
     /**
-     * Get all articles the user has shared.
+     * Get all articles shared with the user.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */

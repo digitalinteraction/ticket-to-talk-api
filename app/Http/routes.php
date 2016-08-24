@@ -137,6 +137,34 @@ Route::group(
                 'uses' => 'ArticleController@destroy'
             ]
         );
+
+        Route::post('share/send',
+            [
+                'as' => 'article.share.send',
+                'uses' => 'ArticleController@shareArticle'
+            ]
+        );
+
+        Route::get('share/get',
+            [
+                'as' => 'article.share.get',
+                'uses' => 'ArticleController@getSharedArticles'
+            ]
+        );
+
+        Route::post('share/accept',
+            [
+                'as' => 'article.share.accept',
+                'uses' => 'ArticleController@acceptArticle'
+            ]
+        );
+
+        Route::post('share/reject',
+            [
+                'as' => 'article.share.reject',
+                'uses' => 'ArticleController@rejectArticle'
+            ]
+        );
     }
 );
 

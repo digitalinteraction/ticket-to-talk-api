@@ -224,6 +224,11 @@ class ArticleController extends Controller
         );
     }
 
+    /**
+     * Gets all of the user's articles
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function getUserArticles()
     {
         $token = Input::get('token');
@@ -247,7 +252,12 @@ class ArticleController extends Controller
         );
     }
 
-    public function shareArticle()
+    /**
+     * Share an article with a user.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function shareArticle(Request $request)
     {
         $token = Input::get('token');
         $user = $this->jwtauth->authenticate($token);
@@ -262,6 +272,127 @@ class ArticleController extends Controller
             );
         }
 
+        $article = Article::find($request->article_id);
+        $recipient = User::where('email', $request->email)->get()->first();
 
+        if(!$recipient)
+        {
+            return response()->json(
+                [
+                    "Status" => 500,
+                    "Message" => "The recipient is not registered with Ticket to Talk",
+                ]
+            );
+        }
+        else
+        {
+            $recipient->sharedArticles()->attach($article->id, ["sender_id" => $user->id]);
+
+            return response()->json(
+                [
+                    "Status" => 200,
+                    "Message" => "Invitation sent"
+                ]
+            );
+        }
+    }
+
+    /**
+     * Get all articles shared with the user
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getSharedArticles()
+    {
+        $token = Input::get('token');
+        $user = $this->jwtauth->authenticate($token);
+
+        if (!$user)
+        {
+            return response()->json(
+                [
+                    "Status" => 402,
+                    "Message" => "User not authenticated.",
+                ]
+            );
+        }
+
+        $articles = [];
+
+        foreach ($user->sharedArticles as $article)
+        {
+            array_push($articles, $article);
+        }
+
+        return response()->json(
+            [
+                "Status" => 200,
+                "Articles" => $articles
+            ]
+        );
+    }
+
+    /**
+     * Accept an article
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function acceptArticle(Request $request)
+    {
+        $token = Input::get('token');
+        $user = $this->jwtauth->authenticate($token);
+
+        if (!$user)
+        {
+            return response()->json(
+                [
+                    "Status" => 402,
+                    "Message" => "User not authenticated.",
+                ]
+            );
+        }
+
+        $user->articles()->attach($request->article_id);
+
+        $user->sharedArticles()->detach($request->article_id);
+
+        return response()->json(
+            [
+                "Status" => 200,
+                "Message" => "Article accepted",
+                "Articles" => $user->articles
+            ]
+        );
+    }
+
+    /**
+     * Reject a shared article.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function rejectArticle(Request $request)
+    {
+        $token = Input::get('token');
+        $user = $this->jwtauth->authenticate($token);
+
+        if (!$user)
+        {
+            return response()->json(
+                [
+                    "Status" => 402,
+                    "Message" => "User not authenticated.",
+                ]
+            );
+        }
+
+        $user->sharedArticles()->detach($request->article_id);
+
+        return response()->json(
+            [
+                "Status" => 200,
+                "Message" => "Article rejected",
+            ]
+        );
     }
 }
