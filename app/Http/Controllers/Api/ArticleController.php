@@ -291,14 +291,46 @@ class ArticleController extends Controller
             return response()->json(
                 [
                     "Status" => 200,
-                    "Message" => "Invitation sent",
-                    "Invitations" => $recipient->sharedArticles
+                    "Message" => "Invitation sent"
                 ]
             );
         }
     }
-    
-    public function getSharedArticles(){}
+
+    /**
+     * Get all articles shared with the user
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getSharedArticles()
+    {
+        $token = Input::get('token');
+        $user = $this->jwtauth->authenticate($token);
+
+        if (!$user)
+        {
+            return response()->json(
+                [
+                    "Status" => 402,
+                    "Message" => "User not authenticated.",
+                ]
+            );
+        }
+
+        $articles = [];
+
+        foreach ($user->sharedArticles as $article)
+        {
+            array_push($articles, $article);
+        }
+
+        return response()->json(
+            [
+                "Status" => 200,
+                "Articles" => $articles
+            ]
+        );
+    }
 
     public function acceptArticle() {}
 
