@@ -224,6 +224,11 @@ class ArticleController extends Controller
         );
     }
 
+    /**
+     * Gets all of the user's articles
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function getUserArticles()
     {
         $token = Input::get('token');
@@ -247,7 +252,12 @@ class ArticleController extends Controller
         );
     }
 
-    public function shareArticle()
+    /**
+     * Share an article with a user.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function shareArticle(Request $request)
     {
         $token = Input::get('token');
         $user = $this->jwtauth->authenticate($token);
@@ -262,6 +272,35 @@ class ArticleController extends Controller
             );
         }
 
+        $article = Article::find($request->article_id);
+        $recipient = User::where('email', $request->email)->get()->first();
 
+        if(!$recipient)
+        {
+            return response()->json(
+                [
+                    "Status" => 500,
+                    "Message" => "The recipient is not registered with Ticket to Talk",
+                ]
+            );
+        }
+        else
+        {
+            $recipient->sharedArticles()->attach($article->id, ["sender_id" => $user->id]);
+
+            return response()->json(
+                [
+                    "Status" => 200,
+                    "Message" => "Invitation sent",
+                    "Invitations" => $recipient->sharedArticles
+                ]
+            );
+        }
     }
+    
+    public function getSharedArticles(){}
+
+    public function acceptArticle() {}
+
+    public function rejectArticle() {}
 }
