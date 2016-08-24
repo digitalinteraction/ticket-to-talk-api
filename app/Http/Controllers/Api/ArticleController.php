@@ -332,7 +332,58 @@ class ArticleController extends Controller
         );
     }
 
-    public function acceptArticle() {}
+    /**
+     * Accept an article
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function acceptArticle(Request $request)
+    {
+        $token = Input::get('token');
+        $user = $this->jwtauth->authenticate($token);
 
-    public function rejectArticle() {}
+        if (!$user)
+        {
+            return response()->json(
+                [
+                    "Status" => 402,
+                    "Message" => "User not authenticated.",
+                ]
+            );
+        }
+
+        $user->articles()->attach($request->article_id);
+
+        $user->sharedArticles()->detach($request->article_id);
+
+        return response()->json(
+            [
+                "Status" => 200,
+                "Message" => "Article accepted",
+                "Articles" => $user->articles
+            ]
+        );
+    }
+
+    /**
+     * Reject a shared article.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function rejectArticle()
+    {
+        $token = Input::get('token');
+        $user = $this->jwtauth->authenticate($token);
+
+        if (!$user)
+        {
+            return response()->json(
+                [
+                    "Status" => 402,
+                    "Message" => "User not authenticated.",
+                ]
+            );
+        }
+    }
 }
