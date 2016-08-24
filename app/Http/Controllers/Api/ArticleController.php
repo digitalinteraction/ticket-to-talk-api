@@ -371,7 +371,7 @@ class ArticleController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function rejectArticle()
+    public function rejectArticle(Request $request)
     {
         $token = Input::get('token');
         $user = $this->jwtauth->authenticate($token);
@@ -385,5 +385,14 @@ class ArticleController extends Controller
                 ]
             );
         }
+
+        $user->sharedArticles()->detach($request->article_id);
+
+        return response()->json(
+            [
+                "Status" => 200,
+                "Message" => "Article rejected",
+            ]
+        );
     }
 }
