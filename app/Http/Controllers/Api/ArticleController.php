@@ -284,17 +284,26 @@ class ArticleController extends Controller
                 ]
             );
         }
-        else
-        {
-            $recipient->sharedArticles()->attach($article->id, ["sender_id" => $user->id]);
 
-            return response()->json(
-                [
-                    "Status" => 200,
-                    "Message" => "Invitation sent"
-                ]
-            );
+        if (strcmp($request->includeNotes, "false"))
+        {
+            $a = new Article();
+            $a->title = $article->title;
+            $a->link = $article->link;
+            $a->notes = " ";
+            $a->save();
+            $article = $a;
         }
+
+        $recipient->sharedArticles()->attach($article->id, ["sender_id" => $user->id]);
+
+        return response()->json(
+            [
+                "Status" => 200,
+                "Message" => "Invitation sent"
+            ]
+        );
+
     }
 
     /**
