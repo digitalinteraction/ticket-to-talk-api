@@ -436,6 +436,13 @@ Route::group(
             ]
         );
 
+        Route::post('/update',
+            [
+                'as' => 'conversation.update',
+                'uses' => 'ConversationController@update'
+            ]
+        );
+
         Route::post('/tickets/add',
             [
                 'as' => 'conversation.tickets.add',

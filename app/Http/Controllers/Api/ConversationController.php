@@ -158,13 +158,46 @@ class ConversationController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
+     * @internal param int $id
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        $token = Input::get('token');
+        $user = $this->jwtauth->authenticate($token);
+
+        if (!$user)
+        {
+            return response()->json(
+                [
+                    "Status" => 401,
+                    "Message" => "User not authenticated.",
+                ]
+            );
+        }
+
+        $conversation = Conversation::find($request->conversation_id);
+        if (!$conversation)
+        {
+            return response()->json(
+                [
+                    "Status" => 500,
+                    "Message" => "Conversation not found",
+                ]
+            );
+        }
+
+        $conversation->notes = $request->notes;
+        $conversation->save();
+
+        return response()->json(
+            [
+                "Status" => 500,
+                "Message" => "Conversation updated",
+                "Conversation" => $conversation
+            ]
+        );
     }
 
     /**
