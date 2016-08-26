@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Input;
 use Tymon\JWTAuth\JWTAuth;
 
@@ -73,6 +74,7 @@ class PersonController extends Controller
         $person->birthPlace = $request->birthPlace;
         $person->admin_id = $user->id;
         $person->notes = $request->notes;
+        $person->area = $request->townCity;
 
         $area = new Area();
         $area->townCity = $request->townCity;
@@ -198,13 +200,43 @@ class PersonController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
         //
+        $token = Input::get('token');
+        $user = $this->jwtauth->authenticate($token);
+
+        if (!$user)
+        {
+            return response()->json(
+                [
+                    "Status" => 402,
+                    "Message" => "User not authenticated.",
+                ]
+            );
+        }
+
+        $person = Person::find($request->person_id);
+
+        $person->name = $request->name;
+        $person->birthYear = $request->birthYear;
+        $person->birthPlace = $request->birthPlace;
+        $person->notes = $request->notes;
+        $person->area = $request->area;
+
+        $person->save();
+
+        return response()->json(
+            [
+                "Status" => 200,
+                "Message" => "Person updated",
+                "Person" => $person
+            ]
+        );
+
     }
 
 
