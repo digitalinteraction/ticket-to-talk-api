@@ -285,7 +285,7 @@ class ArticleController extends Controller
             );
         }
 
-        if (strcmp($request->includeNotes, "false"))
+        if (strcmp($request->includeNotes, "false") == 0)
         {
             $a = new Article();
             $a->title = $article->title;
