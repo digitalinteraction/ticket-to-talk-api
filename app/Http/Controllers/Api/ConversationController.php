@@ -116,7 +116,14 @@ class ConversationController extends Controller
         }
 
         $conversation = new Conversation();
-        $conversation->date = Carbon::create($date[2], $date[0], $date[1], $time[0], $time[1], $time[2], 'Europe/London');
+        if (strcmp("Android", $request->platform) == 0)
+        {
+            $conversation->date = Carbon::create($date[2], $date[0], $date[1], $time[0], $time[1], $time[2], 'Europe/London');
+        }
+        else
+        {
+            $conversation->date = Carbon::create($date[2], $date[1], $date[0], $time[0], $time[1], $time[2], 'Europe/London');
+        }
 
         $conversation->notes = $request->notes;
         $conversation->person_id = $request->person_id;
