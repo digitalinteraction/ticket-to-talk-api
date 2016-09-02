@@ -195,13 +195,89 @@ class TicketController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
+     * @internal param int $id
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        $token = Input::get('token');
+        $user = $this->jwtauth->authenticate($token);
+
+        if (!$user)
+        {
+            return response()->json(
+                [
+                    "Status" => 401,
+                    "Message" => "User not authenticated."
+                ]
+            );
+        }
+
+        $ticket = Ticket::find($request->ticket_id);
+        if (!$ticket)
+        {
+            return response()->json(
+                [
+                    "Status" => 500,
+                    "Message" => "Ticket not found"
+                ]
+            );
+        }
+
+        $period = new Period();
+        $period->text = $request->period;
+
+        $stored = $period->checkPeriodExists($period);
+        if(!$stored)
+        {
+            $period->save();
+        } else
+        {
+            $period = $stored;
+        }
+
+        $area = new Area();
+        $area->townCity = $request->area;
+
+        $stored = $area->checkAreaExists($area);
+
+        if($stored == null)
+        {
+            $area->save();
+        } else
+        {
+            $area = $stored;
+        }
+
+        $ticket->title = $request->title;
+        $ticket->description = $request->description;
+        $ticket->year = $request->year;
+        $ticket->access_level = $request->access_level;
+        $ticket->period_id = $period->id;
+        $ticket->area_id = $area->id;
+
+        $saved = $ticket->save();
+        if ($saved)
+        {
+            return response()->json(
+                [
+                    "Status" => 200,
+                    "Message" => "Ticket updated",
+                    "Ticket" => $ticket,
+                    "Area" => $area
+                ]
+            );
+        }
+        else
+        {
+            return response()->json(
+                [
+                    "Status" => 500,
+                    "Message" => "Ticket could not be saved."
+                ]
+            );
+        }
     }
 
     /**
