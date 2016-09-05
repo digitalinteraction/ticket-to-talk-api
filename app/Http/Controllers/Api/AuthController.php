@@ -28,8 +28,20 @@ class AuthController extends Controller
         $this->jwtauth = $jwtauth;
     }
 
+    /**
+     * Registers the user.
+     *
+     * @param RegisterRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function register(RegisterRequest $request)
     {
+
+//        return response()->json(
+//            [
+//                "Request" => $request->password
+//            ]
+//        );
         $newUser = $this->user->create(
             [
                 'name' => $request->get('name'),
@@ -63,6 +75,12 @@ class AuthController extends Controller
         );
     }
 
+    /**
+     * Authenticates the user
+     *
+     * @param LoginRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function login(LoginRequest $request)
     {
 //        return $request->getContent();
@@ -104,6 +122,11 @@ class AuthController extends Controller
         );
     }
 
+    /**
+     * Generates the user from the token.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function getUser()
     {
         $token = Input::get('token');

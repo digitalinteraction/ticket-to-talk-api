@@ -22,7 +22,6 @@ Route::group(
             [
                 'as' => 'test.getTag',
                 'uses' => 'TestController@getTag',
-                'https' => true
             ]
         );
 
@@ -37,7 +36,6 @@ Route::group(
             [
                 'as' => 'test.receiveImage',
                 'uses' => 'TestController@receiveImage',
-                'https' => true
             ]
         );
 
@@ -45,7 +43,6 @@ Route::group(
             [
                 'as' => 'test.getImage',
                 'uses' => 'TestController@getImage',
-                'https' => true
             ]
         );
 
