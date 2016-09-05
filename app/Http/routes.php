@@ -334,7 +334,7 @@ Route::group(
         Route::post('update/',
             [
                 'as' => 'user.update',
-                'uses' => 'PersonController@update'
+                'uses' => 'UserController@update'
             ]
         );
 

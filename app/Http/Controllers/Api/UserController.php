@@ -85,13 +85,54 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
+     * @internal param int $id
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
         //
+        $token = Input::get('token');
+        $user = $this->jwtauth->authenticate($token);
+
+        if (!$user)
+        {
+            return response()->json(
+                [
+                    "Status" => 401,
+                    "Message" => "User not authenticated.",
+                ]
+            );
+        }
+
+
+
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->password = bcrypt($request->password);
+
+        $saved = $user->save();
+
+        if ($saved)
+        {
+            return response()->json(
+                [
+                    "Status" => 200,
+                    "Message" => "User updated.",
+                    "User" => $user
+
+                ]
+            );
+        }
+        else
+            {
+                return response(
+                    [
+                        "Status" => 500,
+                    ],500
+                );
+            }
+
     }
 
     /**
