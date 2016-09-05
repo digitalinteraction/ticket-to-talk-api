@@ -8,6 +8,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Tag;
 use Illuminate\Support\Facades\Input;
+use Illuminate\View\View;
 
 class TestController extends Controller
 {
@@ -15,6 +16,16 @@ class TestController extends Controller
     {
         $tag = Tag::find(1);
         return response()->json($tag);
+    }
+
+    public function home()
+    {
+//        return view("home");
+        return response()->json(
+            [
+                "Message" => "Home"
+            ]
+        );
     }
 
     public function receiveImage(Request $request)

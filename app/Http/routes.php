@@ -25,6 +25,8 @@ Route::group(
             ]
         );
 
+    Route::get("/home", "TestController@home");
+
         Route::get('/test/write',
             [
                 'as' => 'test.write',
