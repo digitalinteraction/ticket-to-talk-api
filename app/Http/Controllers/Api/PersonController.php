@@ -93,20 +93,19 @@ class PersonController extends Controller
         $person->save();
         $person->users()->attach($user->id, ['user_type' => 'Admin', "relation" => $request->relation]);
 
-//        return response()->json(
-//            [
-//                "user" => $user,
-//                "person" => $person,
-//                "area" => $area,
-//            ]
-//        );
-
-        $file_path = "storage/profile/p_" . $person->id .".jpg";
-        $person->pathToPhoto = $file_path;
-        $data = base64_decode($request->image);
-        $file = fopen(public_path($file_path), "wb");
-        fwrite($file, $data);
-        fclose($file);
+        if ($request->pathToPhoto != null)
+        {
+            $person->pathToPhoto = $request->pathToPhoto;
+        }
+        else
+        {
+            $file_path = "storage/profile/p_" . $person->id .".jpg";
+            $person->pathToPhoto = $file_path;
+            $data = base64_decode($request->image);
+            $file = fopen(public_path($file_path), "wb");
+            fwrite($file, $data);
+            fclose($file);
+        }
 
         $saved = $person->save();
 

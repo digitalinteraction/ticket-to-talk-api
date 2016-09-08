@@ -50,12 +50,20 @@ class AuthController extends Controller
             ]
         );
 
-        $file_path = "storage/profile/u_" . $newUser->id .".jpg";
-        $data = base64_decode($request->image);
-        $file = fopen($file_path, "wb");
-        fwrite($file, $data);
-        fclose($file);
-        $newUser->pathToPhoto = $file_path;
+        if ($request->pathToPhoto != null)
+        {
+            $newUser->pathToPhoto = $request->pathToPhoto;
+        }
+        else
+        {
+            $file_path = "storage/profile/u_" . $newUser->id .".jpg";
+            $data = base64_decode($request->image);
+            $file = fopen($file_path, "wb");
+            fwrite($file, $data);
+            fclose($file);
+            $newUser->pathToPhoto = $file_path;
+        }
+
         $newUser->save();
 
         if (!$newUser) {
