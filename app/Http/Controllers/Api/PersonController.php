@@ -105,6 +105,8 @@ class PersonController extends Controller
             $file = fopen(public_path($file_path), "wb");
             fwrite($file, $data);
             fclose($file);
+
+            $person->imageHash = $request->imageHash;
         }
 
         $saved = $person->save();
@@ -225,6 +227,18 @@ class PersonController extends Controller
         $person->birthPlace = $request->birthPlace;
         $person->notes = $request->notes;
         $person->area = $request->area;
+
+        if ($request->imageHash != null)
+        {
+            $person->imageHash = $request->imageHash;
+            $file_path = "storage/profile/p_" . $person->id . ".jpg";
+            $data = base64_decode($request->image);
+            $file = fopen($file_path, "wb");
+            fwrite($file, $data);
+            fclose($file);
+
+            $person->pathToPhoto = $file_path;
+        }
 
         $person->save();
 

@@ -61,7 +61,9 @@ class AuthController extends Controller
             $file = fopen($file_path, "wb");
             fwrite($file, $data);
             fclose($file);
+
             $newUser->pathToPhoto = $file_path;
+            $newUser->imageHash = $request->imageHash;
         }
 
         $newUser->save();

@@ -109,6 +109,17 @@ class UserController extends Controller
         $user->email = $request->email;
         $user->password = bcrypt($request->password);
 
+        if ($request->imageHash != null)
+        {
+            $user->imageHash = $request->imageHash;
+
+            $file_path = "storage/profile/u_" . $user->id . ".jpg";
+            $data = base64_decode($request->image);
+            $file = fopen($file_path, "wb");
+            fwrite($file, $data);
+            fclose($file);
+        }
+
         $saved = $user->save();
 
         if ($saved)
@@ -123,13 +134,13 @@ class UserController extends Controller
             );
         }
         else
-            {
-                return response(
-                    [
-                        "Status" => 500,
-                    ],500
-                );
-            }
+        {
+            return response(
+                [
+                    "Status" => 500,
+                ],500
+            );
+        }
 
     }
 
