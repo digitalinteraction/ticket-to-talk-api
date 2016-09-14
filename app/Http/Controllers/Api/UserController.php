@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Invitation;
+use App\Invite;
 use App\Person;
 use App\User;
 use Illuminate\Http\Request;
@@ -218,19 +219,26 @@ class UserController extends Controller
         }
 
         $person = Person::find($request->person_id);
-        $invitee = User::where("email", $request->email)->get()->first();
-        
-        if(!$invitee) 
-        {
-            return response()->json(
-                [
-                    "Status" => 500,
-                    "Message" => "User not found.",
-                ]
-            );
-        }
+//        $invitee = User::where("email", $request->email)->get()->first();
+//
+//        if(!$invitee)
+//        {
+//            return response()->json(
+//                [
+//                    "Status" => 500,
+//                    "Message" => "User not found.",
+//                ]
+//            );
+//        }
+        $invite = new Invite();
+        $invite->person_id = $person->id;
+        $invite->sender_email = $user->email;
+        $invite->recipient_email = $request->email;
+        $invite->group = $request->group;
 
-        $invitee->invitations()->attach($person->id, ["user_type" => $request->group, "inviter_id" => $user->id]);
+        $invite->save();
+
+//        $invitee->invitations()->attach($person->id, ["user_type" => $request->group, "inviter_id" => $user->id]);
 
         return response()->json(
             [
@@ -260,19 +268,36 @@ class UserController extends Controller
         }
 
         $invites = [];
-        foreach ($user->invitations as $inv)
-        {
-            $invite = new Invitation();
-            $person = Person::find($inv->pivot->person_id);
-            $name = User::find($inv->pivot->user_id)->name;
-            $group = $inv->pivot->user_type;
 
+        $r_invites = Invite::where('recipient_email', $user->email)->get();
+
+        foreach ($r_invites as $invite)
+        {
+            $person = Person::find($invite->person_id);
+            $name = User::where('email', $invite->sender_email)->get()->first()->name;
+            $group = $invite->group;
+
+            $invite = new Invitation();
             $invite->person = $person;
             $invite->name = $name;
             $invite->group = $group;
 
             array_push($invites, $invite);
         }
+
+//        foreach ($user->invitations as $inv)
+//        {
+//            $invite = new Invitation();
+//            $person = Person::find($inv->pivot->person_id);
+//            $name = User::find($inv->pivot->user_id)->name;
+//            $group = $inv->pivot->user_type;
+//
+//            $invite->person = $person;
+//            $invite->name = $name;
+//            $invite->group = $group;
+//
+//            array_push($invites, $invite);
+//        }
 
         return response()->json(
             [
@@ -303,10 +328,15 @@ class UserController extends Controller
             );
         }
 
-        $invite = $user->invitations()->find($request->person_id);
-        $user->people()->attach($request->person_id, ["user_type" => $invite->pivot->user_type, "relation" => $request->relation]);
+        $invite = Invite::where('recipient_email', $user->email)->where('person_id', $request->person_id)->get()->first();
 
-        $user->invitations()->detach($request->person_id);
+//        $invite = $user->invitations()->find($request->person_id);
+//        $user->people()->attach($request->person_id, ["user_type" => $invite->pivot->user_type, "relation" => $request->relation]);
+        $user->people()->attach($request->person_id, ["user_type" => $invite->group, "relation" => $request->relation]);
+
+//        $user->invitations()->detach($request->person_id);
+
+        $invite->delete();
 
         return response()->json(
             [
@@ -337,7 +367,9 @@ class UserController extends Controller
             );
         }
 
-        $user->invitations()->detach($request->person_id);
+        $invite = Invite::where('recipient_email', $user->email)->where('person_id', $request->person_id)->get()->first();
+        $invite->delete();
+//        $user->invitations()->detach($request->person_id);
 
         return response()->json(
             [
