@@ -33,16 +33,16 @@ class Ticket extends Model
     {
         return $this->belongsToMany('App\Tag', 'ticket_tag');
     }
-
-    /**
-     * Get tag's area.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function area()
-    {
-        return $this->belongsTo('App\Area');
-    }
+//
+//    /**
+//     * Get tag's area.
+//     *
+//     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+//     */
+//    public function area()
+//    {
+//        return $this->belongsTo('App\Area');
+//    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

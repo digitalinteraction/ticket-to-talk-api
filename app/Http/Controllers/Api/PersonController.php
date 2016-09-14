@@ -341,13 +341,13 @@ class PersonController extends Controller
         if($person)
         {
             $tickets = [];
-            $areas = [];
+//            $areas = [];
             $tags = [];
             $ticket_tags = [];
             foreach($person->tickets as $ticket)
             {
                 array_push($tickets, $ticket);
-                array_push($areas, $ticket->area);
+//                array_push($areas, $ticket->area);
                 foreach($ticket->tags as $tag)
                 {
                     $already_added = false;
@@ -376,7 +376,7 @@ class PersonController extends Controller
                 [
                     "status" => 200,
                     "tickets" => $tickets,
-                    "areas" => $areas,
+//                    "areas" => $areas,
                     "tags" => $tags,
                     "ticket_tags" => $ticket_tags
                 ]

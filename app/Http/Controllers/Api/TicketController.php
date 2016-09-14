@@ -68,8 +68,8 @@ class TicketController extends Controller
             );
         }
 
-        $temp_ticket = new Ticket();
-        $temp_ticket->title = $request['ticket']['title'];
+//        $temp_ticket = new Ticket();
+//        $temp_ticket->title = $request['ticket']['title'];
 
 //        $tags = [];
 //        foreach($request['tags'] as $tag)
@@ -77,18 +77,18 @@ class TicketController extends Controller
 //            array_push($tags, $tag["id"]);
 //        }
 
-        $area = new Area();
-        $area->townCity = $request['area']['townCity'];
-
-        $stored = $area->checkAreaExists($area);
-
-        if(!$stored)
-        {
-            $area->save();
-        } else
-        {
-            $area = $stored;
-        }
+//        $area = new Area();
+//        $area->townCity = $request['area']['townCity'];
+//
+//        $stored = $area->checkAreaExists($area);
+//
+//        if(!$stored)
+//        {
+//            $area->save();
+//        } else
+//        {
+//            $area = $stored;
+//        }
 
         $period = new Period();
         $period->text = $request['period']['text'];
@@ -112,7 +112,8 @@ class TicketController extends Controller
         $ticket->pathToFile = "null_path";
         $ticket->access_level = $request['ticket']['access_level'];
         $ticket->person_id = $request['ticket']['person_id'];
-        $ticket->area_id = $area->id;
+//        $ticket->area_id = $area->id;
+        $ticket->area = $request['ticket']['area'];
         $ticket->period_id = $period->id;
         $ticket->save();
 
@@ -155,7 +156,7 @@ class TicketController extends Controller
                     "message" => "Ticket saved",
                     "ticket" => $ticket,
                     'owner' => $user,
-                    "area" => $area
+//                    "area" => $area
                 ]
             );
         } else
@@ -237,25 +238,26 @@ class TicketController extends Controller
             $period = $stored;
         }
 
-        $area = new Area();
-        $area->townCity = $request->area;
-
-        $stored = $area->checkAreaExists($area);
-
-        if($stored == null)
-        {
-            $area->save();
-        } else
-        {
-            $area = $stored;
-        }
+//        $area = new Area();
+//        $area->townCity = $request->area;
+//
+//        $stored = $area->checkAreaExists($area);
+//
+//        if($stored == null)
+//        {
+//            $area->save();
+//        } else
+//        {
+//            $area = $stored;
+//        }
 
         $ticket->title = $request->title;
         $ticket->description = $request->description;
         $ticket->year = $request->year;
         $ticket->access_level = $request->access_level;
         $ticket->period_id = $period->id;
-        $ticket->area_id = $area->id;
+//        $ticket->area_id = $area->id;
+        $ticket->area = $request->area;
 
         $saved = $ticket->save();
         if ($saved)
@@ -265,7 +267,7 @@ class TicketController extends Controller
                     "Status" => 200,
                     "Message" => "Ticket updated",
                     "Ticket" => $ticket,
-                    "Area" => $area
+//                    "Area" => $area
                 ]
             );
         }
