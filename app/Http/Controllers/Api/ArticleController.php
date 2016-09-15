@@ -255,6 +255,7 @@ class ArticleController extends Controller
     /**
      * Share an article with a user.
      *
+     * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function shareArticle(Request $request)
@@ -285,7 +286,7 @@ class ArticleController extends Controller
             );
         }
 
-        if (strcmp($request->includeNotes, "false") == 0)
+        if (strcmp($request->includeNotes, "False") == 0)
         {
             $a = new Article();
             $a->title = $article->title;

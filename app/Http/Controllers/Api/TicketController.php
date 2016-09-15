@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Area;
 use App\Period;
 use App\Tag;
 use App\Ticket;
