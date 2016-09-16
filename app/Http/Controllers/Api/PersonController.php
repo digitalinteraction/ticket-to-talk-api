@@ -220,13 +220,16 @@ class PersonController extends Controller
             );
         }
 
-        $person = Person::find($request->person_id);
+        $person = $user->people->find($request->person_id);
+//        $person = Person::find($request->person_id);
 
         $person->name = $request->name;
         $person->birthYear = $request->birthYear;
         $person->birthPlace = $request->birthPlace;
         $person->notes = $request->notes;
         $person->area = $request->area;
+
+        $user->people()->updateExistingPeople($person->id, ['user_type' => $person->pivot->user_type, 'relation' => $request->relation], true);
 
         if ($request->imageHash != null)
         {
