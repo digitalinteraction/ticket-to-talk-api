@@ -220,7 +220,7 @@ class PersonController extends Controller
             );
         }
 
-        $person = $user->people->find($request->person_id);
+        $person = $user->people()->find($request->person_id);
 //        $person = Person::find($request->person_id);
 
         $person->name = $request->name;
@@ -229,7 +229,7 @@ class PersonController extends Controller
         $person->notes = $request->notes;
         $person->area = $request->area;
 
-        $user->people()->updateExistingPeople($person->id, ['user_type' => $person->pivot->user_type, 'relation' => $request->relation], true);
+        $user->people()->updateExistingPivot($person->id, ['user_type' => $user->people()->find($request->person_id)->pivot->user_id, 'relation' => $request->relation], true);
 
         if ($request->imageHash != null)
         {
@@ -245,6 +245,7 @@ class PersonController extends Controller
 
         $person->save();
 
+        $person->pivot->relation = $request->relation;
         return response()->json(
             [
                 "Status" => 200,
