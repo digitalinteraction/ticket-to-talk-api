@@ -11,6 +11,10 @@
 |
 */
 
+Route::get('/', function() {
+    return view('home');
+});
+
 // TODO: DELETE
 // API - TESTING
 Route::group(
