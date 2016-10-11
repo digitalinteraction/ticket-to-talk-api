@@ -103,9 +103,11 @@ class PersonController extends Controller
             $file_path = "ticket_to_talk/storage/profile/p_" . $person->id .".jpg";
             $person->pathToPhoto = $file_path;
             $data = base64_decode($request->image);
-            $file = fopen(public_path($file_path), "wb");
-            fwrite($file, $data);
-            fclose($file);
+//            $file = fopen(public_path($file_path), "wb");
+//            fwrite($file, $data);
+//            fclose($file);
+
+            Storage::disk('s3')->put($file_path, $data);
 
             $person->imageHash = $request->imageHash;
         }
