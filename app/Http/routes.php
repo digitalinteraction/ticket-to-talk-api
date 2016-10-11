@@ -26,6 +26,7 @@ Route::group(
             [
                 'as' => 'test.getTag',
                 'uses' => 'TestController@getTag',
+                'ssl' => true
             ]
         );
 
@@ -86,13 +87,6 @@ Route::group(
             [
                 'as' => 'auth.login',
                 'uses' => 'AuthController@login'
-            ]
-        );
-
-        Route::get('/auth/test/',
-            [
-                'as' => 'auth.test',
-                'uses' => 'AuthController@getUser'
             ]
         );
     }

@@ -10,6 +10,7 @@ use App\Http\Requests\RegisterRequest;
 use App\Http\Requests\LoginRequest;
 
 use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Storage;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\JWTAuth;
 
@@ -56,11 +57,14 @@ class AuthController extends Controller
         }
         else
         {
-            $file_path = "storage/profile/u_" . $newUser->id .".jpg";
+//            $file_path = "storage/profile/u_" . $newUser->id .".jpg";
             $data = base64_decode($request->image);
-            $file = fopen($file_path, "wb");
-            fwrite($file, $data);
-            fclose($file);
+            $file_path = "ticket_to_talk/storage/profile/u_" . $newUser->id .".jpg";
+//            $file = fopen($file_path, "wb");
+//            fwrite($file, $data);
+//            fclose($file);
+
+            Storage::disk('s3')->put($file_path, $data);
 
             $newUser->pathToPhoto = $file_path;
             $newUser->imageHash = $request->imageHash;

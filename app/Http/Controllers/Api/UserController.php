@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Storage;
 use Tymon\JWTAuth\JWTAuth;
 
 class UserController extends Controller
@@ -114,11 +115,13 @@ class UserController extends Controller
         {
             $user->imageHash = $request->imageHash;
 
-            $file_path = "storage/profile/u_" . $user->id . ".jpg";
+            $file_path = "ticket_to_talk/ storage/profile/u_" . $user->id . ".jpg";
             $data = base64_decode($request->image);
-            $file = fopen($file_path, "wb");
-            fwrite($file, $data);
-            fclose($file);
+//            $file = fopen($file_path, "wb");
+//            fwrite($file, $data);
+//            fclose($file);
+
+            Storage::disk('s3')->put($file_path, $data);
         }
 
         $saved = $user->save();

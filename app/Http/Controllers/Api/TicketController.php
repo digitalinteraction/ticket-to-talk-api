@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Storage;
 use Tymon\JWTAuth\JWTAuth;
 
 class TicketController extends Controller
@@ -131,19 +132,22 @@ class TicketController extends Controller
             switch ($request['ticket']['mediaType'])
             {
                 case "Sound":
-                    $file_path = "storage/audio/t_" . $ticket->id .".wav";
+                    $file_path = "ticket_to_talk/storage/audio/t_" . $ticket->id .".wav";
                     break;
                 case "Picture":
-                    $file_path = "storage/photo/t_" . $ticket->id .".jpg";
+                    $file_path = "ticket_to_talk/storage/photo/t_" . $ticket->id .".jpg";
                     break;
                 case "Video":
                     break;
             }
 
             $data = base64_decode($request->media);
-            $file = fopen($file_path, "wb");
-            fwrite($file, $data);
-            fclose($file);
+            Storage::disk('s3')->put($file_path, $data);
+
+//            $file = fopen($file_path, "wb");
+//            fwrite($file, $data);
+//            fclose($file);
+
             $ticket->pathToFile = $file_path;
             $ticket->save();
         }

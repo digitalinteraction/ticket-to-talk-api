@@ -12,6 +12,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Storage;
 use Tymon\JWTAuth\JWTAuth;
 
 class PersonController extends Controller
@@ -99,7 +100,7 @@ class PersonController extends Controller
         }
         else
         {
-            $file_path = "storage/profile/p_" . $person->id .".jpg";
+            $file_path = "ticket_to_talk/storage/profile/p_" . $person->id .".jpg";
             $person->pathToPhoto = $file_path;
             $data = base64_decode($request->image);
             $file = fopen(public_path($file_path), "wb");
@@ -234,11 +235,13 @@ class PersonController extends Controller
         if ($request->imageHash != null)
         {
             $person->imageHash = $request->imageHash;
-            $file_path = "storage/profile/p_" . $person->id . ".jpg";
+            $file_path = "ticket_to_talk/storage/profile/p_" . $person->id . ".jpg";
             $data = base64_decode($request->image);
-            $file = fopen($file_path, "wb");
-            fwrite($file, $data);
-            fclose($file);
+
+            Storage::disk('s3')->put($file_path, $data);
+//            $file = fopen($file_path, "wb");
+//            fwrite($file, $data);
+//            fclose($file);
 
             $person->pathToPhoto = $file_path;
         }
