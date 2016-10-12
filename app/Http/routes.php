@@ -17,64 +17,76 @@ Route::get('/', function() {
 
 // TODO: DELETE
 // API - TESTING
-Route::group(
-    [
-        'prefix' => 'api',
-        'namespace' => 'Api'
-    ], function () {
-        Route::get('/test/getTag',
-            [
-                'as' => 'test.getTag',
-                'uses' => 'TestController@getTag',
-                'ssl' => true
-            ]
-        );
-
-    Route::get("/home", "TestController@home");
-
-        Route::get('/test/write',
-            [
-                'as' => 'test.write',
-                'uses' => 'TestController@writeTextToFile',
-            ]
-        );
-
-        Route::post('/test/receiveImage',
-            [
-                'as' => 'test.receiveImage',
-                'uses' => 'TestController@receiveImage',
-            ]
-        );
-
-        Route::get('/test/getImage',
-            [
-                'as' => 'test.getImage',
-                'uses' => 'TestController@getImage',
-            ]
-        );
-
-        Route::get('/test/getImageBytes',
-            [
-                'as' => 'test.getImageBytes',
-                'uses' => 'TestController@getImageBytes',
-
-            ]
-        );
-
-        Route::post('/test/receiveAudio',
-            [
-                'as' => 'test.receiveAudio',
-                'uses' => 'TestController@receiveAudio'
-            ]
-        );
-    }
-);
+//Route::group(
+//    [
+//        'prefix' => 'api',
+//        'namespace' => 'Api'
+//    ], function () {
+//        Route::get('/test/getTag',
+//            [
+//                'as' => 'test.getTag',
+//                'uses' => 'TestController@getTag',
+//                'ssl' => true
+//            ]
+//        );
+//
+//    Route::get("/home", "TestController@home");
+//
+//        Route::get('/test/write',
+//            [
+//                'as' => 'test.write',
+//                'uses' => 'TestController@writeTextToFile',
+//            ]
+//        );
+//
+//        Route::post('/test/receiveImage',
+//            [
+//                'as' => 'test.receiveImage',
+//                'uses' => 'TestController@receiveImage',
+//            ]
+//        );
+//
+//        Route::get('/test/getImage',
+//            [
+//                'as' => 'test.getImage',
+//                'uses' => 'TestController@getImage',
+//            ]
+//        );
+//
+//        Route::get('/test/getImageBytes',
+//            [
+//                'as' => 'test.getImageBytes',
+//                'uses' => 'TestController@getImageBytes',
+//
+//            ]
+//        );
+//
+//        Route::post('/test/receiveAudio',
+//            [
+//                'as' => 'test.receiveAudio',
+//                'uses' => 'TestController@receiveAudio'
+//            ]
+//        );
+//
+//        Route::get('test/token',
+//            [
+//                'as' => 'test.token',
+//                'uses' => 'TestController@genKey'
+//            ]
+//        );
+//    }
+//);
 
 // API - AUTHENTICATION
 Route::group(
     [
         'prefix' => 'api',
-        'namespace' => 'Api'
+        'namespace' => 'Api',
+        'middleware' =>
+            [
+                'throttle:60,1',
+                'log'
+            ]
     ], function () {
         Route::post('/auth/register',
             [
@@ -96,7 +108,12 @@ Route::group(
 Route::group(
     [
         'prefix' => 'api/articles',
-        'namespace' => 'Api'
+        'namespace' => 'Api',
+        'middleware' =>
+            [
+                'api',
+                'log'
+            ]
     ],
     function()
     {
@@ -169,7 +186,12 @@ Route::group(
 Route::group(
     [
         'prefix' => 'api/tags',
-        'namespace' => 'Api'
+        'namespace' => 'Api',
+        'middleware' =>
+            [
+                'api',
+                'log'
+            ]
     ],
     function()
     {
@@ -214,7 +236,12 @@ Route::group(
 Route::group(
     [
         'prefix' => 'api/tickets',
-        'namespace' => 'Api'
+        'namespace' => 'Api',
+        'middleware' =>
+            [
+                'api',
+                'log'
+            ]
     ],
     function()
     {
@@ -259,7 +286,12 @@ Route::group(
 Route::group(
     [
         'prefix' => 'api/people',
-        'namespace' => 'Api'
+        'namespace' => 'Api',
+        'middleware' =>
+            [
+                'api',
+                'log'
+            ]
     ],
     function()
     {
@@ -318,7 +350,12 @@ Route::group(
 Route::group(
     [
         'prefix' => 'api/user',
-        'namespace' => 'Api'
+        'namespace' => 'Api',
+        'middleware' =>
+            [
+                'api',
+                'log'
+            ]
     ],
     function()
     {
@@ -384,7 +421,12 @@ Route::group(
 Route::group(
     [
         'prefix' => 'api/inspiration',
-        'namespace' => 'Api'
+        'namespace' => 'Api',
+        'middleware' =>
+            [
+                'api',
+                'log'
+            ]
     ],
     function () {
         Route::get('/get',
@@ -400,7 +442,12 @@ Route::group(
 Route::group(
     [
         'prefix' => 'api/media',
-        'namespace' => 'Api'
+        'namespace' => 'Api',
+        'middleware' =>
+            [
+                'api',
+                'log'
+            ]
     ],
     function () {
         Route::get('/get',
@@ -416,7 +463,12 @@ Route::group(
 Route::group(
     [
         'prefix' => 'api/conversations',
-        'namespace' => 'Api'
+        'namespace' => 'Api',
+        'middleware' =>
+            [
+                'api',
+                'log'
+            ]
     ],
     function () {
         Route::get('/get',
