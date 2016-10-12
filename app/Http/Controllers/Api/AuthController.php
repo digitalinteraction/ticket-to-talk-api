@@ -2,9 +2,6 @@
 
 namespace App\Http\Controllers\Api;
 
-use Illuminate\Http\Request;
-
-use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\RegisterRequest;
 use App\Http\Requests\LoginRequest;
@@ -15,8 +12,6 @@ use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\JWTAuth;
 
 use App\User;
-use Tymon\JWTAuth\Token;
-use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
@@ -38,11 +33,6 @@ class AuthController extends Controller
     public function register(RegisterRequest $request)
     {
 
-//        return response()->json(
-//            [
-//                "Request" => $request->password
-//            ]
-//        );
         $newUser = $this->user->create(
             [
                 'name' => $request->get('name'),
@@ -57,18 +47,17 @@ class AuthController extends Controller
         }
         else
         {
-//            $file_path = "storage/profile/u_" . $newUser->id .".jpg";
+
             $data = base64_decode($request->image);
             $file_path = "ticket_to_talk/storage/profile/u_" . $newUser->id .".jpg";
-//            $file = fopen($file_path, "wb");
-//            fwrite($file, $data);
-//            fclose($file);
 
             Storage::disk('s3')->put($file_path, $data);
 
             $newUser->pathToPhoto = $file_path;
             $newUser->imageHash = $request->imageHash;
         }
+
+        $newUser->api_key = bin2hex(openssl_random_pseudo_bytes(32));
 
         $newUser->save();
 
