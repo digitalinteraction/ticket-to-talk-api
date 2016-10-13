@@ -43,6 +43,17 @@ class ArticleController extends Controller
     }
 
     /**
+     * @api {get} /articles/store Store an Article
+     * @apiName StoreArticle
+     * @apiGroup Articles
+     *
+     * @apiParam {token} Session token
+     *
+     * @apiSuccess {String} status HTTP response code
+     * @apiSuccess {String} message Server message
+     * @apiSuccess {Article} article The stored article
+     * @apiSuccess {User} user Owner of the article
+     *
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request

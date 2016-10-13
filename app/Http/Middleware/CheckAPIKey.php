@@ -33,7 +33,7 @@ class CheckAPIKey
         $token = Input::get('token');
         $user = $this->jwtauth->authenticate($token);
 
-        if (!$user)
+        if (!$user || $user->revoked)
         {
             return response()->json(
                 [
@@ -47,7 +47,6 @@ class CheckAPIKey
         {
             return $next($request);
         }
-
         else
         {
             return response()->json(

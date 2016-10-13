@@ -18,6 +18,8 @@ class AuthController extends Controller
     private $user;
     private $jwtauth;
 
+    private $default_api_key = "a82ae536fc32c8c185920f3a440b0984bb51b9077517a6c8ce4880e41737438d";
+
     public function  __construct(User $user, JWTAuth $jwtauth)
     {
         $this->user = $user;
@@ -57,7 +59,10 @@ class AuthController extends Controller
             $newUser->imageHash = $request->imageHash;
         }
 
-        $newUser->api_key = bin2hex(openssl_random_pseudo_bytes(32));
+        $raw_key = $this->default_api_key . $newUser->email . time();
+        $api_key = hash('sha256', $raw_key);
+        $newUser->api_key = $api_key;
+//        $newUser->api_key = bin2hex(openssl_random_pseudo_bytes(32));
 
         $newUser->save();
 
@@ -73,6 +78,7 @@ class AuthController extends Controller
             [
                 'message' => 'user_created',
                 'user' => $newUser,
+                'api_key' => $api_key,
                 'token' => $this->jwtauth->fromUser($newUser)
             ]
         );
@@ -86,11 +92,9 @@ class AuthController extends Controller
      */
     public function login(LoginRequest $request)
     {
-//        return $request->getContent();
         // get user credentials
         $credentials = $request->only('email', 'password');
         $val = null;
-//        return $request->email;
 
         try
         {
@@ -115,11 +119,41 @@ class AuthController extends Controller
             );
         }
 
+        $user = $this->jwtauth->authenticate($val);
+
+        // If login attempted with default api key (logged in on new device)
+        // Send their api key.
+        if (strcmp($request->api_key, $this->default_api_key) == 0)
+        {
+
+            if($user->revoked)
+            {
+                return response()->json(
+                    [
+                        "code" => "401",
+                        "message" => "API Key revoked",
+                        "user" => $user,
+                        "token" => $val
+                    ]
+                );
+            }
+
+            return response()->json(
+                [
+                    "code" => "200",
+                    "message" => "Authenticated",
+                    "user" => $user,
+                    "api_key" => $user->api_key,
+                    "token" => $val
+                ]
+            );
+        }
+
         return response()->json(
             [
                 "code" => "200",
                 "message" => "Authenticated",
-                "user" => $this->jwtauth->authenticate($val),
+                "user" => $user,
                 "token" => $val
             ]
         );

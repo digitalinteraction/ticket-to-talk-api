@@ -11,71 +11,16 @@
 |
 */
 
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Redirect;
+
 Route::get('/', function() {
     return view('home');
 });
 
-// TODO: DELETE
-// API - TESTING
-//Route::group(
-//    [
-//        'prefix' => 'api',
-//        'namespace' => 'Api'
-//    ], function () {
-//        Route::get('/test/getTag',
-//            [
-//                'as' => 'test.getTag',
-//                'uses' => 'TestController@getTag',
-//                'ssl' => true
-//            ]
-//        );
-//
-//    Route::get("/home", "TestController@home");
-//
-//        Route::get('/test/write',
-//            [
-//                'as' => 'test.write',
-//                'uses' => 'TestController@writeTextToFile',
-//            ]
-//        );
-//
-//        Route::post('/test/receiveImage',
-//            [
-//                'as' => 'test.receiveImage',
-//                'uses' => 'TestController@receiveImage',
-//            ]
-//        );
-//
-//        Route::get('/test/getImage',
-//            [
-//                'as' => 'test.getImage',
-//                'uses' => 'TestController@getImage',
-//            ]
-//        );
-//
-//        Route::get('/test/getImageBytes',
-//            [
-//                'as' => 'test.getImageBytes',
-//                'uses' => 'TestController@getImageBytes',
-//
-//            ]
-//        );
-//
-//        Route::post('/test/receiveAudio',
-//            [
-//                'as' => 'test.receiveAudio',
-//                'uses' => 'TestController@receiveAudio'
-//            ]
-//        );
-//
-//        Route::get('test/token',
-//            [
-//                'as' => 'test.token',
-//                'uses' => 'TestController@genKey'
-//            ]
-//        );
-//    }
-//);
+Route::get("/docs", function() {
+    return File::get(public_path() . "/docs/index.html");
+});
 
 // API - AUTHENTICATION
 Route::group(
