@@ -43,21 +43,21 @@ class ArticleController extends Controller
     }
 
     /**
-     * @api {get} /articles/store Store an Article
+     * Store a newly created resource in storage.
+     *
+     * @api {post} /articles/store Store an Article
      * @apiName StoreArticle
      * @apiGroup Articles
      *
-     * @apiParam {token} Session token
+     * @apiParam {JWTAuthToken} token The session token
      *
      * @apiSuccess {String} status HTTP response code
      * @apiSuccess {String} message Server message
      * @apiSuccess {Article} article The stored article
      * @apiSuccess {User} user Owner of the article
      *
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @apiError 500 The article could not be found.
+     * @apiError 401 User could not be authenticated.
      */
     public function store(Request $request)
     {
@@ -68,7 +68,7 @@ class ArticleController extends Controller
         {
             return response()->json(
                 [
-                    "Status" => 402,
+                    "Status" => 401,
                     "Message" => "User not authenticated.",
                 ]
             );
@@ -105,7 +105,19 @@ class ArticleController extends Controller
     /**
      * Display the specified resource.
      *
-     * @return \Illuminate\Http\Response
+     * @api {get} /articles/show Get an Article
+     * @apiName ShowArticle
+     * @apiGroup Articles
+     *
+     * @apiParam {int} article_id The article ID
+     * @apiParam {JWTAuthToken} token The session token
+     *
+     * @apiSuccess {String} status HTTP response code
+     * @apiSuccess {String} message Server message
+     * @apiSuccess {Article} article The requested article
+     *
+     * @apiError 500 The article could not be found.
+     * @apiError 401 User could not be authenticated.
      */
     public function show()
     {
@@ -116,7 +128,7 @@ class ArticleController extends Controller
         {
             return response()->json(
                 [
-                    "Status" => 402,
+                    "Status" => 401,
                     "Message" => "User not authenticated.",
                 ]
             );
@@ -158,8 +170,22 @@ class ArticleController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @api {post} /articles/update Update an Article
+     * @apiName UpdateArticle
+     * @apiGroup Articles
+     *
+     * @apiParam {int} article_id The article id
+     * @apiParam {String} title The article title
+     * @apiParam {String} link The article title
+     * @apiParam {Notes} notes The user's notes on the article
+     * @apiParam {JWTAuthToken} token The session token
+     *
+     * @apiSuccess {String} status HTTP response code
+     * @apiSuccess {String} message Server message
+     * @apiSuccess {Article} article The requested article
+     *
+     * @apiError 500 The article could not be found.
+     * @apiError 401 User could not be authenticated.
      */
     public function update(Request $request)
     {
@@ -171,7 +197,7 @@ class ArticleController extends Controller
         {
             return response()->json(
                 [
-                    "Status" => 402,
+                    "Status" => 401,
                     "Message" => "User not authenticated.",
                 ]
             );
@@ -207,7 +233,18 @@ class ArticleController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @return \Illuminate\Http\Response
+     * @api {get} /articles/destroy Delete an Article
+     * @apiName DeleteArticle
+     * @apiGroup Articles
+     *
+     * @apiParam {int} article_id The article id
+     * @apiParam {JWTAuthToken} token The session token
+     *
+     * @apiSuccess {String} status HTTP response code
+     * @apiSuccess {String} message Server message
+     *
+     * @apiError 500 The article could not be found.
+     * @apiError 401 User could not be authenticated.
      */
     public function destroy()
     {
@@ -218,7 +255,7 @@ class ArticleController extends Controller
         {
             return response()->json(
                 [
-                    "Status" => 402,
+                    "Status" => 401,
                     "Message" => "User not authenticated.",
                 ]
             );
@@ -236,9 +273,20 @@ class ArticleController extends Controller
     }
 
     /**
-     * Gets all of the user's articles
+     * Gets all of the user's articles.
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @api {get} /articles/all Get User's Articles
+     * @apiName GetUserArticles
+     * @apiGroup Articles
+     *
+     * @apiParam {JWTAuthToken} token The session token
+     *
+     * @apiSuccess {String} status HTTP response code
+     * @apiSuccess {String} message Server message
+     * @apiSuccess {Article[]} articles User's articles
+     *
+     * @apiError 500 The article could not be found.
+     * @apiError 401 User could not be authenticated.
      */
     public function getUserArticles()
     {
@@ -249,7 +297,7 @@ class ArticleController extends Controller
         {
             return response()->json(
                 [
-                    "Status" => 402,
+                    "Status" => 401,
                     "Message" => "User not authenticated.",
                 ]
             );
@@ -266,8 +314,19 @@ class ArticleController extends Controller
     /**
      * Share an article with a user.
      *
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
+     * @api {post} /articles/share/send Share an Article.
+     * @apiName ShareArticle
+     * @apiGroup Articles
+     *
+     * @apiParam {int} article_id The article id
+     * @apiParam {string} email The recipient's email address.
+     * @apiParam {JWTAuthToken} token The session token
+     *
+     * @apiSuccess {String} status HTTP response code
+     * @apiSuccess {String} message Server message
+     *
+     * @apiError 500 The article could not be found.
+     * @apiError 401 User could not be authenticated.
      */
     public function shareArticle(Request $request)
     {
@@ -278,7 +337,7 @@ class ArticleController extends Controller
         {
             return response()->json(
                 [
-                    "Status" => 402,
+                    "Status" => 401,
                     "Message" => "User not authenticated.",
                 ]
             );
@@ -321,7 +380,17 @@ class ArticleController extends Controller
     /**
      * Get all articles shared with the user
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @api {get} /articles/share/get Get Shared Articles
+     * @apiName GetSharedArticle
+     * @apiGroup Articles
+     *
+     * @apiParam {JWTAuthToken} token The session token
+     *
+     * @apiSuccess {String} status HTTP response code
+     * @apiSuccess {Article[]} Articles Articles shared with the user.
+     *
+     * @apiError 500 The article could not be found.
+     * @apiError 401 User could not be authenticated.
      */
     public function getSharedArticles()
     {
@@ -332,7 +401,7 @@ class ArticleController extends Controller
         {
             return response()->json(
                 [
-                    "Status" => 402,
+                    "Status" => 401,
                     "Message" => "User not authenticated.",
                 ]
             );
@@ -356,8 +425,19 @@ class ArticleController extends Controller
     /**
      * Accept an article
      *
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
+     * @api {post} /articles/share/accept Accept an Article.
+     * @apiName AcceptArticle
+     * @apiGroup Articles
+     *
+     * @apiParam {int} article_id The article id
+     * @apiParam {JWTAuthToken} token The session token
+     *
+     * @apiSuccess {String} status HTTP response code
+     * @apiSuccess {String} message Server message
+     * @apiSuccess {Article[]} The user's articles
+     *
+     * @apiError 500 The article could not be found.
+     * @apiError 401 User could not be authenticated.
      */
     public function acceptArticle(Request $request)
     {
@@ -368,7 +448,7 @@ class ArticleController extends Controller
         {
             return response()->json(
                 [
-                    "Status" => 402,
+                    "Status" => 401,
                     "Message" => "User not authenticated.",
                 ]
             );
@@ -390,7 +470,18 @@ class ArticleController extends Controller
     /**
      * Reject a shared article.
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @api {post} /articles/share/reject Reject an Article.
+     * @apiName RejectArticle
+     * @apiGroup Articles
+     *
+     * @apiParam {int} article_id The article id
+     * @apiParam {JWTAuthToken} token The session token
+     *
+     * @apiSuccess {String} status HTTP response code
+     * @apiSuccess {String} message Server message
+     *
+     * @apiError 500 The article could not be found.
+     * @apiError 401 User could not be authenticated.
      */
     public function rejectArticle(Request $request)
     {
@@ -401,7 +492,7 @@ class ArticleController extends Controller
         {
             return response()->json(
                 [
-                    "Status" => 402,
+                    "Status" => 401,
                     "Message" => "User not authenticated.",
                 ]
             );
