@@ -47,7 +47,6 @@ class CheckAPIKey
         {
             return $next($request);
         }
-
         else
         {
             return response()->json(
