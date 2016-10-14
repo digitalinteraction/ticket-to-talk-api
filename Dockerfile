@@ -9,7 +9,7 @@ RUN apt-get -y update \
  && apt-get -y upgrade -y \
  && DEBIAN_FRONTEND=noninteractive apt-get -y install \
         unzip zip \
-        mysql-client \
+        mysql-server \
         nginx-extras \
         php5-fpm \
         php5-mysql  \
@@ -43,11 +43,13 @@ RUN mkdir -p /app && rm -fr /var/www/html/ticket-to-talk-server && ln -s /app /v
 # Puts composer.phar in the root directory, \composer.phar
 RUN curl -sS https://getcomposer.org/installer | php
 
+RUN service mysql start
 
 # Add our Composer configuration and install it's packages
 WORKDIR /app
-ADD composer.json /app/composer.json
-ADD composer.lock /app/composer.lock
+ADD . /app
+#ADD composer.json /app/composer.json
+#ADD composer.lock /app/composer.lock
 RUN /composer.phar install
 RUN chown -R www-data:www-data /app
 
@@ -64,16 +66,21 @@ RUN chmod -R 775 bootstrap/
 RUN chmod -R 775 vendor/
 RUN chmod -R 775 storage/
 
+#RUN service mysql start
+#RUN mysql -u root --password=  < create_db.sql
 
-RUN php artisan migrate:install
+#RUN php artisan migrate:install
 RUN php artisan migrate
-
-
 RUN php artisan db:seed --class=InspirationTableSeeder
+#RUN php artisan migrate:install
+#RUN php artisan migrate
+
+
+#RUN php artisan db:seed --class=InspirationTableSeeder
 
 
 # Add the rest of our application to the app folder
-ADD . /app
+#ADD . /app
 
 
 # Add our nginx config file to nginx's config folder
@@ -93,12 +100,8 @@ EXPOSE 80
 RUN chmod +x /app/run.sh
 
 
-# Own assets so it can be used by silverstripe
-RUN chown www-data /app/assets
-
-
 # Remove the install file
-RUN rm install.php
+#RUN rm install.php
 
 
 # Start our application
