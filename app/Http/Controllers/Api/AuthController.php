@@ -29,8 +29,24 @@ class AuthController extends Controller
     /**
      * Registers the user.
      *
-     * @param RegisterRequest $request
-     * @return \Illuminate\Http\JsonResponse
+     * @api {post} /auth/register Register
+     * @apiName Register
+     * @apiGroup Authentication
+     *
+     * @apiParam {String} name The user's name.
+     * @apiParam {String} email The user's email address.
+     * @apiParam {String} password A hashed version of the user's password.
+     * @apiParam {String} pathToPhoto Path to the user's photo.
+     * @apiParam {byte[]} image The user's profile picture as a byte array.
+     * @apiParam {String} imageHash A SHA256 of the image byte array.
+     * @apiParam {JWTAuthToken} token The session token
+     *
+     * @apiSuccess {String} message Server message
+     * @apiSuccess {User} user The newly created user.
+     * @apiSuccess {String} api_key The user's api_key
+     * @apiSuccess {String} token The user's session token.
+     *
+     * @apiError 500 User could not be created.
      */
     public function register(RegisterRequest $request)
     {
@@ -87,8 +103,19 @@ class AuthController extends Controller
     /**
      * Authenticates the user
      *
-     * @param LoginRequest $request
-     * @return \Illuminate\Http\JsonResponse
+     * @api {post} /auth/login Login
+     * @apiName Login
+     * @apiGroup Authentication
+     *
+     * @apiParam {String} email The user's email address.
+     * @apiParam {String} password A hashed version of the user's password.
+     *
+     * @apiSuccess {String} message Server message
+     * @apiSuccess {User} user The newly created user.
+     * @apiSuccess {JWTAuthToken} token The session token
+     * @apiSuccess {String} api_key Returns the user's api key if they login with the default key.
+     *
+     * @apiError 401 User could not be authenticated
      */
     public function login(LoginRequest $request)
     {
@@ -159,15 +186,15 @@ class AuthController extends Controller
         );
     }
 
-    /**
-     * Generates the user from the token.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function getUser()
-    {
-        $token = Input::get('token');
-        $user = $this->jwtauth->authenticate($token);
-        return response()->json($user);
-    }
+//    /**
+//     * Generates the user from the token.
+//     *
+//     * @return \Illuminate\Http\JsonResponse
+//     */
+//    public function getUser()
+//    {
+//        $token = Input::get('token');
+//        $user = $this->jwtauth->authenticate($token);
+//        return response()->json($user);
+//    }
 }

@@ -49,8 +49,22 @@ class TicketController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @api {post} /tickets/store Save a Ticket
+     * @apiName SaveTicket
+     * @apiGroup Tickets
+     *
+     * @apiParam {Ticket} ticket The ticket to save.
+     * @apiParam {Period} period Period of life the ticket is from.
+     * @apiParam {byte[]} media Byte array of the file attached to the ticket.
+     * @apiParam {JWTAuthToken} token The session token
+     *
+     * @apiSuccess {String} status The response code
+     * @apiSuccess {String} message Update confirmation
+     * @apiSuccess {Ticket} ticket The newly created ticket.
+     * @apiSuccess {User} user The owner of the ticket.
+     *
+     * @apiError 500 Resource not found
+     * @apiError 401 User could not be authenticated
      */
     public function store(Request $request)
     {
@@ -64,7 +78,7 @@ class TicketController extends Controller
                 [
                     "Status" => 401,
                     "Message" => "User not authenticated."
-                ]
+                ],401
             );
         }
 
@@ -159,7 +173,6 @@ class TicketController extends Controller
                     "message" => "Ticket saved",
                     "ticket" => $ticket,
                     'owner' => $user,
-//                    "area" => $area
                 ]
             );
         } else
@@ -169,7 +182,7 @@ class TicketController extends Controller
                     "status" => 500,
                     "message" => "Error saving ticket",
                     "ticket" => $ticket
-                ]
+                ],500
             );
         }
     }
@@ -199,9 +212,26 @@ class TicketController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     * @internal param int $id
+     * @api {post} /tickets/update Update a Ticket
+     * @apiName UpdateTicket
+     * @apiGroup Tickets
+     *
+     * @apiParam {String} ticket_id The ticket id.
+     * @apiParam {String} title The ticket title.
+     * @apiParam {String} description The ticket description.
+     * @apiParam {String} year The year the file is from.
+     * @apiParam {String} access_level Which user group can access the ticket.
+     * @apiParam {String} period_id The id of the period the ticket is from.
+     * @apiParam {String} area Where the ticket is from.
+     * @apiParam {JWTAuthToken} token The session token
+     *
+     * @apiSuccess {String} status The response code
+     * @apiSuccess {String} message Update confirmation
+     * @apiSuccess {Ticket} ticket The newly created ticket.
+     * @apiSuccess {User} user The owner of the ticket.
+     *
+     * @apiError 500 Resource not found
+     * @apiError 401 User could not be authenticated
      */
     public function update(Request $request)
     {
@@ -286,9 +316,20 @@ class TicketController extends Controller
     }
 
     /**
-     * Deletes the ticket resource
+     * @api {delete} /tickets/destroy Delete a Ticket
+     * @apiName DeleteTicket
+     * @apiGroup Tickets
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @apiParam {String} ticket_id The ticket id.
+     * @apiParam {JWTAuthToken} token The session token
+     *
+     * @apiSuccess {String} status The response code
+     * @apiSuccess {String} message Update confirmation
+     * @apiSuccess {Ticket} ticket The newly created ticket.
+     * @apiSuccess {User} user The owner of the ticket.
+     *
+     * @apiError 500 Resource not found
+     * @apiError 401 User could not be authenticated
      */
     public function destroy()
     {
@@ -301,7 +342,7 @@ class TicketController extends Controller
                 [
                     "Status" => 401,
                     "Message" => "User not authenticated."
-                ]
+                ],401
             );
         }
 

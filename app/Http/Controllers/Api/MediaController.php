@@ -24,6 +24,19 @@ class MediaController extends Controller
     }
 
     //
+    /**
+     * @api {get} /media/get Download Media
+     * @apiName GetMedia
+     * @apiGroup Media
+     *
+     * @apiParam {String} fileName Path to the file.
+     * @apiParam {JWTAuthToken} token The session token
+     *
+     * @apiSuccess {File} Returns the requested file
+     *
+     * @apiError 500 Resource not found
+     * @apiError 401 User could not be authenticated
+     */
     public function getMedia()
     {
 
@@ -56,9 +69,6 @@ class MediaController extends Controller
                 $file_type = 'audio/wav';
                 break;
         }
-
-//        $path = public_path($fileName);
-//        return response()->download($path);
 
         $exists = Storage::disk('s3')->exists($fileName);
         if ($exists)

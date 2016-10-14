@@ -87,9 +87,23 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     * @internal param int $id
+     * @api {post} /user/update Update a User
+     * @apiName UpdateUser
+     * @apiGroup User
+     *
+     * @apiParam {String} name The user's name.
+     * @apiParam {String} email The user's email.
+     * @apiParam {String} password Hashed version of the user's password.
+     * @apiParam {String} imageHash SHA256 Hash of the user's profile photo.
+     * @apiParam {byte[]} image Byte array of the user's profile picture.
+     * @apiParam {JWTAuthToken} token The session token
+     *
+     * @apiSuccess {String} Status The response code
+     * @apiSuccess {String} Message Update confirmation
+     * @apiSuccess {User} User The updated user.
+     *
+     * @apiError 500 Resource not found
+     * @apiError 401 User could not be authenticated
      */
     public function update(Request $request)
     {
@@ -117,9 +131,6 @@ class UserController extends Controller
 
             $file_path = "ticket_to_talk/ storage/profile/u_" . $user->id . ".jpg";
             $data = base64_decode($request->image);
-//            $file = fopen($file_path, "wb");
-//            fwrite($file, $data);
-//            fclose($file);
 
             Storage::disk('s3')->put($file_path, $data);
         }
@@ -162,7 +173,17 @@ class UserController extends Controller
     /**
      * Get all user's associated with authenticated user.
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @api {get} /user/getpeople Get A User's People
+     * @apiName GetUsersPeople
+     * @apiGroup User
+     *
+     * @apiParam {JWTAuthToken} token The session token
+     *
+     * @apiSuccess {Person[]} people The people linked to the user's account.
+     * @apiSuccess {Period[]} periods The periods attached to these people.
+     *
+     * @apiError 500 Resource not found
+     * @apiError 401 User could not be authenticated
      */
     public function getAssociatedPeople ()
     {
@@ -203,8 +224,20 @@ class UserController extends Controller
     /**
      * Send an invitation to join a person.
      * 
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
+     * @api {post} /user/invitations/send Invite a User to Join a Person
+     * @apiName SendPersonInvitation
+     * @apiGroup User
+     *
+     * @apiParam {String} person_id The person's ID.
+     * @apiParam {String} email The recipient's email address.
+     * @apiParam {String} group The user group the recipient is to join.
+     * @apiParam {JWTAuthToken} token The session token
+     *
+     * @apiSuccess {String} status The response code.
+     * @apiSuccess {boolean} added Whether the invitation was successful.
+     *
+     * @apiError 500 Resource not found
+     * @apiError 401 User could not be authenticated
      */
     public function sendInvitation(Request $request)
     {
@@ -222,17 +255,7 @@ class UserController extends Controller
         }
 
         $person = Person::find($request->person_id);
-//        $invitee = User::where("email", $request->email)->get()->first();
-//
-//        if(!$invitee)
-//        {
-//            return response()->json(
-//                [
-//                    "Status" => 500,
-//                    "Message" => "User not found.",
-//                ]
-//            );
-//        }
+
         $invite = new Invite();
         $invite->person_id = $person->id;
         $invite->sender_email = $user->email;
@@ -240,8 +263,6 @@ class UserController extends Controller
         $invite->group = $request->group;
 
         $invite->save();
-
-//        $invitee->invitations()->attach($person->id, ["user_type" => $request->group, "inviter_id" => $user->id]);
 
         return response()->json(
             [
@@ -253,7 +274,16 @@ class UserController extends Controller
     /**
      * Get all of the user's invitations.
      * 
-     * @return \Illuminate\Http\JsonResponse
+     * @api {get} /user/invitations/get Get a User's Invitations
+     * @apiName GetPersonInvitation
+     * @apiGroup User
+     *
+     * @apiParam {JWTAuthToken} token The session token
+     *
+     * @apiSuccess {Invitation[]} invites The user's invitations.
+     *
+     * @apiError 500 Resource not found
+     * @apiError 401 User could not be authenticated
      */
     public function getInvitations() 
     {
@@ -266,7 +296,7 @@ class UserController extends Controller
                 [
                     "Status" => 401,
                     "Message" => "User not authenticated.",
-                ]
+                ],401
             );
         }
 
@@ -313,8 +343,19 @@ class UserController extends Controller
     /**
      * Accept an invitation.
      * 
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
+     * @api {post} /user/invitations/accept Accept and Invitation
+     * @apiName AcceptPersonInvitation
+     * @apiGroup User
+     *
+     * @apiParam {String} person_id The person's ID.
+     * @apiParam {String} relation The user's relation to the person.
+     * @apiParam {JWTAuthToken} token The session token
+     *
+     * @apiSuccess {String} Status The response code.
+     * @apiSuccess {Person} person The person the user accepted the invite for.
+     *
+     * @apiError 500 Resource not found
+     * @apiError 401 User could not be authenticated
      */
     public function acceptInvitation(Request $request)
     {
@@ -352,8 +393,18 @@ class UserController extends Controller
     /**
      * Reject an invitation
      *
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
+     * @api {post} /user/invitations/reject Reject an Invitation
+     * @apiName RejectPersonInvitation
+     * @apiGroup User
+     *
+     * @apiParam {String} person_id The person's ID.
+     * @apiParam {JWTAuthToken} token The session token
+     *
+     * @apiSuccess {String} Status The response code.
+     * @apiSuccess {String} Messages Server message.
+     *
+     * @apiError 500 Resource not found
+     * @apiError 401 User could not be authenticated
      */
     public function rejectInvitation(Request $request)
     {
@@ -366,7 +417,7 @@ class UserController extends Controller
                 [
                     "Status" => 401,
                     "Message" => "User not authenticated.",
-                ]
+                ],401
             );
         }
 

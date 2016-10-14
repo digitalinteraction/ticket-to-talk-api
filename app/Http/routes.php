@@ -174,6 +174,7 @@ Route::group(
                 'uses' => 'TagController@destroy'
             ]
         );
+
     }
 );
 

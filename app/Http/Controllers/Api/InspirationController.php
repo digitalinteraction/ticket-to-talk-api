@@ -13,6 +13,16 @@ class InspirationController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @api {get} /inspiration/get Get Inspirations
+     * @apiName GetInspirations
+     * @apiGroup Inspiration
+     *
+     * @apiParam {JWTAuthToken} token The session token
+     *
+     * @apiSuccess {Inspiration[]} Inspirations Array of Inspirations.
+     *
+     * @apiError 401 User could not be authenticated
+     *
      * @return \Illuminate\Http\Response
      */
     public function index()

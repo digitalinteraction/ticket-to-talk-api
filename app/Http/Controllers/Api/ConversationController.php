@@ -29,7 +29,17 @@ class ConversationController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @api {get} /conversations/get Get User's Conversations
+     * @apiName GetConversations
+     * @apiGroup Conversations
+     *
+     * @apiParam {String} person_id The id of the person the conversations are for.
+     * @apiParam {JWTAuthToken} token The session token
+     *
+     * @apiSuccess {String} status The response code
+     * @apiSuccess {Conversation[]} conversations The conversations attached to the person.
+     *
+     * @apiError 500 Person could not be found
      */
     public function index()
     {
@@ -80,8 +90,20 @@ class ConversationController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @api {post} /conversations/store Save a Conversation
+     * @apiName StoreConversation
+     * @apiGroup Conversations
+     *
+     * @apiParam {String} datetime String representation of the conversation date-time.
+     * @apiParam {String} platform The OS the request is sent from (Android or iOS).
+     * @apiParam {String} notes The user's notes on the conversation.
+     * @apiParam {String} person_id ID of the person this conversation is for.
+     * @apiParam {JWTAuthToken} token The session token
+     *
+     * @apiSuccess {String} status The response code
+     * @apiSuccess {Conversation} conversation The newly created conversation.
+     *
+     * @apiError 401 User could not be authenticated
      */
     public function store(Request $request)
     {
@@ -167,9 +189,19 @@ class ConversationController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     * @internal param int $id
+     * @api {post} /conversations/update Update a Conversation
+     * @apiName UpdateConversation
+     * @apiGroup Conversations
+     *
+     * @apiParam {String} conversation_id Conversation identifier.
+     * @apiParam {String} notes The user's notes on the conversation.
+     * @apiParam {JWTAuthToken} token The session token
+     *
+     * @apiSuccess {String} status The response code
+     * @apiSuccess {Conversation} Conversation The updated conversation.
+     *
+     * @apiError 500 Conversation not found
+     * @apiError 401 User could not be authenticated
      */
     public function update(Request $request)
     {
@@ -182,7 +214,7 @@ class ConversationController extends Controller
                 [
                     "Status" => 401,
                     "Message" => "User not authenticated.",
-                ]
+                ],401
             );
         }
 
@@ -193,7 +225,7 @@ class ConversationController extends Controller
                 [
                     "Status" => 500,
                     "Message" => "Conversation not found",
-                ]
+                ],500
             );
         }
 
@@ -202,7 +234,7 @@ class ConversationController extends Controller
 
         return response()->json(
             [
-                "Status" => 500,
+                "Status" => 200,
                 "Message" => "Conversation updated",
                 "Conversation" => $conversation
             ]
@@ -212,7 +244,18 @@ class ConversationController extends Controller
     /**
      * Delete the conversation
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @api {get} /conversations/destroy Delete a Conversation
+     * @apiName DeleteConversation
+     * @apiGroup Conversations
+     *
+     * @apiParam {String} conversation_id Conversation identifier.
+     * @apiParam {JWTAuthToken} token The session token
+     *
+     * @apiSuccess {String} Status The response code
+     * @apiSuccess {String} Message Deletion confirmation
+     *
+     * @apiError 500 Conversation not found
+     * @apiError 401 User could not be authenticated
      */
     public function destroy()
     {
@@ -225,7 +268,7 @@ class ConversationController extends Controller
                 [
                     "Status" => 401,
                     "Message" => "User not authenticated.",
-                ]
+                ],401
             );
         }
 
@@ -244,8 +287,19 @@ class ConversationController extends Controller
     /**
      * Add a ticket to the conversation
      *
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
+     * @api {post} /conversations/tickets/add Add a Ticket to a Conversation
+     * @apiName AddTicketToConversation
+     * @apiGroup Conversations
+     *
+     * @apiParam {String} conversation_id Conversation identifier.
+     * @apiParam {String} ticket_id Ticket identifier.
+     * @apiParam {JWTAuthToken} token The session token
+     *
+     * @apiSuccess {String} status The response code
+     * @apiSuccess {String} message Deletion confirmation
+     *
+     * @apiError 500 Resource not found
+     * @apiError 401 User could not be authenticated
      */
     public function addTicket(Request $request)
     {
@@ -258,7 +312,7 @@ class ConversationController extends Controller
                 [
                     "Status" => 401,
                     "Message" => "User not authenticated.",
-                ]
+                ],401
             );
         }
 
@@ -276,8 +330,19 @@ class ConversationController extends Controller
     /**
      * Removes a ticket from the conversation
      *
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
+     * @api {post} /conversations/tickets/remove Remove a Ticket from a Conversation
+     * @apiName RemoveTicketFromConversation
+     * @apiGroup Conversations
+     *
+     * @apiParam {String} conversation_id Conversation identifier.
+     * @apiParam {String} ticket_id Ticket identifier.
+     * @apiParam {JWTAuthToken} token The session token
+     *
+     * @apiSuccess {String} status The response code
+     * @apiSuccess {String} message Deletion confirmation
+     *
+     * @apiError 500 Resource not found
+     * @apiError 401 User could not be authenticated
      */
     public function removeTicket(Request $request)
     {
