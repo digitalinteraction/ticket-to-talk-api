@@ -50,8 +50,27 @@ class PersonController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @api {post} /people/store Save a person
+     * @apiName StorePerson
+     * @apiGroup People
+     *
+     * @apiParam {String} name Person's name.
+     * @apiParam {String} birthYear Person's birth year.
+     * @apiParam {String} birthPlace Person's birth place.
+     * @apiParam {String} notes User's notes on the person.
+     * @apiParam {String} townCity Where the person spent most of their life.
+     * @apiParam {String} relation User's relation to the person.
+     * @apiParam {byte[]} image Picture of the person.
+     * @apiParam {String} imageHash SHA256 hash of the image byte array.
+     * @apiParam {JWTAuthToken} token The session token
+     *
+     * @apiSuccess {String} status The response code
+     * @apiSuccess {String} message Server message
+     * @apiSuccess {Person} person The newly created person.
+     * @apiSuccess {User} owner The user who created the person.
+     *
+     * @apiError 500 Resource not found
+     * @apiError 401 User could not be authenticated
      */
     public function store(Request $request)
     {
@@ -143,7 +162,7 @@ class PersonController extends Controller
                     "status" => 500,
                     "message" => "Error saving person",
                     "person" => $person
-                ]
+                ],500
             );
         }
     }
@@ -151,7 +170,19 @@ class PersonController extends Controller
     /**
      * Display the specified resource.
      *
-     * @return \Illuminate\Http\Response
+     * @api {get} /people/show Get a Person
+     * @apiName GetPerson
+     * @apiGroup People
+     *
+     * @apiParam {String} name Person's name
+     * @apiParam {JWTAuthToken} token The session token
+     *
+     * @apiSuccess {String} status The response code
+     * @apiSuccess {String} message Server message
+     * @apiSuccess {Person[]} person Deletion confirmation
+     *
+     * @apiError 500 Resource not found
+     * @apiError 401 User could not be authenticated
      */
     public function show()
     {
@@ -162,9 +193,9 @@ class PersonController extends Controller
         {
             return response()->json(
                 [
-                    "Status" => 402,
+                    "Status" => 401,
                     "Message" => "User not authenticated.",
-                ]
+                ],401
             );
         }
 
@@ -186,7 +217,7 @@ class PersonController extends Controller
             [
                 "status" => 500,
                 "message" => "Person not found",
-            ]
+            ],500
         );
     }
 
@@ -204,8 +235,26 @@ class PersonController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @api {post} /people/update Update a Person
+     * @apiName UpdatePerson
+     * @apiGroup People
+     *
+     * @apiParam {String} name Person's name.
+     * @apiParam {String} birthYear Person's birth year.
+     * @apiParam {String} birthPlace Person's birth place.
+     * @apiParam {String} notes User's notes on the person.
+     * @apiParam {String} townCity Where the person spent most of their life.
+     * @apiParam {String} relation User's relation to the person.
+     * @apiParam {byte[]} image Picture of the person.
+     * @apiParam {String} imageHash SHA256 hash of the image byte array.
+     * @apiParam {JWTAuthToken} token The session token
+     *
+     * @apiSuccess {String} status The response code
+     * @apiSuccess {String} message Update confirmation
+     * @apiSuccess {Person} person The newly created person.
+     *
+     * @apiError 500 Resource not found
+     * @apiError 401 User could not be authenticated
      */
     public function update(Request $request)
     {
@@ -217,9 +266,9 @@ class PersonController extends Controller
         {
             return response()->json(
                 [
-                    "Status" => 402,
+                    "Status" => 401,
                     "Message" => "User not authenticated.",
-                ]
+                ],401
             );
         }
 
@@ -241,9 +290,6 @@ class PersonController extends Controller
             $data = base64_decode($request->image);
 
             Storage::disk('s3')->put($file_path, $data);
-//            $file = fopen($file_path, "wb");
-//            fwrite($file, $data);
-//            fclose($file);
 
             $person->pathToPhoto = $file_path;
         }
@@ -265,7 +311,18 @@ class PersonController extends Controller
     /**
      * Destroys the record of the person.
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @api {delete} /people/destroy Delete a Person
+     * @apiName DeletePerson
+     * @apiGroup People
+     *
+     * @apiParam {String} person_id Person's ID.
+     * @apiParam {JWTAuthToken} token The session token
+     *
+     * @apiSuccess {String} status The response code
+     * @apiSuccess {String} message Deletion confirmation
+     *
+     * @apiError 500 Resource not found
+     * @apiError 401 User could not be authenticated
      */
     public function destroy()
     {
@@ -276,9 +333,9 @@ class PersonController extends Controller
         {
             return response()->json(
                 [
-                    "Status" => 402,
+                    "Status" => 401,
                     "Message" => "User not authenticated.",
-                ]
+                ],401
             );
         }
 
@@ -294,7 +351,18 @@ class PersonController extends Controller
     }
 
     /**
-     * @return \Illuminate\Http\JsonResponse
+     * @api {get} /people/getusers Get Person's Attached Users
+     * @apiName PersonUsers
+     * @apiGroup People
+     *
+     * @apiParam {String} person_id Person's ID.
+     * @apiParam {JWTAuthToken} token The session token
+     *
+     * @apiSuccess {String} status The response code
+     * @apiSuccess {User[]} users Users attached to this person.
+     *
+     * @apiError 500 Resource not found
+     * @apiError 401 User could not be authenticated
      */
     public function getUsers()
     {
@@ -305,9 +373,9 @@ class PersonController extends Controller
         {
             return response()->json(
                 [
-                    "Status" => 402,
+                    "Status" => 401,
                     "Message" => "User not authenticated.",
-                ]
+                ],401
             );
         }
 
@@ -327,7 +395,20 @@ class PersonController extends Controller
     }
 
     /**
-     * @return \Illuminate\Http\JsonResponse
+     * @api {get} /people/tickets Get a Person's Tickets
+     * @apiName GetTicketsForPerson
+     * @apiGroup People
+     *
+     * @apiParam {String} person_id Person's ID.
+     * @apiParam {JWTAuthToken} token The session token
+     *
+     * @apiSuccess {String} status The response code
+     * @apiSuccess {Ticket[]} tickets Get a person's tickets.
+     * @apiSuccess {Tag[]} tags Get tags for tickets.
+     * @apiSuccess {TicketTag[]} ticket_tags Get ticket tag pairing.
+     *
+     * @apiError 500 Resource not found
+     * @apiError 401 User could not be authenticated
      */
     public function getTickets()
     {
@@ -338,9 +419,9 @@ class PersonController extends Controller
         {
             return response()->json(
                 [
-                    "Status" => 402,
+                    "Status" => 401,
                     "Message" => "User not authenticated.",
-                ]
+                ],401
             );
         }
 
@@ -350,13 +431,11 @@ class PersonController extends Controller
         if($person)
         {
             $tickets = [];
-//            $areas = [];
             $tags = [];
             $ticket_tags = [];
             foreach($person->tickets as $ticket)
             {
                 array_push($tickets, $ticket);
-//                array_push($areas, $ticket->area);
                 foreach($ticket->tags as $tag)
                 {
                     $already_added = false;
@@ -385,7 +464,6 @@ class PersonController extends Controller
                 [
                     "status" => 200,
                     "tickets" => $tickets,
-//                    "areas" => $areas,
                     "tags" => $tags,
                     "ticket_tags" => $ticket_tags
                 ]
