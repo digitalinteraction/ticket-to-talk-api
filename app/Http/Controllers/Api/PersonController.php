@@ -170,7 +170,7 @@ class PersonController extends Controller
     /**
      * Display the specified resource.
      *
-     * @api {get} /people/show Get a Person
+     * @api {get} /people/show Get a People
      * @apiName GetPerson
      * @apiGroup People
      *
