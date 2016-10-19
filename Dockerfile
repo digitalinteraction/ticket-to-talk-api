@@ -32,7 +32,7 @@ RUN sed -i 's/post_max_size.\+/post_max_size = 200M/' /etc/php5/fpm/php.ini
 
 
 # Allow fastcgi for Silverstripe
-# RUN sed -i 's/listen = .\+/listen = 127.0.0.1:9000/' /etc/php5/fpm/pool.d/www.conf
+RUN sed -i 's/listen = .\+/listen = 127.0.0.1:9000/' /etc/php5/fpm/pool.d/www.conf
 
 # Create the empty directories we will use
 RUN mkdir -p /var/www/html/ticket-to-talk-server
@@ -70,17 +70,8 @@ RUN chmod -R 775 storage/
 #RUN mysql -u root --password=  < create_db.sql
 
 #RUN php artisan migrate:install
-RUN php artisan migrate
-RUN php artisan db:seed --class=InspirationTableSeeder
-#RUN php artisan migrate:install
 #RUN php artisan migrate
-
-
 #RUN php artisan db:seed --class=InspirationTableSeeder
-
-
-# Add the rest of our application to the app folder
-#ADD . /app
 
 
 # Add our nginx config file to nginx's config folder
