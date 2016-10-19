@@ -35,8 +35,8 @@ RUN sed -i 's/post_max_size.\+/post_max_size = 200M/' /etc/php5/fpm/php.ini
 RUN sed -i 's/listen = .\+/listen = 127.0.0.1:9000/' /etc/php5/fpm/pool.d/www.conf
 
 # Create the empty directories we will use
-RUN mkdir -p /var/www/html/ticket-to-talk-server
-RUN mkdir -p /app && rm -fr /var/www/html/ticket-to-talk-server && ln -s /app /var/www/html/ticket-to-talk-server
+RUN mkdir -p /var/www/html
+RUN mkdir -p /app && rm -fr /var/www/html && ln -s /app /var/www/html/ticket-to-talk-server
 
 
 # Install Composer, our PHP package manager (https://getcomposer.org/)
