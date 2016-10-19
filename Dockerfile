@@ -36,7 +36,7 @@ RUN sed -i 's/listen = .\+/listen = 127.0.0.1:9000/' /etc/php5/fpm/pool.d/www.co
 
 # Create the empty directories we will use
 RUN mkdir -p /var/www/html
-RUN mkdir -p /app && rm -fr /var/www/html && ln -s /app /var/www/html/ticket-to-talk-server
+RUN mkdir -p /app && rm -fr /var/www/html && ln -s /app /var/www/html
 
 
 # Install Composer, our PHP package manager (https://getcomposer.org/)
