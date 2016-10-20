@@ -46,10 +46,10 @@ return [
         ],
         's3' => [
             'driver' => 's3',
-            'key' => 'AKIAJ5RLZGLCL254CH2A',
-            'secret' => 'YcxI5pYd/2V4CB9UTegPL+FOx7hMKnhb3Br9tsgc',
-            'region' => 'eu-central-1',
-            'bucket' => 'daniel-welsh',
+            'key' => 'your-key',
+            'secret' => 'your-secret',
+            'region' => 'your-region',
+            'bucket' => 'your-bucket',
         ],
     ],
 ];

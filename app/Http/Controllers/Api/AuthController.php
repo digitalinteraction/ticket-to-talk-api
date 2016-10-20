@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\RegisterRequest;
 use App\Http\Requests\LoginRequest;
 
-use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Storage;
 use Tymon\JWTAuth\Exceptions\JWTException;
@@ -52,30 +51,13 @@ class AuthController extends Controller
     public function register(RegisterRequest $request)
     {
 
-        try {
-            $newUser = $this->user->create(
-                [
-                    'name' => $request->get('name'),
-                    'email' => $request->get('email'),
-                    'password' => bcrypt($request->get('password'))
-                ]
-            );
-        }
-        catch (QueryException $ex)
-        {
-            return response()->json(
-                [
-                    'message' => [
-                        'status' => '500'
-                    ],
-                    'errors' => [
-                        'This email is already registered with Ticket to Talk'
-                    ],
-                    'data' => []
-                ],500
-            );
-        }
-
+        $newUser = $this->user->create(
+            [
+                'name' => $request->get('name'),
+                'email' => $request->get('email'),
+                'password' => bcrypt($request->get('password'))
+            ]
+        );
 
         if ($request->pathToPhoto != null)
         {
@@ -96,20 +78,24 @@ class AuthController extends Controller
         $raw_key = $this->default_api_key . $newUser->email . time();
         $api_key = hash('sha256', $raw_key);
         $newUser->api_key = $api_key;
+//        $newUser->api_key = bin2hex(openssl_random_pseudo_bytes(32));
 
         $newUser->save();
 
+        if (!$newUser) {
+            return response()->json(
+                [
+                    'failed_to_create_new_user'
+                ],500
+            );
+        }
+
         return response()->json(
             [
-                'message' => [
-                    "User created."
-                ],
-                'errors' => [],
-                'data' => [
-                    'user' => $newUser,
-                    'api_key' => $api_key,
-                    'token' => $this->jwtauth->fromUser($newUser)
-                ],
+                'message' => 'user_created',
+                'user' => $newUser,
+                'api_key' => $api_key,
+                'token' => $this->jwtauth->fromUser($newUser)
             ]
         );
     }
@@ -144,15 +130,8 @@ class AuthController extends Controller
             {
                 return response()->json(
                     [
-                        'status' => [
-                            'message' => "Incorrect email or password",
-                            'code' => 401
-                        ],
-                        'errors' => [
-                            "message" => "Incorrect authentication details"
-                        ],
-                        'data' => [
-                        ],
+                        "code" => "401",
+                        "message" => 'Invalid email or password'
                     ]
                 );
             }
@@ -188,32 +167,34 @@ class AuthController extends Controller
 
             return response()->json(
                 [
-                    'status' => [
-                        'message' => "Authenticated - API Key given",
-                        'code' => 200
-                    ],
-                    'errors' => [],
-                    'data' => [
-                        "user" => $user,
-                        "token" => $val,
-                        "api_key" => $user->api_key
-                    ],
+                    "code" => "200",
+                    "message" => "Authenticated",
+                    "user" => $user,
+                    "api_key" => $user->api_key,
+                    "token" => $val
                 ]
             );
         }
 
         return response()->json(
             [
-                'status' => [
-                    'message' => "Authenticated",
-                    'code' => 200
-                ],
-                'errors' => [],
-                'data' => [
-                    "user" => $user,
-                    "token" => $val
-                ],
+                "code" => "200",
+                "message" => "Authenticated",
+                "user" => $user,
+                "token" => $val
             ]
         );
     }
+
+//    /**
+//     * Generates the user from the token.
+//     *
+//     * @return \Illuminate\Http\JsonResponse
+//     */
+//    public function getUser()
+//    {
+//        $token = Input::get('token');
+//        $user = $this->jwtauth->authenticate($token);
+//        return response()->json($user);
+//    }
 }
