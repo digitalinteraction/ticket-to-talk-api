@@ -49,12 +49,45 @@ class ArticleController extends Controller
      * @apiName StoreArticle
      * @apiGroup Articles
      *
+     * @apiDescription
+     * Create and save an article
+     *
      * @apiParam {JWTAuthToken} token The session token
      *
      * @apiSuccess {String} status HTTP response code
      * @apiSuccess {String} message Server message
      * @apiSuccess {Article} article The stored article
      * @apiSuccess {User} user Owner of the article
+     *
+     * @apiSuccessExample {json} Success-Response:
+     *
+     *  {
+            "status": {
+                "message": "Article saved.",
+                "code": 200
+            },
+            "errors": [],
+            "data": {
+                "article": {
+                    "title": "Facebook",
+                    "link": "facebook.com",
+                    "notes": "These are notes",
+                    "updated_at": "2016-10-21 10:23:22",
+                    "created_at": "2016-10-21 10:23:22",
+                    "id": 5
+                },
+                "owner": {
+                    "id": 3,
+                    "name": "Test",
+                    "email": "test@email.com",
+                    "pathToPhoto": "ticket_to_talk/storage/profile/u_3.jpg",
+                    "created_at": "2016-10-20 15:16:03",
+                    "updated_at": "2016-10-20 15:16:04",
+                    "imageHash": "asdasdasdasdasdasdasdsdasdasd",
+                    "revoked": null
+                }
+            }
+        }
      *
      * @apiError 500 The article could not be found.
      * @apiError 401 User could not be authenticated.
@@ -84,20 +117,31 @@ class ArticleController extends Controller
         if ($saved) {
             return response()->json(
                 [
-                    "status" => 200,
-                    "message" => "Article saved",
-                    "article" => $article,
-                    'owner' => $user
+                    "status" =>
+                        [
+                            "message" => "Article saved.",
+                            "code" => 200
+                        ],
+                    "errors" => [],
+                    "data" =>
+                        [
+                            "article" => $article,
+                            'owner' => $user
+                        ]
                 ]
             );
         } else
         {
             return response()->json(
                 [
-                    "status" => 500,
-                    "message" => "Error saving article",
-                    "article" => $article
-                ]
+                    "status" =>
+                        [
+                            "message" => "Article could not be saved",
+                            "code" => 500
+                        ],
+                    "errors" => [],
+                    "data" => []
+                ],500
             );
         }
     }
@@ -109,12 +153,38 @@ class ArticleController extends Controller
      * @apiName ShowArticle
      * @apiGroup Articles
      *
+     * @apiDescription
+     * Get a single article by its ID.
+     *
      * @apiParam {int} article_id The article ID
      * @apiParam {JWTAuthToken} token The session token
      *
      * @apiSuccess {String} status HTTP response code
      * @apiSuccess {String} message Server message
      * @apiSuccess {Article} article The requested article
+     *
+     * @apiSuccessExample {json} Server-Response:
+     *  {
+            "status": {
+                "message": "Returned users articles",
+                "code": 200
+            },
+            "errors": [],
+            "data": {
+                "article": {
+                    "id": 5,
+                    "title": "Article",
+                    "link": "http://google.com",
+                    "notes": "These are updated notes",
+                    "created_at": "2016-10-21 10:23:22",
+                    "updated_at": "2016-10-21 10:28:46",
+                    "pivot": {
+                        "user_id": 3,
+                        "article_id": 5
+                    }
+                }
+            }
+        }
      *
      * @apiError 500 The article could not be found.
      * @apiError 401 User could not be authenticated.
@@ -128,9 +198,17 @@ class ArticleController extends Controller
         {
             return response()->json(
                 [
-                    "Status" => 401,
-                    "Message" => "User not authenticated.",
-                ]
+                    "status" =>
+                        [
+                            "message" => "User could not be authenticated",
+                            "code" => 401
+                        ],
+                    "errors" =>
+                        [
+                            'message' => "User could not be authenticated"
+                        ],
+                    "data" => []
+                ],500
             );
         }
 
@@ -142,18 +220,36 @@ class ArticleController extends Controller
             {
                 return response()->json(
                     [
-                        "status" => 200,
-                        "message" => "Article Found",
-                        "article" => $article,
+                        "status" =>
+                            [
+                                "message" => "Returned users articles",
+                                "code" => 200
+                            ],
+                        "errors" => [],
+                        "data" =>
+                            [
+                                "article" => $article
+                            ]
                     ]
                 );
             }
         }
         return response()->json(
             [
-                "status" => 500,
-                "message" => "Article not found",
-            ]
+                "status" =>
+                    [
+                        "message" => "Error",
+                        "code" => 500
+                    ],
+                "errors" =>
+                    [
+                        'message' => "Article could not be sound"
+                    ],
+                "data" =>
+                    [
+
+                    ]
+            ],500
         );
     }
 
@@ -174,6 +270,9 @@ class ArticleController extends Controller
      * @apiName UpdateArticle
      * @apiGroup Articles
      *
+     * @apiDescription
+     * Update an article with new information.
+     *
      * @apiParam {int} article_id The article id
      * @apiParam {String} title The article title
      * @apiParam {String} link The article title
@@ -183,6 +282,29 @@ class ArticleController extends Controller
      * @apiSuccess {String} status HTTP response code
      * @apiSuccess {String} message Server message
      * @apiSuccess {Article} article The requested article
+     *
+     * @apiSuccessExample {json} Server-Response:
+     *  {
+            "status": {
+                "message": "Article updated",
+                "code": 200
+            },
+            "errors": [],
+            "data": {
+                "article": {
+                    "id": 5,
+                    "title": "Article",
+                    "link": "http://google.com",
+                    "notes": "These are updated notes",
+                    "created_at": "2016-10-21 10:23:22",
+                    "updated_at": "2016-10-21 10:28:46",
+                    "pivot": {
+                        "user_id": 3,
+                        "article_id": 5
+                    }
+                }
+            }
+        }
      *
      * @apiError 500 The article could not be found.
      * @apiError 401 User could not be authenticated.
@@ -197,9 +319,20 @@ class ArticleController extends Controller
         {
             return response()->json(
                 [
-                    "Status" => 401,
-                    "Message" => "User not authenticated.",
-                ]
+                    'status' =>
+                        [
+                            "message" => "User not authenticated",
+                            "code" => 401
+                        ],
+                    'errors' =>
+                        [
+                            'message' => "User could not be authenticated"
+                        ],
+                    'data' =>
+                        [
+
+                        ],
+                ],401
             );
         }
 
@@ -210,9 +343,20 @@ class ArticleController extends Controller
         {
             return response()->json(
                 [
-                    "status" => 500,
-                    "message" => "Article not found",
-                ]
+                    'status' =>
+                        [
+                            "message" => "Resource not found",
+                            "code" => 500
+                        ],
+                    'errors' =>
+                        [
+                            'message' => "Article could not be found"
+                        ],
+                    'data' =>
+                        [
+
+                        ],
+                ],500
             );
         }
 
@@ -223,9 +367,18 @@ class ArticleController extends Controller
 
         return response()->json(
             [
-                "status" => 200,
-                "message" => "Article updated",
-                "article" => $article,
+                'status' =>
+                    [
+                        "message" => "Article updated",
+                        "code" => 200
+                    ],
+                'errors' =>
+                    [
+                    ],
+                'data' =>
+                    [
+                        "article" => $article,
+                    ],
             ]
         );
     }
@@ -233,9 +386,15 @@ class ArticleController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @api {get} /articles/destroy Delete an Article
+     * @api {delete} /articles/destroy Delete an Article
      * @apiName DeleteArticle
      * @apiGroup Articles
+     *
+     * @apiSuccessExample {json} Server-Response:
+     *  {
+            "status": 200,
+            "message": "Article deleted"
+        }
      *
      * @apiParam {int} article_id The article id
      * @apiParam {JWTAuthToken} token The session token
@@ -279,11 +438,51 @@ class ArticleController extends Controller
      * @apiName GetUserArticles
      * @apiGroup Articles
      *
+     * @apiDescription
+     * Get the user's saved articles
+     *
      * @apiParam {JWTAuthToken} token The session token
      *
      * @apiSuccess {String} status HTTP response code
      * @apiSuccess {String} message Server message
      * @apiSuccess {Article[]} articles User's articles
+     *
+     * @apiSuccessExample {json} Server-Response:
+     *  {
+            "status": {
+                "message": "Success",
+                "code": 200
+            },
+            "errors": [],
+            "data": {
+                "articles": [
+                    {
+                        "id": 2,
+                        "title": "Facebook",
+                        "link": "facebook.com",
+                        "notes": "These are notes",
+                        "created_at": "2016-10-21 10:17:35",
+                        "updated_at": "2016-10-21 10:17:35",
+                        "pivot": {
+                            "user_id": 3,
+                            "article_id": 2
+                        }
+                    },
+                    {
+                        "id": 5,
+                        "title": "Article",
+                        "link": "http://google.com",
+                        "notes": "These are updated notes",
+                        "created_at": "2016-10-21 10:23:22",
+                        "updated_at": "2016-10-21 10:28:46",
+                        "pivot": {
+                            "user_id": 3,
+                            "article_id": 5
+                        }
+                    }
+                ]
+            }
+        }
      *
      * @apiError 500 The article could not be found.
      * @apiError 401 User could not be authenticated.
@@ -297,16 +496,33 @@ class ArticleController extends Controller
         {
             return response()->json(
                 [
-                    "Status" => 401,
-                    "Message" => "User not authenticated.",
-                ]
+                    "status" =>
+                        [
+                            "message" => "Error",
+                            "code" => 401
+                        ],
+                    "errors" =>
+                        [
+                            "message" => "User could not be authenticated"
+                        ],
+                    "data" => []
+                ],401
             );
         }
         return response()->json(
+
             [
-                "status" => 200,
-                "message" => "All user articles",
-                "articles" => $user->articles
+                "status" =>
+                    [
+                        "message" => "Success",
+                        "code" => 200
+                    ],
+                "errors" =>
+                    [
+                    ],
+                "data" => [
+                    "articles" => $user->articles
+                ]
             ]
         );
     }
@@ -389,6 +605,37 @@ class ArticleController extends Controller
      * @apiSuccess {String} status HTTP response code
      * @apiSuccess {Article[]} Articles Articles shared with the user.
      *
+     * @apiSuccessExample {json} Server-Response:
+     *  {
+            "Status": 200,
+            "Articles": [
+                {
+                    "id": 1,
+                    "title": "Facebook",
+                    "link": "http://facebook.com",
+                    "notes": "Add some notes about the article!",
+                    "created_at": "2016-10-21 09:55:36",
+                    "updated_at": "2016-10-21 10:37:50",
+                    "pivot": {
+                        "user_id": 3,
+                        "article_id": 1
+                    }
+                },
+                {
+                    "id": 2,
+                    "title": "Facebook",
+                    "link": "facebook.com",
+                    "notes": "These are notes",
+                    "created_at": "2016-10-21 10:17:35",
+                    "updated_at": "2016-10-21 10:17:35",
+                    "pivot": {
+                        "user_id": 3,
+                        "article_id": 2
+                    }
+                },
+            ]
+        }
+     *
      * @apiError 500 The article could not be found.
      * @apiError 401 User could not be authenticated.
      */
@@ -436,6 +683,50 @@ class ArticleController extends Controller
      * @apiSuccess {String} message Server message
      * @apiSuccess {Article[]} The user's articles
      *
+     * @apiSuccessExample {json} Server-Response:
+     *  {
+            "Status": 200,
+            "Message": "Article accepted",
+            "Articles": [
+                {
+                    "id": 1,
+                    "title": "Facebook",
+                    "link": "http://facebook.com",
+                    "notes": "Add some notes about the article!",
+                    "created_at": "2016-10-21 09:55:36",
+                    "updated_at": "2016-10-21 10:37:50",
+                    "pivot": {
+                        "user_id": 3,
+                        "article_id": 1
+                    }
+                },
+                {
+                    "id": 2,
+                    "title": "Facebook",
+                    "link": "facebook.com",
+                    "notes": "These are notes",
+                    "created_at": "2016-10-21 10:17:35",
+                    "updated_at": "2016-10-21 10:17:35",
+                    "pivot": {
+                        "user_id": 3,
+                        "article_id": 2
+                    }
+                },
+                {
+                    "id": 5,
+                    "title": "Article",
+                    "link": "http://google.com",
+                    "notes": "These are updated notes",
+                    "created_at": "2016-10-21 10:23:22",
+                    "updated_at": "2016-10-21 10:28:46",
+                    "pivot": {
+                        "user_id": 3,
+                        "article_id": 5
+                    }
+                }
+            ]
+        }
+     *
      * @apiError 500 The article could not be found.
      * @apiError 401 User could not be authenticated.
      */
@@ -479,6 +770,12 @@ class ArticleController extends Controller
      *
      * @apiSuccess {String} status HTTP response code
      * @apiSuccess {String} message Server message
+     *
+     * @apiSuccessExample {json} Server-Response:
+     *  {
+            "Status": 200,
+            "Message": "Article rejected"
+        }
      *
      * @apiError 500 The article could not be found.
      * @apiError 401 User could not be authenticated.

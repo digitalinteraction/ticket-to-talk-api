@@ -170,16 +170,15 @@ class PersonController extends Controller
     /**
      * Display the specified resource.
      *
-     * @api {get} /people/show Get a People
-     * @apiName GetPerson
+     * @api {get} /people/show Get People
+     * @apiName GetPeople
      * @apiGroup People
      *
-     * @apiParam {String} name Person's name
      * @apiParam {JWTAuthToken} token The session token
      *
      * @apiSuccess {String} status The response code
      * @apiSuccess {String} message Server message
-     * @apiSuccess {Person[]} person Deletion confirmation
+     * @apiSuccess {Person[]} person The user's people
      *
      * @apiError 500 Resource not found
      * @apiError 401 User could not be authenticated
@@ -239,6 +238,7 @@ class PersonController extends Controller
      * @apiName UpdatePerson
      * @apiGroup People
      *
+     * @apiParam {String} person_id Person's ID.
      * @apiParam {String} name Person's name.
      * @apiParam {String} birthYear Person's birth year.
      * @apiParam {String} birthPlace Person's birth place.
