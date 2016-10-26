@@ -31,7 +31,7 @@ RUN sed -i 's/upload_max_filesize.\+/upload_max_filesize = 200M/' /etc/php5/fpm/
 RUN sed -i 's/post_max_size.\+/post_max_size = 200M/' /etc/php5/fpm/php.ini
 
 
-# Allow fastcgi for Silverstripe
+# Allow fastcgi
 RUN sed -i 's/listen = .\+/listen = 127.0.0.1:9000/' /etc/php5/fpm/pool.d/www.conf
 
 # Create the empty directories we will use
@@ -66,12 +66,9 @@ RUN chmod -R 775 bootstrap/
 RUN chmod -R 775 vendor/
 RUN chmod -R 775 storage/
 
-#RUN service mysql start
-#RUN mysql -u root --password=  < create_db.sql
 
-#RUN php artisan migrate:install
-#RUN php artisan migrate
-#RUN php artisan db:seed --class=InspirationTableSeeder
+# Setup MySQL server
+RUN ln -s /var/lib/mysql/mysql.sock /tmp/mysql.sock
 
 
 # Add our nginx config file to nginx's config folder
@@ -89,10 +86,6 @@ EXPOSE 80
 
 # Let our run script be run
 RUN chmod +x /app/run.sh
-
-
-# Remove the install file
-#RUN rm install.php
 
 
 # Start our application
