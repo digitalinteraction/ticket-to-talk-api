@@ -38,6 +38,7 @@ class Handler extends ExceptionHandler
 
     /**
      * Render an exception into an HTTP response.
+     * FROM: https://gist.github.com/tannernelson/cb2d981a3cfeabd425b8
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Exception  $e
