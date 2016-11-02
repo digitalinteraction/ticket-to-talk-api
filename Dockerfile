@@ -1,4 +1,4 @@
-# Dockerfile to deploy a silverstripe server
+# Dockerfile to deploy a Laravel server, based on R Anderson's Silverstripe Dockerfile.
 
 # Begin with a base Debian system (https://www.debian.org/), we are using the 'jessie' version
 FROM debian:jessie
@@ -43,13 +43,10 @@ RUN mkdir -p /app && rm -fr /var/www/html && ln -s /app /var/www/html
 # Puts composer.phar in the root directory, \composer.phar
 RUN curl -sS https://getcomposer.org/installer | php
 
-RUN service mysql start
 
 # Add our Composer configuration and install it's packages
 WORKDIR /app
 ADD . /app
-#ADD composer.json /app/composer.json
-#ADD composer.lock /app/composer.lock
 RUN /composer.phar install
 RUN chown -R www-data:www-data /app
 
