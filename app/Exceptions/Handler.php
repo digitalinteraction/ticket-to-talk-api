@@ -81,7 +81,7 @@ class Handler extends ExceptionHandler
                 'message' => 'Something went wrong',
                 'error' => true,
             ];
-            if (debug()) {
+            if (config('app.debug')) {
                 $response['debug'] = [
                     'message' => $e->getMessage(),
                     'line' => $e->getLine(),
