@@ -50,7 +50,14 @@
             "description": "<p>user's articles</p>"
           }
         ]
-      }
+      },
+      "examples": [
+        {
+          "title": "Server-Response:",
+          "content": "{\n           \"Status\": 200,\n           \"Message\": \"Article accepted\",\n           \"Articles\": [\n               {\n                   \"id\": 1,\n                   \"title\": \"Facebook\",\n                   \"link\": \"http://facebook.com\",\n                   \"notes\": \"Add some notes about the article!\",\n                   \"created_at\": \"2016-10-21 09:55:36\",\n                   \"updated_at\": \"2016-10-21 10:37:50\",\n                   \"pivot\": {\n                       \"user_id\": 3,\n                       \"article_id\": 1\n                   }\n               },\n               {\n                   \"id\": 2,\n                   \"title\": \"Facebook\",\n                   \"link\": \"facebook.com\",\n                   \"notes\": \"These are notes\",\n                   \"created_at\": \"2016-10-21 10:17:35\",\n                   \"updated_at\": \"2016-10-21 10:17:35\",\n                   \"pivot\": {\n                       \"user_id\": 3,\n                       \"article_id\": 2\n                   }\n               },\n               {\n                   \"id\": 5,\n                   \"title\": \"Article\",\n                   \"link\": \"http://google.com\",\n                   \"notes\": \"These are updated notes\",\n                   \"created_at\": \"2016-10-21 10:23:22\",\n                   \"updated_at\": \"2016-10-21 10:28:46\",\n                   \"pivot\": {\n                       \"user_id\": 3,\n                       \"article_id\": 5\n                   }\n               }\n           ]\n       }",
+          "type": "json"
+        }
+      ]
     },
     "error": {
       "fields": {
@@ -75,11 +82,38 @@
     "groupTitle": "Articles"
   },
   {
-    "type": "get",
+    "type": "delete",
     "url": "/articles/destroy",
     "title": "Delete an Article",
     "name": "DeleteArticle",
     "group": "Articles",
+    "success": {
+      "examples": [
+        {
+          "title": "Server-Response:",
+          "content": "{\n           \"status\": 200,\n           \"message\": \"Article deleted\"\n       }",
+          "type": "json"
+        }
+      ],
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "status",
+            "description": "<p>HTTP response code</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>Server message</p>"
+          }
+        ]
+      }
+    },
     "parameter": {
       "fields": {
         "Parameter": [
@@ -96,26 +130,6 @@
             "optional": false,
             "field": "token",
             "description": "<p>The session token</p>"
-          }
-        ]
-      }
-    },
-    "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "status",
-            "description": "<p>HTTP response code</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "message",
-            "description": "<p>Server message</p>"
           }
         ]
       }
@@ -179,7 +193,14 @@
             "description": "<p>Articles shared with the user.</p>"
           }
         ]
-      }
+      },
+      "examples": [
+        {
+          "title": "Server-Response:",
+          "content": "{\n           \"Status\": 200,\n           \"Articles\": [\n               {\n                   \"id\": 1,\n                   \"title\": \"Facebook\",\n                   \"link\": \"http://facebook.com\",\n                   \"notes\": \"Add some notes about the article!\",\n                   \"created_at\": \"2016-10-21 09:55:36\",\n                   \"updated_at\": \"2016-10-21 10:37:50\",\n                   \"pivot\": {\n                       \"user_id\": 3,\n                       \"article_id\": 1\n                   }\n               },\n               {\n                   \"id\": 2,\n                   \"title\": \"Facebook\",\n                   \"link\": \"facebook.com\",\n                   \"notes\": \"These are notes\",\n                   \"created_at\": \"2016-10-21 10:17:35\",\n                   \"updated_at\": \"2016-10-21 10:17:35\",\n                   \"pivot\": {\n                       \"user_id\": 3,\n                       \"article_id\": 2\n                   }\n               },\n           ]\n       }",
+          "type": "json"
+        }
+      ]
     },
     "error": {
       "fields": {
@@ -209,6 +230,7 @@
     "title": "Get User's Articles",
     "name": "GetUserArticles",
     "group": "Articles",
+    "description": "<p>Get the user's saved articles</p>",
     "parameter": {
       "fields": {
         "Parameter": [
@@ -247,7 +269,14 @@
             "description": "<p>User's articles</p>"
           }
         ]
-      }
+      },
+      "examples": [
+        {
+          "title": "Server-Response:",
+          "content": "{\n           \"status\": {\n               \"message\": \"Success\",\n               \"code\": 200\n           },\n           \"errors\": [],\n           \"data\": {\n               \"articles\": [\n                   {\n                       \"id\": 2,\n                       \"title\": \"Facebook\",\n                       \"link\": \"facebook.com\",\n                       \"notes\": \"These are notes\",\n                       \"created_at\": \"2016-10-21 10:17:35\",\n                       \"updated_at\": \"2016-10-21 10:17:35\",\n                       \"pivot\": {\n                           \"user_id\": 3,\n                           \"article_id\": 2\n                       }\n                   },\n                   {\n                       \"id\": 5,\n                       \"title\": \"Article\",\n                       \"link\": \"http://google.com\",\n                       \"notes\": \"These are updated notes\",\n                       \"created_at\": \"2016-10-21 10:23:22\",\n                       \"updated_at\": \"2016-10-21 10:28:46\",\n                       \"pivot\": {\n                           \"user_id\": 3,\n                           \"article_id\": 5\n                       }\n                   }\n               ]\n           }\n       }",
+          "type": "json"
+        }
+      ]
     },
     "error": {
       "fields": {
@@ -315,7 +344,14 @@
             "description": "<p>Server message</p>"
           }
         ]
-      }
+      },
+      "examples": [
+        {
+          "title": "Server-Response:",
+          "content": "{\n           \"Status\": 200,\n           \"Message\": \"Article rejected\"\n       }",
+          "type": "json"
+        }
+      ]
     },
     "error": {
       "fields": {
@@ -420,6 +456,7 @@
     "title": "Get an Article",
     "name": "ShowArticle",
     "group": "Articles",
+    "description": "<p>Get a single article by its ID.</p>",
     "parameter": {
       "fields": {
         "Parameter": [
@@ -465,7 +502,14 @@
             "description": "<p>The requested article</p>"
           }
         ]
-      }
+      },
+      "examples": [
+        {
+          "title": "Server-Response:",
+          "content": "{\n           \"status\": {\n               \"message\": \"Returned users articles\",\n               \"code\": 200\n           },\n           \"errors\": [],\n           \"data\": {\n               \"article\": {\n                   \"id\": 5,\n                   \"title\": \"Article\",\n                   \"link\": \"http://google.com\",\n                   \"notes\": \"These are updated notes\",\n                   \"created_at\": \"2016-10-21 10:23:22\",\n                   \"updated_at\": \"2016-10-21 10:28:46\",\n                   \"pivot\": {\n                       \"user_id\": 3,\n                       \"article_id\": 5\n                   }\n               }\n           }\n       }",
+          "type": "json"
+        }
+      ]
     },
     "error": {
       "fields": {
@@ -495,6 +539,7 @@
     "title": "Store an Article",
     "name": "StoreArticle",
     "group": "Articles",
+    "description": "<p>Create and save an article</p>",
     "parameter": {
       "fields": {
         "Parameter": [
@@ -540,7 +585,14 @@
             "description": "<p>Owner of the article</p>"
           }
         ]
-      }
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "\n{\n           \"status\": {\n               \"message\": \"Article saved.\",\n               \"code\": 200\n           },\n           \"errors\": [],\n           \"data\": {\n               \"article\": {\n                   \"title\": \"Facebook\",\n                   \"link\": \"facebook.com\",\n                   \"notes\": \"These are notes\",\n                   \"updated_at\": \"2016-10-21 10:23:22\",\n                   \"created_at\": \"2016-10-21 10:23:22\",\n                   \"id\": 5\n               },\n               \"owner\": {\n                   \"id\": 3,\n                   \"name\": \"Test\",\n                   \"email\": \"test@email.com\",\n                   \"pathToPhoto\": \"ticket_to_talk/storage/profile/u_3.jpg\",\n                   \"created_at\": \"2016-10-20 15:16:03\",\n                   \"updated_at\": \"2016-10-20 15:16:04\",\n                   \"imageHash\": \"asdasdasdasdasdasdasdsdasdasd\",\n                   \"revoked\": null\n               }\n           }\n       }",
+          "type": "json"
+        }
+      ]
     },
     "error": {
       "fields": {
@@ -570,6 +622,7 @@
     "title": "Update an Article",
     "name": "UpdateArticle",
     "group": "Articles",
+    "description": "<p>Update an article with new information.</p>",
     "parameter": {
       "fields": {
         "Parameter": [
@@ -636,7 +689,14 @@
             "description": "<p>The requested article</p>"
           }
         ]
-      }
+      },
+      "examples": [
+        {
+          "title": "Server-Response:",
+          "content": "{\n           \"status\": {\n               \"message\": \"Article updated\",\n               \"code\": 200\n           },\n           \"errors\": [],\n           \"data\": {\n               \"article\": {\n                   \"id\": 5,\n                   \"title\": \"Article\",\n                   \"link\": \"http://google.com\",\n                   \"notes\": \"These are updated notes\",\n                   \"created_at\": \"2016-10-21 10:23:22\",\n                   \"updated_at\": \"2016-10-21 10:28:46\",\n                   \"pivot\": {\n                       \"user_id\": 3,\n                       \"article_id\": 5\n                   }\n               }\n           }\n       }",
+          "type": "json"
+        }
+      ]
     },
     "error": {
       "fields": {
@@ -1465,19 +1525,12 @@
   {
     "type": "get",
     "url": "/people/show",
-    "title": "Get a Person",
-    "name": "GetPerson",
+    "title": "Get People",
+    "name": "GetPeople",
     "group": "People",
     "parameter": {
       "fields": {
         "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "name",
-            "description": "<p>Person's name</p>"
-          },
           {
             "group": "Parameter",
             "type": "JWTAuthToken",
@@ -1510,7 +1563,7 @@
             "type": "Person[]",
             "optional": false,
             "field": "person",
-            "description": "<p>Deletion confirmation</p>"
+            "description": "<p>The user's people</p>"
           }
         ]
       }
@@ -1827,6 +1880,13 @@
     "parameter": {
       "fields": {
         "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "person_id",
+            "description": "<p>Person's ID.</p>"
+          },
           {
             "group": "Parameter",
             "type": "String",
