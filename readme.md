@@ -1,4 +1,4 @@
-#Ticket to Talk
+# Ticket to Talk
 
 Ticket to Talk is a cross platform application that aims to help encourage conversation between younger carers of those with dementia with those they are caring for. 
 Users collect a series of ‘Tickets’ which they can use as prompts in conversations with who they are caring for. 
