@@ -117,7 +117,7 @@ class UserController extends Controller
                 [
                     "Status" => 401,
                     "Message" => "User not authenticated.",
-                ]
+                ],401
             );
         }
 
@@ -196,7 +196,7 @@ class UserController extends Controller
                 [
                     "Status" => 401,
                     "Message" => "User not authenticated.",
-                ]
+                ],401
             );
         }
 
@@ -250,7 +250,7 @@ class UserController extends Controller
                 [
                     "Status" => 401,
                     "Message" => "User not authenticated.",
-                ]
+                ],401
             );
         }
 
@@ -368,7 +368,7 @@ class UserController extends Controller
                 [
                     "Status" => 401,
                     "Message" => "User not authenticated.",
-                ]
+                ],401
             );
         }
 

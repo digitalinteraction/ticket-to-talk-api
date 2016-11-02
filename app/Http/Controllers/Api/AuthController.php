@@ -179,17 +179,17 @@ class AuthController extends Controller
                 return response()->json(
                     [
                         "code" => "401",
-                        "message" => "API Key revoked",
+                        "message" => "error",
                         "user" => $user,
                         "token" => $val
-                    ]
+                    ],500
                 );
             }
 
             return response()->json(
                 [
                     'status' => [
-                        'message' => "Authenticated - API Key given",
+                        'message' => "success",
                         'code' => 200
                     ],
                     'errors' => [],
@@ -201,19 +201,57 @@ class AuthController extends Controller
                 ]
             );
         }
-
-        return response()->json(
-            [
-                'status' => [
-                    'message' => "Authenticated",
-                    'code' => 200
-                ],
-                'errors' => [],
-                'data' => [
-                    "user" => $user,
-                    "token" => $val
-                ],
-            ]
-        );
+        else if ($request->api_key == null)
+        {
+            return response()->json(
+                [
+                    'status' => [
+                        'message' => "error",
+                        'code' => 401
+                    ],
+                    'errors' =>
+                        [
+                            'No API key given'
+                        ],
+                    'data' => [
+                    ],
+                    401
+                ]
+            );
+        }
+        else if (strcmp($request->api_key, $user->api_key) == 0)
+        {
+            return response()->json(
+                [
+                    'status' => [
+                        'message' => "success",
+                        'code' => 200
+                    ],
+                    'errors' => [],
+                    'data' => [
+                        "user" => $user,
+                        "token" => $val
+                    ],
+                ]
+            );
+        }
+        else
+        {
+            return response()->json(
+                [
+                    'status' => [
+                        'message' => "error",
+                        'code' => 401
+                    ],
+                    'errors' =>
+                        [
+                            'Invalid API key'
+                        ],
+                    'data' => [
+                    ],
+                    401
+                ]
+            );
+        }
     }
 }

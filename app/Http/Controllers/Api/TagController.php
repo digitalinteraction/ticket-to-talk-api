@@ -60,9 +60,9 @@ class TagController extends Controller
         {
             return response()->json(
                 [
-                    "Status" => 402,
+                    "Status" => 401,
                     "Message" => "User not authenticated.",
-                ]
+                ],401
             );
         }
         $tag = new Tag();
@@ -132,9 +132,9 @@ class TagController extends Controller
         }
         return response()->json(
             [
-                "status" => 500,
+                "status" => 404,
                 "message" => "Tag not found",
-            ]
+            ],404
         );
     }
 
@@ -166,9 +166,9 @@ class TagController extends Controller
         {
             return response()->json(
                 [
-                    "Status" => 402,
+                    "Status" => 401,
                     "Message" => "User not authenticated.",
-                ]
+                ],401
             );
         }
 
@@ -188,9 +188,9 @@ class TagController extends Controller
         {
             return response()->json(
                 [
-                    "status" => 500,
+                    "status" => 404,
                     "message" => "Tag not found",
-                ]
+                ],404
             );
         }
 
@@ -221,9 +221,9 @@ class TagController extends Controller
         {
             return response()->json(
                 [
-                    "Status" => 402,
+                    "Status" => 401,
                     "Message" => "User not authenticated.",
-                ]
+                ],401
             );
         }
 
@@ -243,9 +243,9 @@ class TagController extends Controller
         {
             return response()->json(
                 [
-                    "status" => 500,
+                    "status" => 404,
                     "message" => "Tag not found",
-                ]
+                ],404
             );
         }
 
@@ -267,9 +267,9 @@ class TagController extends Controller
         {
             return response()->json(
                 [
-                    "Status" => 402,
+                    "Status" => 401,
                     "Message" => "User not authenticated.",
-                ]
+                ],404
             );
         }
         return response()->json(
