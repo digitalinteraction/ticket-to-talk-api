@@ -244,7 +244,7 @@ class TicketController extends Controller
                 [
                     "Status" => 401,
                     "Message" => "User not authenticated."
-                ]
+                ],401
             );
         }
 
@@ -253,9 +253,9 @@ class TicketController extends Controller
         {
             return response()->json(
                 [
-                    "Status" => 500,
+                    "Status" => 404,
                     "Message" => "Ticket not found"
-                ]
+                ],404
             );
         }
 
@@ -310,7 +310,7 @@ class TicketController extends Controller
                 [
                     "Status" => 500,
                     "Message" => "Ticket could not be saved."
-                ]
+                ],404
             );
         }
     }

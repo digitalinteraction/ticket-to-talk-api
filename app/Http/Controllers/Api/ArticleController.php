@@ -208,7 +208,7 @@ class ArticleController extends Controller
                             'message' => "User could not be authenticated"
                         ],
                     "data" => []
-                ],500
+                ],401
             );
         }
 
@@ -239,17 +239,17 @@ class ArticleController extends Controller
                 "status" =>
                     [
                         "message" => "Error",
-                        "code" => 500
+                        "code" => 404
                     ],
                 "errors" =>
                     [
-                        'message' => "Article could not be sound"
+                        'message' => "Article could not be found"
                     ],
                 "data" =>
                     [
 
                     ]
-            ],500
+            ],404
         );
     }
 
@@ -346,7 +346,7 @@ class ArticleController extends Controller
                     'status' =>
                         [
                             "message" => "Resource not found",
-                            "code" => 500
+                            "code" => 404
                         ],
                     'errors' =>
                         [
@@ -356,7 +356,7 @@ class ArticleController extends Controller
                         [
 
                         ],
-                ],500
+                ],404
             );
         }
 
@@ -416,7 +416,7 @@ class ArticleController extends Controller
                 [
                     "Status" => 401,
                     "Message" => "User not authenticated.",
-                ]
+                ],401
             );
         }
 
@@ -498,7 +498,7 @@ class ArticleController extends Controller
                 [
                     "status" =>
                         [
-                            "message" => "Error",
+                            "message" => "error",
                             "code" => 401
                         ],
                     "errors" =>
@@ -555,7 +555,7 @@ class ArticleController extends Controller
                 [
                     "Status" => 401,
                     "Message" => "User not authenticated.",
-                ]
+                ],401
             );
         }
 
@@ -568,7 +568,7 @@ class ArticleController extends Controller
                 [
                     "Status" => 500,
                     "Message" => "The recipient is not registered with Ticket to Talk",
-                ]
+                ],500
             );
         }
 
@@ -650,7 +650,7 @@ class ArticleController extends Controller
                 [
                     "Status" => 401,
                     "Message" => "User not authenticated.",
-                ]
+                ],401
             );
         }
 
@@ -741,7 +741,7 @@ class ArticleController extends Controller
                 [
                     "Status" => 401,
                     "Message" => "User not authenticated.",
-                ]
+                ],401
             );
         }
 
@@ -791,7 +791,7 @@ class ArticleController extends Controller
                 [
                     "Status" => 401,
                     "Message" => "User not authenticated.",
-                ]
+                ],401
             );
         }
 

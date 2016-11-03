@@ -52,7 +52,7 @@ class ConversationController extends Controller
                 [
                     "Status" => 401,
                     "Message" => "User not authenticated.",
-                ]
+                ],401
             );
         }
 
@@ -116,7 +116,7 @@ class ConversationController extends Controller
                 [
                     "Status" => 401,
                     "Message" => "User not authenticated.",
-                ]
+                ],401
             );
         }
 
@@ -223,9 +223,9 @@ class ConversationController extends Controller
         {
             return response()->json(
                 [
-                    "Status" => 500,
+                    "Status" => 404,
                     "Message" => "Conversation not found",
-                ],500
+                ],404
             );
         }
 
@@ -355,7 +355,7 @@ class ConversationController extends Controller
                 [
                     "Status" => 401,
                     "Message" => "User not authenticated.",
-                ]
+                ],401
             );
         }
 
@@ -366,7 +366,7 @@ class ConversationController extends Controller
             [
                 "status" => 200,
                 "message" => "ticket removed from conversation"
-            ]
+            ],401
         );
     }
 }

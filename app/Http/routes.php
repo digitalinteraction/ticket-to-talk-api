@@ -29,7 +29,7 @@ Route::group(
         'namespace' => 'Api',
         'middleware' =>
             [
-                'throttle:60,1',
+                'limit:10,10',
                 'log'
             ]
     ], function () {

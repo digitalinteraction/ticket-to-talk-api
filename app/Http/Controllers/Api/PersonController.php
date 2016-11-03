@@ -84,7 +84,7 @@ class PersonController extends Controller
                 [
                     "Status" => 401,
                     "Message" => "User not authenticated.",
-                ]
+                ],401
             );
         }
 
@@ -214,9 +214,9 @@ class PersonController extends Controller
         }
         return response()->json(
             [
-                "status" => 500,
+                "status" => 404,
                 "message" => "Person not found",
-            ],500
+            ],404
         );
     }
 
@@ -470,7 +470,17 @@ class PersonController extends Controller
             );
         } else
         {
-            return response()->json(500);
+            return response()->json(
+                [
+                    'message' => [
+                        'status' => 'error'
+                    ],
+                        'errors' => [
+                            'Resources could not be found'
+                    ],
+                    'data' => []],
+                404
+            );
         }
     }
 }
