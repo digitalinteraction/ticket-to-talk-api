@@ -1,11 +1,10 @@
 /vendor
 /node_modules
-/public/storage
+app/public/storage
 Homestead.yaml
 Homestead.json
-.env
+
 .idea
 /config/filesystems.php
-!vendor/laravel/framework/src/Illuminate/Routing/Middleware/ThrottleRequests.php
 public/docs/
 app/public/docs
