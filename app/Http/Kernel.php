@@ -32,7 +32,7 @@ class Kernel extends HttpKernel
         ],
 
         'api' => [
-            'throttle:100,30',
+            'limit:60,30',
             'api.key'
         ],
     ];
@@ -52,5 +52,6 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'api.key' => \App\Http\Middleware\CheckAPIKey::class,
         'log' => \App\Http\Middleware\LogRequest::class,
+        'limit' => \App\Http\Middleware\RateLimiter::class
     ];
 }
