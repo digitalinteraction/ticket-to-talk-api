@@ -3,6 +3,7 @@
 # Begin with a base Debian system (https://www.debian.org/), we are using the 'jessie' version
 FROM debian:jessie
 
+
 # Download the latest updates and
 # install the packages we will need
 RUN apt-get -y update \

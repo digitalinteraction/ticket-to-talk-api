@@ -1,7 +1,14 @@
 server {
-    listen 80;
-    root /var/www/html/public;
+    listen 80 default_server;
+    listen [::]:80 default_server;
     server_name _;
+    return 301 https://$host$request_uri;
+}
+
+server {
+    listen 443 ssl;
+    root /var/www/html/public;
+    server_name tickettotalk.openlab.ncl.ac.uk;
 
     index index.html index.htm index.php;
 
