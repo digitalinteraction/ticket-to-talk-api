@@ -11,7 +11,7 @@ service php5-fpm start
 # service mysql start
 # mysql -u root --password=  < create-db.sql
 # php artisan migrate:install
-# php artisan migrate
+php artisan migrate
 # php artisan db:seed --class=InspirationTableSeeder
 
 tail -F /var/log/nginx/access.log /var/log/nginx/error.log
