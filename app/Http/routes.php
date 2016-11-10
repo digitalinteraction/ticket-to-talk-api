@@ -14,11 +14,11 @@
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Redirect;
 
-Route::get('/', ['https' => true], function() {
+Route::get('/', function() {
     return view('home');
 });
 
-Route::get("/docs", ['https' => true], function() {
+Route::get("/docs", function() {
     return File::get(public_path() . "/docs/index.html");
 });
 
