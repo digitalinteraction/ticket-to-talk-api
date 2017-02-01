@@ -7,6 +7,7 @@ use App\Http\Requests\RegisterRequest;
 use App\Http\Requests\LoginRequest;
 
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Storage;
 use Tymon\JWTAuth\Exceptions\JWTException;
@@ -51,6 +52,7 @@ class AuthController extends Controller
      */
     public function register(RegisterRequest $request)
     {
+
 
         try {
             $newUser = $this->user->create(
