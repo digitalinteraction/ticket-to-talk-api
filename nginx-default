@@ -1,9 +1,14 @@
 server {
     listen 80;
+    listen 443 ssl;
     root /var/www/html/public;
-    server_name _;
+    server_name tickettotalk.openlab.ncl.ac.uk;
 
     index index.html index.htm index.php;
+
+    if ( $http_x_forwarded_proto != 'https' ) {
+        return 301 https://$host$request_uri;
+    }
 
     charset utf-8;
 

@@ -13,6 +13,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Storage;
+use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\JWTAuth;
 
 class PersonController extends Controller
@@ -281,7 +282,7 @@ class PersonController extends Controller
         $person->notes = $request->notes;
         $person->area = $request->area;
 
-        $user->people()->updateExistingPivot($person->id, ['user_type' => $user->people()->find($request->person_id)->pivot->user_id, 'relation' => $request->relation], true);
+        $user->people()->updateExistingPivot($person->id, ['user_type' => $user->people()->find($request->person_id)->pivot->user_type, 'relation' => $request->relation], true);
 
         if ($request->imageHash != null)
         {

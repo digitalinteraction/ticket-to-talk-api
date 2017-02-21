@@ -31,7 +31,22 @@ class CheckAPIKey
     {
 
         $token = Input::get('token');
-        $user = $this->jwtauth->authenticate($token);
+        $user = null;
+
+        try
+        {
+            $user = $this->jwtauth->authenticate($token);
+        }
+        catch (JWTException $e)
+        {
+            return response()->json(
+                [
+                    "Status" => 401,
+                    "Message" => "User not authenticated."
+                ],401
+            );
+        }
+
 
         if (!$user || $user->revoked)
         {

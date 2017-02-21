@@ -31,7 +31,8 @@ Route::group(
             [
                 'limit:10,10',
                 'log'
-            ]
+            ],
+        "https" => true
     ], function () {
         Route::post('/auth/register',
             [
@@ -58,7 +59,8 @@ Route::group(
             [
                 'api',
                 'log'
-            ]
+            ],
+        "https" => true
     ],
     function()
     {
@@ -136,7 +138,8 @@ Route::group(
             [
                 'api',
                 'log'
-            ]
+            ],
+        "https" => true
     ],
     function()
     {
@@ -187,7 +190,8 @@ Route::group(
             [
                 'api',
                 'log'
-            ]
+            ],
+        "https" => true
     ],
     function()
     {
@@ -237,7 +241,8 @@ Route::group(
             [
                 'api',
                 'log'
-            ]
+            ],
+        "https" => true
     ],
     function()
     {
@@ -301,7 +306,8 @@ Route::group(
             [
                 'api',
                 'log'
-            ]
+            ],
+        "https" => true
     ],
     function()
     {
@@ -372,7 +378,8 @@ Route::group(
             [
                 'api',
                 'log'
-            ]
+            ],
+        "https" => true
     ],
     function () {
         Route::get('/get',
@@ -393,7 +400,8 @@ Route::group(
             [
                 'api',
                 'log'
-            ]
+            ],
+        "https" => true
     ],
     function () {
         Route::get('/get',
@@ -414,7 +422,8 @@ Route::group(
             [
                 'api',
                 'log'
-            ]
+            ],
+        "https" => true
     ],
     function () {
         Route::get('/get',
