@@ -72,6 +72,8 @@ class PersonController extends Controller
      *
      * @apiError 500 Resource not found
      * @apiError 401 User could not be authenticated
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
@@ -89,13 +91,21 @@ class PersonController extends Controller
             );
         }
 
+        // AES-256-CBC
+        $iv = bin2hex(openssl_random_pseudo_bytes(16));
+        $notes = openssl_encrypt($request->notes, env('ENC_SCHEME'), env('AES_KEY'), 0, $iv);
+        $year = openssl_encrypt($request->birthYear, env('ENC_SCHEME'), env('AES_KEY'), 0, $iv);
+        $place = openssl_encrypt($request->birthPlace, env('ENC_SCHEME'), env('AES_KEY'), 0, $iv);
+        $area = openssl_encrypt($request->townCity, env('ENC_SCHEME'), env('AES_KEY'), 0, $iv);
+
+
         $person = new Person();
         $person->name = $request->name;
-        $person->birthYear = $request->birthYear;
-        $person->birthPlace = $request->birthPlace;
+        $person->birthYear = $year;
+        $person->birthPlace = $place;
         $person->admin_id = $user->id;
-        $person->notes = $request->notes;
-        $person->area = $request->townCity;
+        $person->notes = $notes;
+        $person->area = $area;
 
         $area = new Area();
         $area->townCity = $request->townCity;
@@ -123,9 +133,6 @@ class PersonController extends Controller
             $file_path = "ticket_to_talk/storage/profile/p_" . $person->id .".jpg";
             $person->pathToPhoto = $file_path;
             $data = base64_decode($request->image);
-//            $file = fopen(public_path($file_path), "wb");
-//            fwrite($file, $data);
-//            fclose($file);
 
             Storage::disk('s3')->put($file_path, $data);
 
@@ -170,6 +177,8 @@ class PersonController extends Controller
 
     /**
      * Display the specified resource.
+     *
+     * TODO decrypt data.
      *
      * @api {get} /people/show Get People
      * @apiName GetPeople
@@ -235,6 +244,8 @@ class PersonController extends Controller
     /**
      * Update the specified resource in storage.
      *
+     * TODO decrypt data.
+     *
      * @api {post} /people/update Update a Person
      * @apiName UpdatePerson
      * @apiGroup People
@@ -274,7 +285,6 @@ class PersonController extends Controller
         }
 
         $person = $user->people()->find($request->person_id);
-//        $person = Person::find($request->person_id);
 
         $person->name = $request->name;
         $person->birthYear = $request->birthYear;
@@ -481,6 +491,53 @@ class PersonController extends Controller
                     ],
                     'data' => []],
                 404
+            );
+        }
+    }
+
+    /**
+     * Download a user profile picture.
+     *
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\JsonResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    public function getProfilePicture()
+    {
+        $token = Input::get('token');
+        $user = $this->jwtauth->authenticate($token);
+
+        $id = Input::get('id');
+
+        if($user->can('view', Person::find($id)))
+        {
+            $fileName = 'p_'.$id.'.jpg';
+
+            $file_type = 'image/jpeg';
+
+            $exists = Storage::disk('s3')->exists($fileName);
+            if ($exists)
+            {
+                // FROM: https://laracasts.com/discuss/channels/laravel/download-file-from-cloud-disk-s3-with-laravel-51
+                $file_contents = Storage::disk('s3')->get($fileName);
+
+                $response = response($file_contents, 200, [
+                    'Content-Type' => $file_type,
+                    'Content-Description' => 'File Transfer',
+                    'Content-Disposition' => "attachment; filename={$fileName}",
+                    'Content-Transfer-Encoding' => 'binary',
+                ]);
+
+                ob_end_clean(); // <- this is important, i have forgotten why.
+
+                return $response;
+            }
+        }
+        else
+        {
+            return response()->json(
+                [
+                    "Status" => 403,
+                    "Message" => "Unauthorised for resource"
+                ],403
             );
         }
     }
