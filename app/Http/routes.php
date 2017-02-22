@@ -229,6 +229,13 @@ Route::group(
                 'uses' => 'TicketController@destroy'
             ]
         );
+
+        Route::get('download',
+            [
+                'as' => 'ticket.download',
+                'uses' => 'TicketController@downloadTicket'
+            ]
+        );
     }
 );
 
@@ -292,6 +299,13 @@ Route::group(
             [
                 'as' => 'people.tickets',
                 'uses' => 'PersonController@getTickets'
+            ]
+        );
+
+        Route::get('picture',
+            [
+                'as' => 'people.picture',
+                'uses' => 'PersonController@getProfilePicture'
             ]
         );
     }
@@ -366,6 +380,13 @@ Route::group(
                 'uses' => 'UserController@rejectInvitation'
             ]
         );
+
+        Route::get('picture',
+            [
+                'as' => 'user.picture',
+                'uses' => 'UserController@getProfilePicture'
+            ]
+        );
     }
 );
 
@@ -392,26 +413,26 @@ Route::group(
 );
 
 // API - MEDIA
-Route::group(
-    [
-        'prefix' => 'api/media',
-        'namespace' => 'Api',
-        'middleware' =>
-            [
-                'api',
-                'log'
-            ],
-        "https" => true
-    ],
-    function () {
-        Route::get('/get',
-            [
-                'as' => 'media.get',
-                'uses' => 'MediaController@getMedia'
-            ]
-        );
-    }
-);
+//Route::group(
+//    [
+//        'prefix' => 'api/media',
+//        'namespace' => 'Api',
+//        'middleware' =>
+//            [
+//                'api',
+//                'log'
+//            ],
+//        "https" => true
+//    ],
+//    function () {
+//        Route::get('/get',
+//            [
+//                'as' => 'media.get',
+//                'uses' => 'MediaController@getMedia'
+//            ]
+//        );
+//    }
+//);
 
 // API - CONVERSATIONS
 Route::group(

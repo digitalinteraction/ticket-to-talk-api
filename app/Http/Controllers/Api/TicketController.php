@@ -317,7 +317,7 @@ class TicketController extends Controller
      *
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\JsonResponse|\Symfony\Component\HttpFoundation\Response
      */
-    public function getMedia()
+    public function downloadTicket()
     {
 
         $token = Input::get('token');
