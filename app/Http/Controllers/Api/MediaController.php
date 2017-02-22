@@ -25,6 +25,8 @@ class MediaController extends Controller
 
     //
     /**
+     * TODO check user has access to the media, currently open to all...
+     *
      * @api {get} /media/get Download Media
      * @apiName GetMedia
      * @apiGroup Media
@@ -54,6 +56,19 @@ class MediaController extends Controller
         }
 
         $fileName = Input::get("fileName");
+
+        $media_type = explode('_', $fileName)[0];
+        switch ($media_type)
+        {
+            case ('t'):
+
+                break;
+            case ('u'):
+                break;
+            case ('p'):
+                break;
+        }
+
 
         $file_suffix = strstr($fileName, '.');
         $file_type = '';

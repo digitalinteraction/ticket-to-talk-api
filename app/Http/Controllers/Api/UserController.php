@@ -373,12 +373,7 @@ class UserController extends Controller
         }
 
         $invite = Invite::where('recipient_email', $user->email)->where('person_id', $request->person_id)->get()->first();
-
-//        $invite = $user->invitations()->find($request->person_id);
-//        $user->people()->attach($request->person_id, ["user_type" => $invite->pivot->user_type, "relation" => $request->relation]);
         $user->people()->attach($request->person_id, ["user_type" => $invite->group, "relation" => $request->relation]);
-
-//        $user->invitations()->detach($request->person_id);
 
         $invite->delete();
 
@@ -423,7 +418,6 @@ class UserController extends Controller
 
         $invite = Invite::where('recipient_email', $user->email)->where('person_id', $request->person_id)->get()->first();
         $invite->delete();
-//        $user->invitations()->detach($request->person_id);
 
         return response()->json(
             [
@@ -431,5 +425,52 @@ class UserController extends Controller
                 "Message" => "Invitation rejected"
             ]
         );
+    }
+
+    /**
+     * Download a user profile picture.
+     *
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\JsonResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    public function getProfilePicture()
+    {
+        $token = Input::get('token');
+        $user = $this->jwtauth->authenticate($token);
+
+        $id = Input::get('id');
+
+        if($user->can('view', $id))
+        {
+            $fileName = 'u_'.$id.'.jpg';
+
+            $file_type = 'image/jpeg';
+
+            $exists = Storage::disk('s3')->exists($fileName);
+            if ($exists)
+            {
+                // FROM: https://laracasts.com/discuss/channels/laravel/download-file-from-cloud-disk-s3-with-laravel-51
+                $file_contents = Storage::disk('s3')->get($fileName);
+
+                $response = response($file_contents, 200, [
+                    'Content-Type' => $file_type,
+                    'Content-Description' => 'File Transfer',
+                    'Content-Disposition' => "attachment; filename={$fileName}",
+                    'Content-Transfer-Encoding' => 'binary',
+                ]);
+
+                ob_end_clean(); // <- this is important, i have forgotten why.
+
+                return $response;
+            }
+        }
+        else
+        {
+            return response()->json(
+                [
+                    "Status" => 403,
+                    "Message" => "Unauthorised for resource"
+                ],403
+            );
+        }
     }
 }

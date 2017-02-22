@@ -82,28 +82,6 @@ class TicketController extends Controller
             );
         }
 
-//        $temp_ticket = new Ticket();
-//        $temp_ticket->title = $request['ticket']['title'];
-
-//        $tags = [];
-//        foreach($request['tags'] as $tag)
-//        {
-//            array_push($tags, $tag["id"]);
-//        }
-
-//        $area = new Area();
-//        $area->townCity = $request['area']['townCity'];
-//
-//        $stored = $area->checkAreaExists($area);
-//
-//        if(!$stored)
-//        {
-//            $area->save();
-//        } else
-//        {
-//            $area = $stored;
-//        }
-
         $period = new Period();
         $period->text = $request['period']['text'];
 
@@ -116,8 +94,6 @@ class TicketController extends Controller
             $period = $stored;
         }
 
-//        return response()->json(["message" => "passed"]);
-
         $ticket = new Ticket();
         $ticket->title = $request['ticket']['title'];
         $ticket->description = $request['ticket']['description'];
@@ -126,12 +102,9 @@ class TicketController extends Controller
         $ticket->pathToFile = "null_path";
         $ticket->access_level = $request['ticket']['access_level'];
         $ticket->person_id = $request['ticket']['person_id'];
-//        $ticket->area_id = $area->id;
         $ticket->area = $request['ticket']['area'];
         $ticket->period_id = $period->id;
         $ticket->save();
-
-//        $ticket->tags()->attach($tags);
 
         $ticket->users()->attach($user->id, ['user_type' => 'admin']);
 
@@ -157,10 +130,6 @@ class TicketController extends Controller
 
             $data = base64_decode($request->media);
             Storage::disk('s3')->put($file_path, $data);
-
-//            $file = fopen($file_path, "wb");
-//            fwrite($file, $data);
-//            fclose($file);
 
             $ticket->pathToFile = $file_path;
             $ticket->save();
@@ -271,25 +240,11 @@ class TicketController extends Controller
             $period = $stored;
         }
 
-//        $area = new Area();
-//        $area->townCity = $request->area;
-//
-//        $stored = $area->checkAreaExists($area);
-//
-//        if($stored == null)
-//        {
-//            $area->save();
-//        } else
-//        {
-//            $area = $stored;
-//        }
-
         $ticket->title = $request->title;
         $ticket->description = $request->description;
         $ticket->year = $request->year;
         $ticket->access_level = $request->access_level;
         $ticket->period_id = $period->id;
-//        $ticket->area_id = $area->id;
         $ticket->area = $request->area;
 
         $saved = $ticket->save();
@@ -300,7 +255,6 @@ class TicketController extends Controller
                     "Status" => 200,
                     "Message" => "Ticket updated",
                     "Ticket" => $ticket,
-//                    "Area" => $area
                 ]
             );
         }
@@ -356,5 +310,67 @@ class TicketController extends Controller
             ]
         );
 
+    }
+
+    /**
+     * Download a ticket.
+     *
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\JsonResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    public function getMedia()
+    {
+
+        $token = Input::get('token');
+        $user = $this->jwtauth->authenticate($token);
+
+        $ticket = Ticket::find(Input::get('id'));
+
+
+        if ($user->can('view', $ticket))
+        {
+            $fileName = $ticket->pathToFile;
+
+            $file_suffix = strstr($fileName, '.');
+            $file_type = '';
+
+            switch ($file_suffix)
+            {
+                case ('.jpg') :
+
+                    $file_type = 'image/jpeg';
+                    break;
+                case ('.wav') :
+
+                    $file_type = 'audio/wav';
+                    break;
+            }
+
+            $exists = Storage::disk('s3')->exists($fileName);
+            if ($exists)
+            {
+                // FROM: https://laracasts.com/discuss/channels/laravel/download-file-from-cloud-disk-s3-with-laravel-51
+                $file_contents = Storage::disk('s3')->get($fileName);
+
+                $response = response($file_contents, 200, [
+                    'Content-Type' => $file_type,
+                    'Content-Description' => 'File Transfer',
+                    'Content-Disposition' => "attachment; filename={$fileName}",
+                    'Content-Transfer-Encoding' => 'binary',
+                ]);
+
+                ob_end_clean(); // <- this is important, i have forgotten why.
+
+                return $response;
+            }
+        }
+        else
+        {
+            return response()->json(
+                [
+                    "Status" => 403,
+                    "Message" => "User not authorised for resource."
+                ],403
+            );
+        }
     }
 }
