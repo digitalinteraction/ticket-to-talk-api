@@ -212,45 +212,61 @@ class ArticleController extends Controller
             );
         }
 
-        $articleID = (int) Input::get('article_id');
+        $article = Article::find(Input::get('article_id'));
 
-        foreach($user->articles as $article)
+        if(!$article)
         {
-            if ($articleID ==  $article->id)
-            {
-                return response()->json(
-                    [
-                        "status" =>
-                            [
-                                "message" => "Returned users articles",
-                                "code" => 200
-                            ],
-                        "errors" => [],
-                        "data" =>
-                            [
-                                "article" => $article
-                            ]
-                    ]
-                );
-            }
-        }
-        return response()->json(
-            [
-                "status" =>
-                    [
-                        "message" => "Error",
-                        "code" => 404
-                    ],
-                "errors" =>
-                    [
-                        'message' => "Article could not be found"
-                    ],
-                "data" =>
-                    [
+            return response()->json(
+                [
+                    "status" =>
+                        [
+                            "message" => "Error",
+                            "code" => 404
+                        ],
+                    "errors" =>
+                        [
+                            'message' => "Article could not be found"
+                        ],
+                    "data" =>
+                        [
 
-                    ]
-            ],404
-        );
+                        ]
+                ],404
+            );
+        }
+
+        if ($user->can('view', $article))
+        {
+            return response()->json(
+                [
+                    "status" =>
+                        [
+                            "message" => "Returned users article",
+                            "code" => 200
+                        ],
+                    "errors" => [],
+                    "data" =>
+                        [
+                            "article" => $article
+                        ]
+                ]
+            );
+        }
+        else
+        {
+            return response()->json(
+                [
+                    "status" =>
+                        [
+                            "message" => "User not authorised for resource",
+                            "code" => 403
+                        ],
+                    "errors" => [],
+                    "data" => []
+                ],403
+            );
+        }
+
     }
 
     /**
@@ -336,8 +352,7 @@ class ArticleController extends Controller
             );
         }
 
-        $articleID = (int) $request->article_id;
-        $article = $user->articles()->find($articleID);
+        $article = Article::find($request->article_id);
 
         if(!$article)
         {
@@ -360,27 +375,46 @@ class ArticleController extends Controller
             );
         }
 
-        $article->title = $request->title;
-        $article->link = $request->link;
-        $article->notes = $request->notes;
-        $article->save();
+        if ($user->can('view', $article))
+        {
+            $article->title = $request->title;
+            $article->link = $request->link;
+            $article->notes = $request->notes;
+            $article->save();
 
-        return response()->json(
-            [
-                'status' =>
-                    [
-                        "message" => "Article updated",
-                        "code" => 200
-                    ],
-                'errors' =>
-                    [
-                    ],
-                'data' =>
-                    [
-                        "article" => $article,
-                    ],
-            ]
-        );
+            return response()->json(
+                [
+                    'status' =>
+                        [
+                            "message" => "Article updated",
+                            "code" => 200
+                        ],
+                    'errors' =>
+                        [
+                        ],
+                    'data' =>
+                        [
+                            "article" => $article,
+                        ],
+                ]
+            );
+        }
+        else
+        {
+            return response()->json(
+                [
+                    'status' =>
+                        [
+                            "message" => "User not authorised for resource",
+                            "code" => 403
+                        ],
+                    'errors' =>
+                        [
+                        ],
+                    'data' => [],
+                ],403
+            );
+        }
     }
 
     /**
@@ -420,15 +454,58 @@ class ArticleController extends Controller
             );
         }
 
-        $article = $user->articles()->find(Input::get("article_id"));
-        $user->articles()->detach($article->id);
+        $article = Article::find(Input::get('article_id'));
 
-        return response()->json(
-            [
-                "status" => 200,
-                "message" => "Article deleted",
-            ]
-        );
+        if(!$article)
+        {
+            return response()->json(
+                [
+                    'status' =>
+                        [
+                            "message" => "Resource not found",
+                            "code" => 404
+                        ],
+                    'errors' =>
+                        [
+                            'message' => "Article could not be found"
+                        ],
+                    'data' =>
+                        [
+
+                        ],
+                ],404
+            );
+        }
+
+        if ($user->can('view', $article))
+        {
+            $user->articles()->detach($article->id);
+            return response()->json(
+                [
+                    "status" => 200,
+                    "message" => "Article deleted",
+                ]
+            );
+        }
+        else
+        {
+            return response()->json(
+                [
+                    'status' =>
+                        [
+                            "message" => "User not authorised for resource",
+                            "code" => 403
+                        ],
+                    'errors' =>
+                        [
+                        ],
+                    'data' =>
+                        [
+
+                        ],
+                ],403
+            );
+        }
     }
 
     /**
@@ -559,37 +636,81 @@ class ArticleController extends Controller
             );
         }
 
-        $article = Article::find($request->article_id);
-        $recipient = User::where('email', $request->email)->get()->first();
+        $article = Article::find(Input::get('article_id'));
 
-        if(!$recipient)
+        if(!$article)
         {
             return response()->json(
                 [
-                    "Status" => 500,
-                    "Message" => "The recipient is not registered with Ticket to Talk",
-                ],500
+                    'status' =>
+                        [
+                            "message" => "Resource not found",
+                            "code" => 404
+                        ],
+                    'errors' =>
+                        [
+                            'message' => "Article could not be found"
+                        ],
+                    'data' =>
+                        [
+
+                        ],
+                ],404
             );
         }
 
-        if (strcmp($request->includeNotes, "False") == 0)
+        if ($user->can('view', $article))
         {
-            $a = new Article();
-            $a->title = $article->title;
-            $a->link = $article->link;
-            $a->notes = " ";
-            $a->save();
-            $article = $a;
+            $recipient = User::where('email', $request->email)->get()->first();
+
+            if(!$recipient)
+            {
+                return response()->json(
+                    [
+                        "Status" => 500,
+                        "Message" => "The recipient is not registered with Ticket to Talk",
+                    ],500
+                );
+            }
+
+            if (strcmp($request->includeNotes, "False") == 0)
+            {
+                $a = new Article();
+                $a->title = $article->title;
+                $a->link = $article->link;
+                $a->notes = " ";
+                $a->save();
+                $article = $a;
+            }
+
+            $recipient->sharedArticles()->attach($article->id, ["sender_id" => $user->id]);
+
+            return response()->json(
+                [
+                    "Status" => 200,
+                    "Message" => "Invitation sent"
+                ]
+            );
         }
+        else
+        {
+            return response()->json(
+                [
+                    'status' =>
+                        [
+                            "message" => "User not authorised for resource",
+                            "code" => 403
+                        ],
+                    'errors' =>
+                        [
+                        ],
+                    'data' =>
+                        [
 
-        $recipient->sharedArticles()->attach($article->id, ["sender_id" => $user->id]);
-
-        return response()->json(
-            [
-                "Status" => 200,
-                "Message" => "Invitation sent"
-            ]
-        );
+                        ],
+                ],403
+            );
+        }
 
     }
 
@@ -745,6 +866,28 @@ class ArticleController extends Controller
             );
         }
 
+        $sharedArticle = $user->sharedArticles->find($request->article_id);
+        if (!$sharedArticle)
+        {
+            return response()->json(
+                [
+                    'status' =>
+                        [
+                            "message" => "Resource not found",
+                            "code" => 404
+                        ],
+                    'errors' =>
+                        [
+                            'message' => "Article could not be found"
+                        ],
+                    'data' =>
+                        [
+
+                        ],
+                ],404
+            );
+        }
+
         $user->articles()->attach($request->article_id);
 
         $user->sharedArticles()->detach($request->article_id);
@@ -792,6 +935,28 @@ class ArticleController extends Controller
                     "Status" => 401,
                     "Message" => "User not authenticated.",
                 ],401
+            );
+        }
+
+        $sharedArticle = $user->sharedArticles->find($request->article_id);
+        if (!$sharedArticle)
+        {
+            return response()->json(
+                [
+                    'status' =>
+                        [
+                            "message" => "Resource not found",
+                            "code" => 404
+                        ],
+                    'errors' =>
+                        [
+                            'message' => "Article could not be found"
+                        ],
+                    'data' =>
+                        [
+
+                        ],
+                ],404
             );
         }
 
