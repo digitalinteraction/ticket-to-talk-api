@@ -81,4 +81,33 @@ class Person extends Model
         return $this->hasMany('App\Conversation');
     }
 
+    /**
+     * Decrypt a person.
+     *
+     * @return $this
+     */
+    public function decryptPerson()
+    {
+
+        $this->notes = openssl_decrypt($this->notes, env('ENC_SCHEME'), env('AES_KEY'), 0, $this->iv);
+        $this->birthYear = openssl_decrypt($this->birthYear, env('ENC_SCHEME'), env('AES_KEY'), 0, $this->iv);
+        $this->birthPlace = openssl_decrypt($this->birthPlace, env('ENC_SCHEME'), env('AES_KEY'), 0, $this->iv);
+        $this->area = openssl_decrypt($this->area, env('ENC_SCHEME'), env('AES_KEY'), 0, $this->iv);
+        return $this;
+    }
+
+    /**
+     * Encrypt a person.
+     *
+     * @return $this
+     */
+    public function encryptPerson()
+    {
+        $this->notes = openssl_encrypt($this->notes, env('ENC_SCHEME'), env('AES_KEY'), 0, $this->iv);
+        $this->birthYear = openssl_encrypt($this->birthYear, env('ENC_SCHEME'), env('AES_KEY'), 0, $this->iv);
+        $this->birthPlace = openssl_encrypt($this->birthPlace, env('ENC_SCHEME'), env('AES_KEY'), 0, $this->iv);
+        $this->area = openssl_encrypt($this->area, env('ENC_SCHEME'), env('AES_KEY'), 0, $this->iv);
+        return $this;
+    }
+
 }

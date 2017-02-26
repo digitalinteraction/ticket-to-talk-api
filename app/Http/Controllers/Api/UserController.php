@@ -205,6 +205,8 @@ class UserController extends Controller
 
         foreach ($user->people as $person)
         {
+
+            $person = $person->decryptPerson();
             array_push($people, $person);
 
             foreach ($person->periods as $period)

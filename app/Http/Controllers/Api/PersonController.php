@@ -92,7 +92,7 @@ class PersonController extends Controller
         }
 
         // AES-256-CBC
-        $iv = bin2hex(openssl_random_pseudo_bytes(16));
+        $iv = bin2hex(openssl_random_pseudo_bytes(8));
         $notes = openssl_encrypt($request->notes, env('ENC_SCHEME'), env('AES_KEY'), 0, $iv);
         $year = openssl_encrypt($request->birthYear, env('ENC_SCHEME'), env('AES_KEY'), 0, $iv);
         $place = openssl_encrypt($request->birthPlace, env('ENC_SCHEME'), env('AES_KEY'), 0, $iv);
@@ -106,6 +106,7 @@ class PersonController extends Controller
         $person->admin_id = $user->id;
         $person->notes = $notes;
         $person->area = $area;
+        $person->iv = $iv;
 
         $area = new Area();
         $area->townCity = $request->townCity;
@@ -217,7 +218,7 @@ class PersonController extends Controller
                     [
                         "status" => 200,
                         "message" => "Person Found",
-                        "people" => $people,
+                        "people" => $people->decryptPerson(),
                     ]
                 );
             }
@@ -284,38 +285,52 @@ class PersonController extends Controller
             );
         }
 
-        $person = $user->people()->find($request->person_id);
+//        $person = $user->people()->find($request->person_id);
+        $person = Person::find($request->person_id);
 
-        $person->name = $request->name;
-        $person->birthYear = $request->birthYear;
-        $person->birthPlace = $request->birthPlace;
-        $person->notes = $request->notes;
-        $person->area = $request->area;
-
-        $user->people()->updateExistingPivot($person->id, ['user_type' => $user->people()->find($request->person_id)->pivot->user_type, 'relation' => $request->relation], true);
-
-        if ($request->imageHash != null)
+        if ($user->can('delete', $person))
         {
-            $person->imageHash = $request->imageHash;
-            $file_path = "ticket_to_talk/storage/profile/p_" . $person->id . ".jpg";
-            $data = base64_decode($request->image);
+            $person = $person->decryptPerson();
+            $person->name = $request->name;
+            $person->birthYear = $request->birthYear;
+            $person->birthPlace = $request->birthPlace;
+            $person->notes = $request->notes;
+            $person->area = $request->area;
 
-            Storage::disk('s3')->put($file_path, $data);
+            $user->people()->updateExistingPivot($person->id, ['user_type' => $user->people()->find($request->person_id)->pivot->user_type, 'relation' => $request->relation], true);
 
-            $person->pathToPhoto = $file_path;
+            if ($request->imageHash != null)
+            {
+                $person->imageHash = $request->imageHash;
+                $file_path = "ticket_to_talk/storage/profile/p_" . $person->id . ".jpg";
+                $data = base64_decode($request->image);
+
+                Storage::disk('s3')->put($file_path, $data);
+
+                $person->pathToPhoto = $file_path;
+            }
+
+            $p_enc = $person->encryptPerson();
+            $p_enc->save();
+
+            $person->pivot->relation = $request->relation;
+            return response()->json(
+                [
+                    "Status" => 200,
+                    "Message" => "Person updated",
+                    "Person" => $person
+                ]
+            );
         }
-
-        $person->save();
-
-        $person->pivot->relation = $request->relation;
-        return response()->json(
-            [
-                "Status" => 200,
-                "Message" => "Person updated",
-                "Person" => $person
-            ]
-        );
-
+        else
+        {
+            return response()->json(
+                [
+                    "Status" => 403,
+                    "Message" => "Unauthorised for resource"
+                ],403
+            );
+        }
     }
 
 

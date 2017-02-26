@@ -11,9 +11,9 @@ class ArticlePolicy
     use HandlesAuthorization;
 
     /**
-     * Create a new policy instance.
+     * Creates a new policy instance
      *
-     * @return void
+     * ArticlePolicy constructor.
      */
     public function __construct()
     {
@@ -27,8 +27,9 @@ class ArticlePolicy
      * @param Article $article
      * @return bool
      */
-    public function show(User $user, Article $article)
+    public function view(User $user, Article $article)
     {
+
         if ($user->articles->find($article->id))
         {
             return true;
