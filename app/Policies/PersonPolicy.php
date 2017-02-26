@@ -28,7 +28,7 @@ class PersonPolicy
      * @param Person $person
      * @return bool
      */
-    public function show(User $user, Person $person)
+    public function view(User $user, Person $person)
     {
         $stored_person = $user->people->find($person->id);
         if($stored_person)

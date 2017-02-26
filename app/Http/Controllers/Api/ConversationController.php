@@ -56,25 +56,48 @@ class ConversationController extends Controller
             );
         }
 
-        $conversations = Conversation::where("person_id", Input::get('person_id'))->get();
-
-        foreach ($conversations as $conversation)
+        $person = Person::find(Input::get('person_id'));
+        if ($user->can('view', $person))
         {
-            $ticket_id_string = "";
-            foreach ($conversation->tickets as $ticket)
+            $conversations = Conversation::where("person_id", $person->id)->get();
+
+            foreach ($conversations as $conversation)
             {
-                $ticket_id_string = $ticket_id_string . $ticket->id . ' ';
+                $ticket_id_string = "";
+                foreach ($conversation->tickets as $ticket)
+                {
+                    $ticket_id_string = $ticket_id_string . $ticket->id . ' ';
+                }
+
+                $conversation->ticket_id_string = $ticket_id_string;
             }
 
-            $conversation->ticket_id_string = $ticket_id_string;
+            return response()->json(
+                [
+                    "status" => 200,
+                    "conversations" => $conversations
+                ]
+            );
         }
+        else
+        {
+            return response()->json(
+                [
+                    'status' =>
+                        [
+                            "message" => "User not authorised for resource",
+                            "code" => 403
+                        ],
+                    'errors' =>
+                        [
+                        ],
+                    'data' =>
+                        [
 
-        return response()->json(
-            [
-                "status" => 200,
-                "conversations" => $conversations
-            ]
-        );
+                        ],
+                ],403
+            );
+        }
     }
 
     /**
@@ -120,48 +143,65 @@ class ConversationController extends Controller
             );
         }
 
-        $dt = explode(" ", $request->datetime);
-
-        $date = explode("/", $dt[0]);
-        $time = explode(":", $dt[1]);
-
-        $date[0] = (int)$date[0];
-
-        for($i = 0; $i < count($date); $i++)
+        if ($user->can('view', $person))
         {
-            $date[$i] = (int)$date[$i];
-        }
+            $dt = explode(" ", $request->datetime);
 
-        for($i = 0; $i < count($time); $i++)
-        {
-            $time[$i] = (int)$time[$i];
-        }
+            $date = explode("/", $dt[0]);
+            $time = explode(":", $dt[1]);
 
-        $conversation = new Conversation();
-        if (strcmp("Android", $request->platform) == 0)
-        {
-//            $conversation->date = Carbon::create($date[2], $date[0], $date[1], $time[0], $time[1], $time[2], 'Europe/London');
-            $conversation->date = $request->datetime;
+            $date[0] = (int)$date[0];
+
+            for($i = 0; $i < count($date); $i++)
+            {
+                $date[$i] = (int)$date[$i];
+            }
+
+            for($i = 0; $i < count($time); $i++)
+            {
+                $time[$i] = (int)$time[$i];
+            }
+
+            $conversation = new Conversation();
+            if (strcmp("Android", $request->platform) == 0)
+            {
+                $conversation->date = $request->datetime;
+            }
+            else
+            {
+                $conversation->date = $request->datetime;
+            }
+
+            $conversation->notes = $request->notes;
+            $conversation->person_id = $request->person_id;
+            $conversation->save();
+
+            return response()->json(
+                [
+                    "status" => 200,
+                    "conversation" => $conversation
+                ]
+            );
         }
         else
         {
-//            $conversation->date = Carbon::create($date[2], $date[0], $date[1], $time[0], $time[1], $time[2], 'Europe/London');
-            $conversation->date = $request->datetime;
+            return response()->json(
+                [
+                    'status' =>
+                        [
+                            "message" => "User not authorised for resource",
+                            "code" => 403
+                        ],
+                    'errors' =>
+                        [
+                        ],
+                    'data' =>
+                        [
+
+                        ],
+                ],403
+            );
         }
-
-        $conversation->notes = $request->notes;
-        $conversation->person_id = $request->person_id;
-        $conversation->save();
-
-//        $conversation->date = $request->datetime;
-
-        return response()->json(
-            [
-                "status" => 200,
-                "conversation" => $conversation
-            ]
-        );
-
     }
 
     /**
@@ -229,16 +269,39 @@ class ConversationController extends Controller
             );
         }
 
-        $conversation->notes = $request->notes;
-        $conversation->save();
+        $person = Person::find($conversation->person_id);
+        if ($user->can('view', $person))
+        {
+            $conversation->notes = $request->notes;
+            $conversation->save();
 
-        return response()->json(
-            [
-                "Status" => 200,
-                "Message" => "Conversation updated",
-                "Conversation" => $conversation
-            ]
-        );
+            return response()->json(
+                [
+                    "Status" => 200,
+                    "Message" => "Conversation updated",
+                    "Conversation" => $conversation
+                ]
+            );
+        }
+        else
+        {
+            return response()->json(
+                [
+                    'status' =>
+                        [
+                            "message" => "User not authorised for resource",
+                            "code" => 403
+                        ],
+                    'errors' =>
+                        [
+                        ],
+                    'data' =>
+                        [
+
+                        ],
+                ],403
+            );
+        }
     }
 
     /**
@@ -272,16 +335,39 @@ class ConversationController extends Controller
             );
         }
 
-        $conversation_id = Input::get('conversation_id');
-        $conversation = Conversation::find($conversation_id);
-        $conversation->delete();
+        $conversation = Conversation::find(Input::get('conversation_id'));
 
-        return response()->json(
-            [
-                "status" => 200,
-                "message" => "conversation deleted."
-            ]
-        );
+        $person = Person::find($conversation->person_id);
+        if ($user->can('view', $person))
+        {
+            $conversation->delete();
+
+            return response()->json(
+                [
+                    "status" => 200,
+                    "message" => "conversation deleted."
+                ]
+            );
+        }
+        else
+        {
+            return response()->json(
+                [
+                    'status' =>
+                        [
+                            "message" => "User not authorised for resource",
+                            "code" => 403
+                        ],
+                    'errors' =>
+                        [
+                        ],
+                    'data' =>
+                        [
+
+                        ],
+                ],403
+            );
+        }
     }
 
     /**
@@ -317,14 +403,38 @@ class ConversationController extends Controller
         }
 
         $conversation = Conversation::find($request->conversation_id);
-        $conversation->tickets()->attach($request->ticket_id);
 
-        return response()->json(
-            [
-                "status" => 200,
-                "message" => "ticket added to conversation"
-            ]
-        );
+        $person = Person::find($conversation->person_id);
+        if ($user->can('view', $person))
+        {
+            $conversation->tickets()->attach($request->ticket_id);
+
+            return response()->json(
+                [
+                    "status" => 200,
+                    "message" => "ticket added to conversation"
+                ]
+            );
+        }
+        else
+        {
+            return response()->json(
+                [
+                    'status' =>
+                        [
+                            "message" => "User not authorised for resource",
+                            "code" => 403
+                        ],
+                    'errors' =>
+                        [
+                        ],
+                    'data' =>
+                        [
+
+                        ],
+                ],403
+            );
+        }
     }
 
     /**
@@ -360,13 +470,38 @@ class ConversationController extends Controller
         }
 
         $conversation = Conversation::find($request->conversation_id);
-        $conversation->tickets()->detach($request->ticket_id);
 
-        return response()->json(
-            [
-                "status" => 200,
-                "message" => "ticket removed from conversation"
-            ],401
-        );
+
+        $person = Person::find($conversation->person_id);
+        if ($user->can('view', $person))
+        {
+            $conversation->tickets()->detach($request->ticket_id);
+
+            return response()->json(
+                [
+                    "status" => 200,
+                    "message" => "ticket removed from conversation"
+                ]
+            );
+        }
+        else
+        {
+            return response()->json(
+                [
+                    'status' =>
+                        [
+                            "message" => "User not authorised for resource",
+                            "code" => 403
+                        ],
+                    'errors' =>
+                        [
+                        ],
+                    'data' =>
+                        [
+
+                        ],
+                ],403
+            );
+        }
     }
 }
