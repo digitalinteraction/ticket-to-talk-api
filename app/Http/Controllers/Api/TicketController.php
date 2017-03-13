@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Period;
+use App\Person;
 use App\Tag;
 use App\Ticket;
 use App\User;
@@ -82,76 +83,88 @@ class TicketController extends Controller
             );
         }
 
-        $period = new Period();
-        $period->text = $request['period']['text'];
-
-        $stored = $period->checkPeriodExists($period);
-        if(!$stored)
+        $person = Person::find($request['ticket']['person_id']);
+        if ($user->can('view', $person))
         {
-            $period->save();
-        } else
-        {
-            $period = $stored;
-        }
+            $period = new Period();
+            $period->text = $request['period']['text'];
 
-        $ticket = new Ticket();
-        $ticket->title = $request['ticket']['title'];
-        $ticket->description = $request['ticket']['description'];
-        $ticket->mediaType = $request['ticket']['mediaType'];
-        $ticket->year = $request['ticket']['year'];
-        $ticket->pathToFile = "null_path";
-        $ticket->access_level = $request['ticket']['access_level'];
-        $ticket->person_id = $request['ticket']['person_id'];
-        $ticket->area = $request['ticket']['area'];
-        $ticket->period_id = $period->id;
-        $ticket->save();
-
-        $ticket->users()->attach($user->id, ['user_type' => 'admin']);
-
-        if(strcmp("YouTube", $request['ticket']['mediaType']) == 0)
-        {
-            $ticket->pathToFile = $request['ticket']['pathToFile'];
-            $ticket->save();
-        }
-        else
-        {
-            $file_path = "";
-            switch ($request['ticket']['mediaType'])
+            $stored = $period->checkPeriodExists($period);
+            if(!$stored)
             {
-                case "Sound":
-                    $file_path = "ticket_to_talk/storage/audio/t_" . $ticket->id .".wav";
-                    break;
-                case "Picture":
-                    $file_path = "ticket_to_talk/storage/photo/t_" . $ticket->id .".jpg";
-                    break;
-                case "Video":
-                    break;
+                $period->save();
+            } else
+            {
+                $period = $stored;
             }
 
-            $data = base64_decode($request->media);
-            Storage::disk('s3')->put($file_path, $data);
-
-            $ticket->pathToFile = $file_path;
+            $ticket = new Ticket();
+            $ticket->title = $request['ticket']['title'];
+            $ticket->description = $request['ticket']['description'];
+            $ticket->mediaType = $request['ticket']['mediaType'];
+            $ticket->year = $request['ticket']['year'];
+            $ticket->pathToFile = "null_path";
+            $ticket->access_level = $request['ticket']['access_level'];
+            $ticket->person_id = $request['ticket']['person_id'];
+            $ticket->area = $request['ticket']['area'];
+            $ticket->period_id = $period->id;
             $ticket->save();
-        }
 
-        if ($ticket->id != 0) {
-            return response()->json(
-                [
-                    "status" => 200,
-                    "message" => "Ticket saved",
-                    "ticket" => $ticket,
-                    'owner' => $user,
-                ]
-            );
+            $ticket->users()->attach($user->id, ['user_type' => 'admin']);
+
+            if(strcmp("YouTube", $request['ticket']['mediaType']) == 0)
+            {
+                $ticket->pathToFile = $request['ticket']['pathToFile'];
+                $ticket->save();
+            }
+            else
+            {
+                $file_path = "";
+                switch ($request['ticket']['mediaType'])
+                {
+                    case "Sound":
+                        $file_path = "ticket_to_talk/storage/audio/t_" . $ticket->id .".wav";
+                        break;
+                    case "Picture":
+                        $file_path = "ticket_to_talk/storage/photo/t_" . $ticket->id .".jpg";
+                        break;
+                    case "Video":
+                        break;
+                }
+
+                $data = base64_decode($request->media);
+                Storage::disk('s3')->put($file_path, $data);
+
+                $ticket->pathToFile = $file_path;
+                $ticket->save();
+            }
+
+            if ($ticket->id != 0) {
+                return response()->json(
+                    [
+                        "status" => 200,
+                        "message" => "Ticket saved",
+                        "ticket" => $ticket,
+                        'owner' => $user,
+                    ]
+                );
+            }
         } else
         {
             return response()->json(
                 [
-                    "status" => 500,
-                    "message" => "Error saving ticket",
-                    "ticket" => $ticket
-                ],500
+                    'status' =>
+                        [
+                            "message" => "User not authorised for resource",
+                            "code" => 403
+                        ],
+                    'errors' =>
+                        [
+                        ],
+                    'data' =>
+                        [
+                        ],
+                ],403
             );
         }
     }
@@ -228,43 +241,54 @@ class TicketController extends Controller
             );
         }
 
-        $period = new Period();
-        $period->text = $request->period;
-
-        $stored = $period->checkPeriodExists($period);
-        if(!$stored)
+        if ($user->can('view', $ticket))
         {
-            $period->save();
+            $period = new Period();
+            $period->text = $request->period;
+
+            $stored = $period->checkPeriodExists($period);
+            if(!$stored)
+            {
+                $period->save();
+            } else
+            {
+                $period = $stored;
+            }
+
+            $ticket->title = $request->title;
+            $ticket->description = $request->description;
+            $ticket->year = $request->year;
+            $ticket->access_level = $request->access_level;
+            $ticket->period_id = $period->id;
+            $ticket->area = $request->area;
+
+            $saved = $ticket->save();
+            if ($saved)
+            {
+                return response()->json(
+                    [
+                        "Status" => 200,
+                        "Message" => "Ticket updated",
+                        "Ticket" => $ticket,
+                    ]
+                );
+            }
         } else
         {
-            $period = $stored;
-        }
-
-        $ticket->title = $request->title;
-        $ticket->description = $request->description;
-        $ticket->year = $request->year;
-        $ticket->access_level = $request->access_level;
-        $ticket->period_id = $period->id;
-        $ticket->area = $request->area;
-
-        $saved = $ticket->save();
-        if ($saved)
-        {
             return response()->json(
                 [
-                    "Status" => 200,
-                    "Message" => "Ticket updated",
-                    "Ticket" => $ticket,
-                ]
-            );
-        }
-        else
-        {
-            return response()->json(
-                [
-                    "Status" => 500,
-                    "Message" => "Ticket could not be saved."
-                ],404
+                    'status' =>
+                        [
+                            "message" => "User not authorised for resource",
+                            "code" => 403
+                        ],
+                    'errors' =>
+                        [
+                        ],
+                    'data' =>
+                        [
+                        ],
+                ],403
             );
         }
     }
@@ -301,15 +325,35 @@ class TicketController extends Controller
         }
 
         $ticket = Ticket::find(Input::get('ticket_id'));
-        $ticket->delete();
+        if ($user->can('view', $ticket))
+        {
+            $ticket->delete();
 
-        return response()->json(
-            [
-                "status" => 200,
-                "message" => "Ticket deleted"
-            ]
-        );
-
+            return response()->json(
+                [
+                    "status" => 200,
+                    "message" => "Ticket deleted"
+                ]
+            );
+        }
+        else
+        {
+            return response()->json(
+                [
+                    'status' =>
+                        [
+                            "message" => "User not authorised for resource",
+                            "code" => 403
+                        ],
+                    'errors' =>
+                        [
+                        ],
+                    'data' =>
+                        [
+                        ],
+                ],403
+            );
+        }
     }
 
     /**
