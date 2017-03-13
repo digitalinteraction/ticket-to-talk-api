@@ -121,42 +121,54 @@ class UserController extends Controller
             );
         }
 
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->password = bcrypt($request->password);
-
-        if ($request->imageHash != null)
+        if ($user->can('update', $user))
         {
-            $user->imageHash = $request->imageHash;
+            $user->name = $request->name;
+            $user->email = $request->email;
+            $user->password = bcrypt($request->password);
 
-            $file_path = "ticket_to_talk/ storage/profile/u_" . $user->id . ".jpg";
-            $data = base64_decode($request->image);
+            if ($request->imageHash != null)
+            {
+                $user->imageHash = $request->imageHash;
 
-            Storage::disk('s3')->put($file_path, $data);
-        }
+                $file_path = "ticket_to_talk/ storage/profile/u_" . $user->id . ".jpg";
+                $data = base64_decode($request->image);
 
-        $saved = $user->save();
+                Storage::disk('s3')->put($file_path, $data);
+            }
 
-        if ($saved)
-        {
-            return response()->json(
-                [
-                    "Status" => 200,
-                    "Message" => "User updated.",
-                    "User" => $user
+            $saved = $user->save();
 
-                ]
-            );
+            if ($saved)
+            {
+                return response()->json(
+                    [
+                        "Status" => 200,
+                        "Message" => "User updated.",
+                        "User" => $user
+
+                    ]
+                );
+            }
         }
         else
         {
-            return response(
+            return response()->json(
                 [
-                    "Status" => 500,
-                ],500
+                    'status' =>
+                        [
+                            "message" => "User not authorised for resource",
+                            "code" => 403
+                        ],
+                    'errors' =>
+                        [
+                        ],
+                    'data' =>
+                        [
+                        ],
+                ],403
             );
         }
-
     }
 
     /**
@@ -320,20 +332,6 @@ class UserController extends Controller
             array_push($invites, $invite);
         }
 
-//        foreach ($user->invitations as $inv)
-//        {
-//            $invite = new Invitation();
-//            $person = Person::find($inv->pivot->person_id);
-//            $name = User::find($inv->pivot->user_id)->name;
-//            $group = $inv->pivot->user_type;
-//
-//            $invite->person = $person;
-//            $invite->name = $name;
-//            $invite->group = $group;
-//
-//            array_push($invites, $invite);
-//        }
-
         return response()->json(
             [
                 "invites" => $invites
@@ -441,7 +439,7 @@ class UserController extends Controller
 
         $id = Input::get('id');
 
-        if($user->can('view', $id))
+        if($user->update('view', $user))
         {
             $fileName = 'u_'.$id.'.jpg';
 
