@@ -20,7 +20,7 @@ class TicketPolicy
         //
     }
 
-    public function show(User $user, Ticket $ticket)
+    public function view(User $user, Ticket $ticket)
     {
 
         foreach ($user->people as $person)
