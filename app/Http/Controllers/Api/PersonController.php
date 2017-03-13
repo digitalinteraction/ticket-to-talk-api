@@ -179,8 +179,6 @@ class PersonController extends Controller
     /**
      * Display the specified resource.
      *
-     * TODO decrypt data.
-     *
      * @api {get} /people/show Get People
      * @apiName GetPeople
      * @apiGroup People
@@ -209,26 +207,45 @@ class PersonController extends Controller
             );
         }
 
-        $personID = (int) Input::get('person_id');
-        foreach($user->people as $people)
+        $person = Person::find(Input::get('person_id'));
+
+        if(!$person)
         {
-            if ($personID ==  $people->id)
-            {
-                return response()->json(
-                    [
-                        "status" => 200,
-                        "message" => "Person Found",
-                        "people" => $people->decryptPerson(),
-                    ]
-                );
-            }
+            return response()->json(
+                [
+                    "status" => 404,
+                    "message" => "Person not found",
+                ],404
+            );
         }
-        return response()->json(
-            [
-                "status" => 404,
-                "message" => "Person not found",
-            ],404
-        );
+        if($user->can('view', $person))
+        {
+            return response()->json(
+                [
+                    "status" => 200,
+                    "message" => "Person Found",
+                    "person" => $person->decryptPerson(),
+                ]
+            );
+        } else
+        {
+            return response()->json(
+                [
+                    'status' =>
+                        [
+                            "message" => "User not authorised for resource",
+                            "code" => 403
+                        ],
+                    'errors' =>
+                        [
+                        ],
+                    'data' =>
+                        [
+
+                        ],
+                ],403
+            );
+        }
     }
 
     /**
@@ -244,8 +261,6 @@ class PersonController extends Controller
 
     /**
      * Update the specified resource in storage.
-     *
-     * TODO decrypt data.
      *
      * @api {post} /people/update Update a Person
      * @apiName UpdatePerson
@@ -285,10 +300,9 @@ class PersonController extends Controller
             );
         }
 
-//        $person = $user->people()->find($request->person_id);
         $person = Person::find($request->person_id);
 
-        if ($user->can('delete', $person))
+        if ($user->can('view', $person))
         {
             $person = $person->decryptPerson();
             $person->name = $request->name;
@@ -366,14 +380,35 @@ class PersonController extends Controller
         }
 
         $person = Person::find(Input::get("person_id"));
-        $person->delete();
+        if (!$person)
+        {
+            return response()->json(
+                [
+                    "Status" => 404,
+                    "Message" => "Resource not found",
+                ],404
+            );
+        }
+        if ($user->can('delete', $person))
+        {
+            $person->delete();
 
-        return response()->json(
-            [
-                "status" => 200,
-                "message" => "person deleted."
-            ]
-        );
+            return response()->json(
+                [
+                    "status" => 200,
+                    "message" => "person deleted."
+                ]
+            );
+        }
+        else
+        {
+            return response()->json(
+                [
+                    "Status" => 403,
+                    "Message" => "Unauthorised for resource"
+                ],403
+            );
+        }
     }
 
     /**
@@ -405,10 +440,19 @@ class PersonController extends Controller
             );
         }
 
-        $personID = (int) Input::get('person_id');
-        $person = Person::find($personID);
+        $person = Person::find((int) Input::get('person_id'));
+        if(!$person)
+        {
+            return response()->json(
+                [
+                    "Status" => 404,
+                    'errors' => "yes",
+                    "Message" => "Resource not found",
+                ],404
+            );
+        }
 
-        if($person)
+        if($user->can('view', $person))
         {
             $users = $person->users;
             return response()->json(
@@ -416,6 +460,14 @@ class PersonController extends Controller
                     "status" => 200,
                     "users" => $users
                 ]
+            );
+        } else
+        {
+            return response()->json(
+                [
+                    "Status" => 403,
+                    "Message" => "Unauthorised for resource"
+                ],403
             );
         }
     }
@@ -454,35 +506,53 @@ class PersonController extends Controller
         $person_id = (int) Input::get('person_id');
         $person = $user->people->find($person_id);
 
-        if($person)
+        if (!$person)
+        {
+            return response()->json(
+                [
+                    'message' => [
+                        'status' => 'error'
+                    ],
+                    'errors' => [
+                        'Resources could not be found'
+                    ],
+                    'data' => []],
+                404
+            );
+        }
+
+        if($user->can('view', $person))
         {
             $tickets = [];
             $tags = [];
             $ticket_tags = [];
             foreach($person->tickets as $ticket)
             {
-                array_push($tickets, $ticket);
-                foreach($ticket->tags as $tag)
+                if ($user->can('view', $ticket))
                 {
-                    $already_added = false;
-                    foreach($tags as $t)
+                    array_push($tickets, $ticket);
+                    foreach($ticket->tags as $tag)
                     {
-                        if ($t == $tag)
+                        $already_added = false;
+                        foreach($tags as $t)
                         {
-                            $already_added = true;
+                            if ($t == $tag)
+                            {
+                                $already_added = true;
+                            }
                         }
-                    }
-                    if (!$already_added)
-                    {
-                        array_push($tags, $tag);
-                    }
-                    $ticket_tag =
-                        [
-                            "ticket_id" => $ticket->id,
-                            "tag_id" => $tag->id
-                        ];
+                        if (!$already_added)
+                        {
+                            array_push($tags, $tag);
+                        }
+                        $ticket_tag =
+                            [
+                                "ticket_id" => $ticket->id,
+                                "tag_id" => $tag->id
+                            ];
 
-                    array_push($ticket_tags, $ticket_tag);
+                        array_push($ticket_tags, $ticket_tag);
+                    }
                 }
             }
 
@@ -498,14 +568,9 @@ class PersonController extends Controller
         {
             return response()->json(
                 [
-                    'message' => [
-                        'status' => 'error'
-                    ],
-                        'errors' => [
-                            'Resources could not be found'
-                    ],
-                    'data' => []],
-                404
+                    "Status" => 403,
+                    "Message" => "Unauthorised for resource"
+                ],403
             );
         }
     }
