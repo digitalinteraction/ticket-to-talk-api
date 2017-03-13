@@ -24,10 +24,10 @@ class UserPolicy
      * @param $id
      * @return bool
      */
-    public function show(User $user, $id)
+    public function update(User $user, $l_user)
     {
 
-        if($id == $user->id)
+        if($l_user->id == $user->id)
         {
             return true;
         }
