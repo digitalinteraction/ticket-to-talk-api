@@ -58,6 +58,17 @@ class CheckAPIKey
             );
         }
 
+        if (!$user->verified)
+        {
+          return response()->json(
+            [
+              'status' => 403,
+              'errors' => true,
+              'message' => 'Account not verified.'
+            ],403
+          );
+        }
+
         if (strcmp($user->api_key, Input::get('api_key')) == 0)
         {
             return $next($request);

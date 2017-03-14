@@ -25,7 +25,6 @@ class EmailController extends Controller
             ];
 
         Mail::send('emails.rate', $data, function($message){
-            $message->from('danjwelsh24@gmail.com', 'Email Rate');
             $message->to('d.welsh@ncl.ac.uk')->subject('[ttt-api] User Rate Limited');
         });
 
@@ -37,5 +36,15 @@ class EmailController extends Controller
         $limited->path = $request->path();
 
         $limited->save();
+    }
+
+    public function test()
+    {
+      Mail::raw('Test email', function($message) {
+        $message->to('d.welsh@ncl.ac.uk')->subject('[ttt-test] Test email');
+        $message->setBody('This is a test email.');
+      });
+
+      return 'Email sent';
     }
 }

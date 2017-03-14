@@ -22,6 +22,7 @@ RUN apt-get -y update \
         curl \
         git \
         vim \
+        ssmtp \
         php-pear && rm -rf /var/lib/apt/lists/*
 
 
@@ -30,6 +31,9 @@ RUN sed -i "s/cgi.fix_pathinfo.\+/cgi.fix_pathinfo = 0/" /etc/php5/fpm/php.ini
 RUN echo "clear_env = no" >> /etc/php5/fpm/php-fpm.conf
 RUN sed -i 's/upload_max_filesize.\+/upload_max_filesize = 200M/' /etc/php5/fpm/php.ini
 RUN sed -i 's/post_max_size.\+/post_max_size = 200M/' /etc/php5/fpm/php.ini
+
+
+RUN sed -i "s/mailhub.\+/mailhub=smtp.ncl.ac.uk/" /etc/ssmtp/ssmtp.conf && sed -i "s/rewriteDomain.\+/rewriteDomain=openlab.ncl.ac.uk/" /etc/ssmtp/ssmtp.conf && echo "FromLineOverride=YES" >> /etc/ssmtp/ssmtp.conf
 
 
 # Allow fastcgi

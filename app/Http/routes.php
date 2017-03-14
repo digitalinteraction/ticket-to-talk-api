@@ -22,30 +22,45 @@ Route::get("/docs", function() {
     return File::get(public_path() . "/docs/index.html");
 });
 
+
 // API - AUTHENTICATION
 Route::group(
     [
-        'prefix' => 'api',
+        'prefix' => 'api/auth',
         'namespace' => 'Api',
         'middleware' =>
             [
-                'limit:10,10',
+                // 'limit:10,10',
                 'log'
             ],
         "https" => true
     ], function () {
-        Route::post('/auth/register',
+        Route::post('register/',
             [
                 'as' => 'auth.register',
                 'uses' => 'AuthController@register'
             ]
         );
 
-        Route::post('/auth/login',
+        Route::post('login/',
             [
                 'as' => 'auth.login',
                 'uses' => 'AuthController@login'
             ]
+        );
+
+        Route::post('verify/',
+        [
+          'as' => 'auth.verify',
+          'uses' => 'AuthController@verify'
+        ]
+        );
+
+        Route::get('/auth/test',
+          [
+            'as' => 'auth.test',
+            'uses' => 'EmailController@test'
+          ]
         );
     }
 );
@@ -411,28 +426,6 @@ Route::group(
         );
     }
 );
-
-// API - MEDIA
-//Route::group(
-//    [
-//        'prefix' => 'api/media',
-//        'namespace' => 'Api',
-//        'middleware' =>
-//            [
-//                'api',
-//                'log'
-//            ],
-//        "https" => true
-//    ],
-//    function () {
-//        Route::get('/get',
-//            [
-//                'as' => 'media.get',
-//                'uses' => 'MediaController@getMedia'
-//            ]
-//        );
-//    }
-//);
 
 // API - CONVERSATIONS
 Route::group(

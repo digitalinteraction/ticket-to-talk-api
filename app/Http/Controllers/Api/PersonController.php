@@ -516,8 +516,8 @@ class PersonController extends Controller
                     'errors' => [
                         'Resources could not be found'
                     ],
-                    'data' => []],
-                404
+                    'data' => []
+                ],404
             );
         }
 
