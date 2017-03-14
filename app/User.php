@@ -86,11 +86,16 @@ class User extends Authenticatable
 
     /**
      * Get all of the user's invitations.
-     * 
+     *
      * @return mixed
      */
     public function invitations()
     {
         return $this->belongsToMany('App\Person', 'invitations')->withPivot("inviter_id", "user_type");
+    }
+
+    public function registrations()
+    {
+      return $this->hasMany('App\Registration');
     }
 }
