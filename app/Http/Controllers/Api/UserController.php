@@ -237,7 +237,7 @@ class UserController extends Controller
 
     /**
      * Send an invitation to join a person.
-     * 
+     *
      * @api {post} /user/invitations/send Invite a User to Join a Person
      * @apiName SendPersonInvitation
      * @apiGroup User
@@ -287,7 +287,7 @@ class UserController extends Controller
     }
     /**
      * Get all of the user's invitations.
-     * 
+     *
      * @api {get} /user/invitations/get Get a User's Invitations
      * @apiName GetPersonInvitation
      * @apiGroup User
@@ -299,7 +299,7 @@ class UserController extends Controller
      * @apiError 500 Resource not found
      * @apiError 401 User could not be authenticated
      */
-    public function getInvitations() 
+    public function getInvitations()
     {
         $token = Input::get('token');
         $user = $this->jwtauth->authenticate($token);
@@ -342,7 +342,7 @@ class UserController extends Controller
 
     /**
      * Accept an invitation.
-     * 
+     *
      * @api {post} /user/invitations/accept Accept and Invitation
      * @apiName AcceptPersonInvitation
      * @apiGroup User
@@ -437,12 +437,9 @@ class UserController extends Controller
         $token = Input::get('token');
         $user = $this->jwtauth->authenticate($token);
 
-        $id = Input::get('id');
-
-        if($user->update('view', $user))
+        if($user->can('update', $user))
         {
-            $fileName = 'u_'.$id.'.jpg';
-
+            $fileName = "ticket_to_talk/storage/profile/u_" . $user->id .".jpg";
             $file_type = 'image/jpeg';
 
             $exists = Storage::disk('s3')->exists($fileName);
@@ -461,6 +458,16 @@ class UserController extends Controller
                 ob_end_clean(); // <- this is important, i have forgotten why.
 
                 return $response;
+            }
+            else
+            {
+              return response()->json(
+                  [
+                      "status" => 404,
+                      'errors' => true,
+                      "message" => "Unauthorised for resource"
+                  ],404
+              );
             }
         }
         else

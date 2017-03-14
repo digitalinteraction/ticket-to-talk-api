@@ -160,7 +160,7 @@ class PersonController extends Controller
                 [
                     "status" => 200,
                     "message" => "Person saved",
-                    "person" => $person,
+                    "person" => $person->decryptPerson(),
                     'owner' => $user
                 ]
             );
@@ -585,7 +585,7 @@ class PersonController extends Controller
         $token = Input::get('token');
         $user = $this->jwtauth->authenticate($token);
 
-        $id = Input::get('id');
+        $id = Input::get('person_id');
 
         if($user->can('view', Person::find($id)))
         {

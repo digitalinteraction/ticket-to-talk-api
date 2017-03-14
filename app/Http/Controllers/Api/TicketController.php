@@ -367,8 +367,7 @@ class TicketController extends Controller
         $token = Input::get('token');
         $user = $this->jwtauth->authenticate($token);
 
-        $ticket = Ticket::find(Input::get('id'));
-
+        $ticket = Ticket::find(Input::get('ticket_id'));
 
         if ($user->can('view', $ticket))
         {
