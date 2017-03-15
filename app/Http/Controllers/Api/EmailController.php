@@ -37,14 +37,4 @@ class EmailController extends Controller
 
         $limited->save();
     }
-
-    public function test()
-    {
-      Mail::raw('Test email', function($message) {
-        $message->to('d.welsh@ncl.ac.uk')->subject('[ttt-test] Test email');
-        $message->setBody('This is a test email.');
-      });
-
-      return 'Email sent';
-    }
 }

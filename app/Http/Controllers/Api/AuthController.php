@@ -54,6 +54,8 @@ class AuthController extends Controller
      * @apiSuccess {String} token The user's session token.
      *
      * @apiError 500 User could not be created.
+     * @param RegisterRequest $request
+     * @return \Illuminate\Http\JsonResponse
      */
     public function register(RegisterRequest $request)
     {
@@ -330,5 +332,58 @@ class AuthController extends Controller
                 ]
             );
         }
+    }
+
+    /**
+     * Resend a verification email to a user.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function resendVerificationEmail()
+    {
+        $token = Input::get('token');
+        $user = $this->jwtauth->authenticate($token);
+
+        if (!$user)
+        {
+            return response()->json(
+                [
+                    "Status" => 401,
+                    "Message" => "User not authenticated.",
+                ],401
+            );
+        }
+
+        $code = '';
+        for ($i = 0; $i < 6; $i++) {
+            $code .= chr(rand(65, 90));
+        }
+
+        $registration = new Registration();
+        $registration->code = $code;
+        $registration->user_id = $user->id;
+
+        $registration->save();
+
+        $data =
+            [
+                'name' => $user->name,
+                'code' => $registration->code,
+                'email' => $user->email
+            ];
+
+        $email = $user->email;
+
+        Mail::send('emails.register', $data, function ($message) use ($email) {
+            $message->to($email)->subject('Verify your email address');
+        });
+
+        return response()->json(
+            [
+                "status" => 200,
+                "errors" => true,
+                "messages" => "If this account exists an email has been sent to it."
+            ]
+        );
     }
 }
