@@ -50,17 +50,17 @@ Route::group(
         );
 
         Route::post('verify/',
-        [
-          'as' => 'auth.verify',
-          'uses' => 'AuthController@verify'
-        ]
+            [
+              'as' => 'auth.verify',
+              'uses' => 'AuthController@verify'
+            ]
         );
 
-        Route::get('/auth/test',
-          [
-            'as' => 'auth.test',
-            'uses' => 'EmailController@test'
-          ]
+        Route::get('verify/resend',
+            [
+                'as' => 'auth.verify.resend',
+                'uses' => 'AuthController@resendVerificationEmail'
+            ]
         );
     }
 );
