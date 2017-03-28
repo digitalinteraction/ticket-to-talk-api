@@ -16,5 +16,5 @@ echo "HELLO WORLD"
 #
 ## For running the db in the container, ran externally, set in .env
 #php artisan migrate:install
-#php artisan migrate
+php artisan migrate
 #php artisan db:seed --class=InspirationTableSeeder

@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\DB;
  */
 class Area extends Model
 {
+
     //
     /**
      * Attributes that are mass assignable

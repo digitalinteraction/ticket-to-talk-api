@@ -6,8 +6,16 @@ services:
         - "8080:80"
         depends_on:
         - mysql
-#        volumes:
+        volumes:
 #        - ".:/app"
+        - ./app:/app/app
+        - ./bootstrap:/app/bootstrap
+        - ./config:/app/config
+        - ./database:/app/database
+        - ./public:/app/public
+        - ./resources:/app/resources
+        - ./storage:/app/storage
+        - ./tests:/app/tests
         links:
         - mysql
 
