@@ -16,6 +16,7 @@ services:
         - ./resources:/app/resources
         - ./storage:/app/storage
         - ./tests:/app/tests
+        - ./phpunit.xml:/app/phpunit.xml
         links:
         - mysql
 
