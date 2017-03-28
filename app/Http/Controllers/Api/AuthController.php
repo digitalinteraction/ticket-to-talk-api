@@ -62,20 +62,20 @@ class AuthController extends Controller
         try {
             $newUser = $this->user->create(
                 [
-                    'name' => $request->get('name'),
-                    'email' => $request->get('email'),
-                    'password' => bcrypt($request->get('password'))
+                    'name' => $request->name,
+                    'email' => $request->email,
+                    'password' => bcrypt($request->password)
                 ]
             );
-        } catch (QueryException $ex) {
+        }
+        catch (QueryException $ex) {
             return response()->json(
                 [
-                    'message' => [
-                        'status' => '500'
+                    'status' => [
+                        'message' => 'This email is already registered with Ticket to Talk',
+                        'code' => 500
                     ],
-                    'errors' => [
-                        'This email is already registered with Ticket to Talk'
-                    ],
+                    'errors' => true,
                     'data' => []
                 ], 500
             );
@@ -127,10 +127,11 @@ class AuthController extends Controller
 
         return response()->json(
             [
-                'message' => [
-                    "User created."
+                'status' => [
+                    "message" => "User created.",
+                    "code" => 200
                 ],
-                'errors' => [],
+                'errors' => false,
                 'data' => [
                     'user' => $newUser,
                     'api_key' => $api_key,
@@ -181,9 +182,14 @@ class AuthController extends Controller
         } catch (JWTException $e) {
             return response()->json(
                 [
-                    "code" => "500",
-                    "message" => 'Failed to create token'
-                ]
+                    "status" =>
+                        [
+                            "code" => 500,
+                            "message" => 'Failed to create token'
+                        ],
+                    "errors" => true,
+                    "data" => []
+                ],500
             );
         }
 

@@ -122,7 +122,7 @@ class ArticleController extends Controller
                             "message" => "Article saved.",
                             "code" => 200
                         ],
-                    "errors" => [],
+                    "errors" => false,
                     "data" =>
                         [
                             "article" => $article,
@@ -139,7 +139,7 @@ class ArticleController extends Controller
                             "message" => "Article could not be saved",
                             "code" => 500
                         ],
-                    "errors" => [],
+                    "errors" => true,
                     "data" => []
                 ],500
             );
@@ -203,10 +203,7 @@ class ArticleController extends Controller
                             "message" => "User could not be authenticated",
                             "code" => 401
                         ],
-                    "errors" =>
-                        [
-                            'message' => "User could not be authenticated"
-                        ],
+                    "errors" => true,
                     "data" => []
                 ],401
             );
@@ -220,13 +217,10 @@ class ArticleController extends Controller
                 [
                     "status" =>
                         [
-                            "message" => "Error",
+                            "message" => "Article could not be found",
                             "code" => 404
                         ],
-                    "errors" =>
-                        [
-                            'message' => "Article could not be found"
-                        ],
+                    "errors" => true,
                     "data" =>
                         [
 
@@ -244,7 +238,7 @@ class ArticleController extends Controller
                             "message" => "Returned users article",
                             "code" => 200
                         ],
-                    "errors" => [],
+                    "errors" => false,
                     "data" =>
                         [
                             "article" => $article
@@ -261,7 +255,7 @@ class ArticleController extends Controller
                             "message" => "User not authorised for resource",
                             "code" => 403
                         ],
-                    "errors" => [],
+                    "errors" => true,
                     "data" => []
                 ],403
             );
@@ -575,13 +569,10 @@ class ArticleController extends Controller
                 [
                     "status" =>
                         [
-                            "message" => "error",
+                            "message" => "User could not be authenticated",
                             "code" => 401
                         ],
-                    "errors" =>
-                        [
-                            "message" => "User could not be authenticated"
-                        ],
+                    "errors" => true,
                     "data" => []
                 ],401
             );
@@ -594,9 +585,7 @@ class ArticleController extends Controller
                         "message" => "Success",
                         "code" => 200
                     ],
-                "errors" =>
-                    [
-                    ],
+                "errors" => false,
                 "data" => [
                     "articles" => $user->articles
                 ]

@@ -17,6 +17,8 @@ services:
         - ./storage:/app/storage
         - ./tests:/app/tests
         - ./phpunit.xml:/app/phpunit.xml
+        - ./test_log.txt:/app/test_log.xml
+        - ./test_output.txt:/app/test_output.xml
         links:
         - mysql
 
