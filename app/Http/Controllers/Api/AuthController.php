@@ -172,9 +172,7 @@ class AuthController extends Controller
                             'message' => "Incorrect email or password",
                             'code' => 401
                         ],
-                        'errors' => [
-                            "message" => "Incorrect authentication details"
-                        ],
+                        'errors' => true,
                         'data' => [
                         ], 401
                     ]
@@ -201,7 +199,7 @@ class AuthController extends Controller
                         "message" => "error",
                         "user" => $user,
                         "token" => $val
-                    ], 500
+                    ], 401
                 );
             }
 
@@ -211,7 +209,7 @@ class AuthController extends Controller
                         'message' => "success",
                         'code' => 200
                     ],
-                    'errors' => [],
+                    'errors' => false,
                     'data' => [
                         "user" => $user,
                         "token" => $val,
@@ -223,13 +221,10 @@ class AuthController extends Controller
             return response()->json(
                 [
                     'status' => [
-                        'message' => "error",
+                        'message' => 'No API key given',
                         'code' => 401
                     ],
-                    'errors' =>
-                        [
-                            'No API key given'
-                        ],
+                    'errors' => true,
                     'data' => [
                     ],
                     401
@@ -242,7 +237,7 @@ class AuthController extends Controller
                         'message' => "success",
                         'code' => 200
                     ],
-                    'errors' => [],
+                    'errors' => false,
                     'data' => [
                         "user" => $user,
                         "token" => $val
@@ -253,13 +248,10 @@ class AuthController extends Controller
             return response()->json(
                 [
                     'status' => [
-                        'message' => "error",
+                        'message' => 'Invalid API key',
                         'code' => 401
                     ],
-                    'errors' =>
-                        [
-                            'Invalid API key'
-                        ],
+                    'errors' => true,
                     'data' => [
                     ]
                 ], 401
