@@ -11,7 +11,7 @@ class HomeTest extends TestCase
      *
      * @return void
      */
-    public function testHomeDisplays()
+    public function testCanDisplayLandingPage()
     {
         $this->call('GET', '/');
 
