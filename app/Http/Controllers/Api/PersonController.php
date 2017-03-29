@@ -82,12 +82,7 @@ class PersonController extends Controller
         $user = $this->jwtauth->authenticate($token);
 
         if (!$user) {
-            return response()->json(
-                [
-                    "Status" => 401,
-                    "Message" => "User not authenticated.",
-                ], 401
-            );
+            abort(401);
         }
 
         // AES-256-CBC
@@ -127,7 +122,11 @@ class PersonController extends Controller
         if ($request->pathToPhoto != null) {
             $person->pathToPhoto = $request->pathToPhoto;
         } else {
-            $file_path = "ticket_to_talk/storage/profile/p_" . $person->id . ".jpg";
+
+            $file_name = "" . $person->id . $person->name . date("YmdHis");
+            $file_name = sha1($file_name);
+
+            $file_path = "ticket_to_talk/storage/profile/p_" . $file_name . ".jpg";
             $person->pathToPhoto = $file_path;
             $data = base64_decode($request->image);
 
@@ -166,20 +165,7 @@ class PersonController extends Controller
                 ]
             );
         } else {
-            return response()->json(
-                [
-                    "status" =>
-                        [
-                            "message" => "Error saving person",
-                            "code" => 500
-                        ],
-                    "errors" => false,
-                    "data" =>
-                        [
-                            "person" => $person
-                        ]
-                ], 500
-            );
+            abort(500);
         }
     }
 
@@ -300,7 +286,11 @@ class PersonController extends Controller
         }
 
         $person = $user->people->find($request->person_id);
+
+
         $person = $person->decryptPerson();
+
+
 
         if ($user->can('view', $person)) {
 
@@ -314,7 +304,11 @@ class PersonController extends Controller
 
             if ($request->imageHash != null) {
                 $person->imageHash = $request->imageHash;
-                $file_path = "ticket_to_talk/storage/profile/p_" . $person->id . ".jpg";
+
+                $file_name = "" . $person->id . $person->name . date("YmdHis");
+                $file_name = sha1($file_name);
+
+                $file_path = "ticket_to_talk/storage/profile/p_" . $file_name . ".jpg";
                 $data = base64_decode($request->image);
 
                 Storage::disk('s3')->put($file_path, $data);

@@ -28,11 +28,20 @@ class InspirationController extends Controller
     public function index()
     {
         $inspirations = Inspiration::all();
+
         return response()->json(
             [
-                "Inspirations" => $inspirations
-            ],
-            200
+                "status" =>
+                [
+                    "message" => "",
+                    "code" => 200
+                ],
+                "errors" => false,
+                "data" =>
+                [
+                    "inspirations" => $inspirations
+                ]
+            ]
         );
     }
 
