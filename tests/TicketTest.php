@@ -14,7 +14,6 @@ class TicketTest extends TestCase
 
         global $ticket_id;
 
-        // TODO FINISH
         $response = $this->json("POST", "/api/tickets/store",
             [
                 'token' => $_ENV['TEST_TOKEN'],
@@ -55,7 +54,6 @@ class TicketTest extends TestCase
 
         $rand = rand(100, 900);
 
-        // TODO FINISH
         $response = $this->json("POST", "/api/tickets/update",
             [
                 'token' => $_ENV['TEST_TOKEN'],
