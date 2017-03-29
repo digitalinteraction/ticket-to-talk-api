@@ -47,12 +47,7 @@ class MediaController extends Controller
 
         if (!$user)
         {
-            return response()->json(
-                [
-                    "Status" => 401,
-                    "Message" => "User not authenticated."
-                ]
-            );
+            abort(401);
         }
 
         $fileName = Input::get("fileName");

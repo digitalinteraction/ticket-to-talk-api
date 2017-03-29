@@ -58,12 +58,7 @@ class TagController extends Controller
 
         if (!$user)
         {
-            return response()->json(
-                [
-                    "Status" => 401,
-                    "Message" => "User not authenticated.",
-                ],401
-            );
+            abort(401);
         }
         $tag = new Tag();
         $tag->text = $request->text;
@@ -74,10 +69,17 @@ class TagController extends Controller
 
             return response()->json(
                 [
-                    "status" => 200,
-                    "message" => "Tag saved",
-                    "tag" => $stored,
-                    'owner' => $user
+                    "status" =>
+                    [
+                        "message" => "tag saved",
+                        "code" => 200
+                    ],
+                    "errors" => false,
+                    "data" =>
+                    [
+                        "tag" => $stored,
+                        'owner' => $user
+                    ]
                 ]
             );
         } else
@@ -87,10 +89,17 @@ class TagController extends Controller
 
             return response()->json(
                 [
-                    "status" => 200,
-                    "message" => "Tag saved",
-                    "tag" => $tag,
-                    'owner' => $user
+                    "status" =>
+                    [
+                        "message" => "success",
+                        "code" => 200
+                    ],
+                    "errors" => false,
+                    "data" =>
+                    [
+                        "tag" => $tag,
+                        'owner' => $user
+                    ]
                 ]
             );
         }
@@ -108,12 +117,7 @@ class TagController extends Controller
 
         if (!$user)
         {
-            return response()->json(
-                [
-                    "Status" => 402,
-                    "Message" => "User not authenticated.",
-                ]
-            );
+            abort(401);
         }
 
         $tagID = (int) Input::get('tag_id');
@@ -121,21 +125,24 @@ class TagController extends Controller
         {
             if ($tagID ==  $tag->id)
             {
+
                 return response()->json(
                     [
-                        "status" => 200,
-                        "message" => "Tag Found",
-                        "tag" => $tag,
+                        "status" =>
+                        [
+                            "message" => "tag found",
+                            "code" => 200
+                        ],
+                        "errors" => false,
+                        "data" =>
+                        [
+                            "tag" => $tag
+                        ]
                     ]
                 );
             }
         }
-        return response()->json(
-            [
-                "status" => 404,
-                "message" => "Tag not found",
-            ],404
-        );
+        abort(404);
     }
 
     /**
@@ -164,12 +171,7 @@ class TagController extends Controller
 
         if (!$user)
         {
-            return response()->json(
-                [
-                    "Status" => 401,
-                    "Message" => "User not authenticated.",
-                ],401
-            );
+            abort(401);
         }
 
         $tagID = (int) Input::get('tag_id');
@@ -186,12 +188,7 @@ class TagController extends Controller
 
         if(!$found)
         {
-            return response()->json(
-                [
-                    "status" => 404,
-                    "message" => "Tag not found",
-                ],404
-            );
+            abort(404);
         }
 
         $tag->text = $request->text;
@@ -199,9 +196,16 @@ class TagController extends Controller
 
         return response()->json(
             [
-                "status" => 200,
-                "message" => "Tag updated",
-                "tag" => $tag,
+                "status" =>
+                [
+                    "message" => "tag updated",
+                    "code" => 200
+                ],
+                "errors" => false,
+                "data" =>
+                [
+                    "tag" => $tag
+                ]
             ]
         );
     }
@@ -219,12 +223,7 @@ class TagController extends Controller
 
         if (!$user)
         {
-            return response()->json(
-                [
-                    "Status" => 401,
-                    "Message" => "User not authenticated.",
-                ],401
-            );
+            abort(401);
         }
 
         $tagID = (int) Input::get('tag_id');
@@ -241,19 +240,23 @@ class TagController extends Controller
 
         if(!$found)
         {
-            return response()->json(
-                [
-                    "status" => 404,
-                    "message" => "Tag not found",
-                ],404
-            );
+            abort(404);
         }
 
         $tag->delete();
+
         return response()->json(
             [
-                "status" => 200,
-                "message" => "Tag deleted",
+                "status" =>
+                [
+                    "message" => "tag deleted",
+                    "code" => 200
+                ],
+                "errors" => false,
+                "data" =>
+                [
+
+                ]
             ]
         );
     }
@@ -265,18 +268,21 @@ class TagController extends Controller
 
         if (!$user)
         {
-            return response()->json(
-                [
-                    "Status" => 401,
-                    "Message" => "User not authenticated.",
-                ],404
-            );
+            abort(401);
         }
+
         return response()->json(
             [
-                "status" => 200,
-                "message" => "All user tags",
-                "tags" => $user->tags
+                "status" =>
+                [
+                    "message" => "success",
+                    "code" => 200
+                ],
+                "errors" => false,
+                "data" =>
+                [
+                    "tags" => $user->tags
+                ]
             ]
         );
     }
