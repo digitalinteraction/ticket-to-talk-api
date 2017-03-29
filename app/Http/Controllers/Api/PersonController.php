@@ -239,20 +239,7 @@ class PersonController extends Controller
                 ]
             );
         } else {
-            return response()->json(
-                [
-                    'status' =>
-                        [
-                            "message" => "User not authorised for resource",
-                            "code" => 403
-                        ],
-                    'errors' => true,
-                    'data' =>
-                        [
-
-                        ],
-                ], 403
-            );
+            abort(403);
         }
     }
 
