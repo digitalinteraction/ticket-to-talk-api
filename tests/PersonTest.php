@@ -45,6 +45,7 @@ class PersonTest extends TestCase
     {
 
         global $person_id;
+
         $rand = rand(1000000, 9000000);
 
         $response = $this->json('POST', '/api/people/update',
@@ -62,6 +63,7 @@ class PersonTest extends TestCase
                 'imageHash' => 'jdfskjbfslkfbgklsfbg'
             ]
         );
+
 
         $response
             ->assertResponseOk()
