@@ -191,23 +191,13 @@ class PersonController extends Controller
         $user = $this->jwtauth->authenticate($token);
 
         if (!$user) {
-            return response()->json(
-                [
-                    "Status" => 401,
-                    "Message" => "User not authenticated.",
-                ], 401
-            );
+            abort(401);
         }
 
         $person = Person::find(Input::get('person_id'));
 
         if (!$person) {
-            return response()->json(
-                [
-                    "status" => 404,
-                    "message" => "Person not found",
-                ], 404
-            );
+            abort(404);
         }
         if ($user->can('view', $person)) {
             return response()->json(
@@ -272,17 +262,7 @@ class PersonController extends Controller
         $user = $this->jwtauth->authenticate($token);
 
         if (!$user) {
-            return response()->json(
-                [
-                    "status" =>
-                        [
-                            "message" => "User not authenticated.",
-                            "code" => 401
-                        ],
-                    "errors" => true,
-                    "data" => []
-                ], 401
-            );
+            abort(401);
         }
 
         $person = $user->people->find($request->person_id);
@@ -337,17 +317,7 @@ class PersonController extends Controller
                 ]
             );
         } else {
-            return response()->json(
-                [
-                    "status" =>
-                        [
-                            "message" => "Unauthorised for resource",
-                            "code" => 403
-                        ],
-                    'errors' => true,
-                    "data" => []
-                ], 403
-            );
+            abort(403);
         }
     }
 
@@ -374,32 +344,12 @@ class PersonController extends Controller
         $user = $this->jwtauth->authenticate($token);
 
         if (!$user) {
-            return response()->json(
-                [
-                    "status" =>
-                        [
-                            "message" => "User not authenticated.",
-                            "code" => 401
-                        ],
-                    "errors" => true,
-                    "data" => []
-                ], 401
-            );
+            abort(401);
         }
 
         $person = Person::find(Input::get("person_id"));
         if (!$person) {
-            return response()->json(
-                [
-                    "status" =>
-                        [
-                            "message" => "User not authenticated.",
-                            "code" => 404
-                        ],
-                    "errors" => true,
-                    "data" => []
-                ], 404
-            );
+            abort(404);
         }
         if ($user->can('delete', $person)) {
             $person->delete();
@@ -416,17 +366,7 @@ class PersonController extends Controller
                 ], 200
             );
         } else {
-            return response()->json(
-                [
-                    "status" =>
-                        [
-                            "message" => "Unauthorised for resource",
-                            "code" => 403
-                        ],
-                    'errors' => true,
-                    "data" => []
-                ], 403
-            );
+            abort(403);
         }
     }
 
@@ -450,31 +390,12 @@ class PersonController extends Controller
         $user = $this->jwtauth->authenticate($token);
 
         if (!$user) {
-            return response()->json(
-                [
-                    "status" =>
-                        [
-                            "message" => "User not authenticated.",
-                            "code" => 401
-                        ],
-                    "errors" => true,
-                    "data" => []
-                ], 401
-            );
+            abort(401);
         }
 
         $person = Person::find((int)Input::get('person_id'));
         if (!$person) {
-            return response()->json(
-                [
-                    "status" => [
-                        "message" => "Resource not found",
-                        "code" => 404
-                    ],
-                    'errors' => true,
-                    "data" => [],
-                ], 404
-            );
+            abort(404);
         }
 
         if ($user->can('view', $person)) {
@@ -494,16 +415,7 @@ class PersonController extends Controller
                 ]
             );
         } else {
-            return response()->json(
-                [
-                    "status" => [
-                        "message" => "User not authorised for resource",
-                        "code" => 403
-                    ],
-                    'errors' => true,
-                    "data" => [],
-                ], 403
-            );
+            abort(403);
         }
     }
 
@@ -529,32 +441,13 @@ class PersonController extends Controller
         $user = $this->jwtauth->authenticate($token);
 
         if (!$user) {
-            return response()->json(
-                [
-                    "status" =>
-                        [
-                            "message" => "User not authenticated.",
-                            "code" => 401
-                        ],
-                    "errors" => true,
-                    "data" => []
-                ], 401
-            );
+            abort(401);
         }
 
         $person = Person::find(Input::get('person_id'));
 
         if (!$person) {
-            return response()->json(
-                [
-                    "status" => [
-                        "message" => "Resource not found",
-                        "code" => 404
-                    ],
-                    'errors' => true,
-                    "data" => [],
-                ], 404
-            );
+            abort(404);
         }
 
         if ($user->can('view', $person)) {
@@ -603,16 +496,7 @@ class PersonController extends Controller
                 ]
             );
         } else {
-            return response()->json(
-                [
-                    "status" => [
-                        "message" => "User not authorised for resource",
-                        "code" => 403
-                    ],
-                    'errors' => true,
-                    "data" => [],
-                ], 403
-            );
+            abort(403);
         }
     }
 
@@ -650,12 +534,7 @@ class PersonController extends Controller
                 return $response;
             }
         } else {
-            return response()->json(
-                [
-                    "Status" => 403,
-                    "Message" => "Unauthorised for resource"
-                ], 403
-            );
+            abort(403);
         }
     }
 }

@@ -99,12 +99,7 @@ class ArticleController extends Controller
 
         if (!$user)
         {
-            return response()->json(
-                [
-                    "Status" => 401,
-                    "Message" => "User not authenticated.",
-                ]
-            );
+            abort(401);
         }
 
         $article = new Article();
@@ -132,17 +127,7 @@ class ArticleController extends Controller
             );
         } else
         {
-            return response()->json(
-                [
-                    "status" =>
-                        [
-                            "message" => "Article could not be saved",
-                            "code" => 500
-                        ],
-                    "errors" => true,
-                    "data" => []
-                ],500
-            );
+            abort(500);
         }
     }
 
@@ -196,37 +181,14 @@ class ArticleController extends Controller
 
         if (!$user)
         {
-            return response()->json(
-                [
-                    "status" =>
-                        [
-                            "message" => "User could not be authenticated",
-                            "code" => 401
-                        ],
-                    "errors" => true,
-                    "data" => []
-                ],401
-            );
+            abort(401);
         }
 
         $article = Article::find(Input::get('article_id'));
 
         if(!$article)
         {
-            return response()->json(
-                [
-                    "status" =>
-                        [
-                            "message" => "Article could not be found",
-                            "code" => 404
-                        ],
-                    "errors" => true,
-                    "data" =>
-                        [
-
-                        ]
-                ],404
-            );
+            abort(404);
         }
 
         if ($user->can('view', $article))
@@ -248,17 +210,7 @@ class ArticleController extends Controller
         }
         else
         {
-            return response()->json(
-                [
-                    "status" =>
-                        [
-                            "message" => "User not authorised for resource",
-                            "code" => 403
-                        ],
-                    "errors" => true,
-                    "data" => []
-                ],403
-            );
+            abort(403);
         }
 
     }
@@ -327,23 +279,7 @@ class ArticleController extends Controller
 
         if (!$user)
         {
-            return response()->json(
-                [
-                    'status' =>
-                        [
-                            "message" => "User not authenticated",
-                            "code" => 401
-                        ],
-                    'errors' =>
-                        [
-                            'message' => "User could not be authenticated"
-                        ],
-                    'data' =>
-                        [
-
-                        ],
-                ],401
-            );
+            abort(401);
         }
 
         $article = Article::find($request->article_id);
@@ -395,19 +331,7 @@ class ArticleController extends Controller
         }
         else
         {
-            return response()->json(
-                [
-                    'status' =>
-                        [
-                            "message" => "User not authorised for resource",
-                            "code" => 403
-                        ],
-                    'errors' =>
-                        [
-                        ],
-                    'data' => [],
-                ],403
-            );
+           abort(403);
         }
     }
 
