@@ -440,65 +440,39 @@ class ArticleController extends Controller
 
         if (!$user)
         {
-            return response()->json(
-                [
-                    "Status" => 401,
-                    "Message" => "User not authenticated.",
-                ],401
-            );
+            abort(401);
         }
 
         $article = Article::find(Input::get('article_id'));
 
         if(!$article)
         {
-            return response()->json(
-                [
-                    'status' =>
-                        [
-                            "message" => "Resource not found",
-                            "code" => 404
-                        ],
-                    'errors' =>
-                        [
-                            'message' => "Article could not be found"
-                        ],
-                    'data' =>
-                        [
-
-                        ],
-                ],404
-            );
+            abort(404);
         }
 
         if ($user->can('view', $article))
         {
             $user->articles()->detach($article->id);
+
+
             return response()->json(
                 [
-                    "status" => 200,
-                    "message" => "Article deleted",
+                    "status" =>
+                    [
+                        "message" => "Article deleted",
+                        "code" => 200
+                    ],
+                    "errors" => false,
+                    "data" =>
+                    [
+
+                    ]
                 ]
             );
         }
         else
         {
-            return response()->json(
-                [
-                    'status' =>
-                        [
-                            "message" => "User not authorised for resource",
-                            "code" => 403
-                        ],
-                    'errors' =>
-                        [
-                        ],
-                    'data' =>
-                        [
-
-                        ],
-                ],403
-            );
+            abort(403);
         }
     }
 
@@ -565,17 +539,7 @@ class ArticleController extends Controller
 
         if (!$user)
         {
-            return response()->json(
-                [
-                    "status" =>
-                        [
-                            "message" => "User could not be authenticated",
-                            "code" => 401
-                        ],
-                    "errors" => true,
-                    "data" => []
-                ],401
-            );
+            abort(401);
         }
         return response()->json(
 
@@ -617,35 +581,14 @@ class ArticleController extends Controller
 
         if (!$user)
         {
-            return response()->json(
-                [
-                    "Status" => 401,
-                    "Message" => "User not authenticated.",
-                ],401
-            );
+            abort(401);
         }
 
         $article = Article::find(Input::get('article_id'));
 
         if(!$article)
         {
-            return response()->json(
-                [
-                    'status' =>
-                        [
-                            "message" => "Resource not found",
-                            "code" => 404
-                        ],
-                    'errors' =>
-                        [
-                            'message' => "Article could not be found"
-                        ],
-                    'data' =>
-                        [
-
-                        ],
-                ],404
-            );
+            abort(404);
         }
 
         if ($user->can('view', $article))
@@ -654,12 +597,7 @@ class ArticleController extends Controller
 
             if(!$recipient)
             {
-                return response()->json(
-                    [
-                        "Status" => 500,
-                        "Message" => "The recipient is not registered with Ticket to Talk",
-                    ],500
-                );
+                abort(405);
             }
 
             if (strcmp($request->includeNotes, "False") == 0)
@@ -676,29 +614,22 @@ class ArticleController extends Controller
 
             return response()->json(
                 [
-                    "Status" => 200,
-                    "Message" => "Invitation sent"
+                    "status" =>
+                    [
+                        "message" => "Invitation sent",
+                        "code" => 200
+                    ],
+                    "errors" => false,
+                    "data" =>
+                    [
+
+                    ]
                 ]
             );
         }
         else
         {
-            return response()->json(
-                [
-                    'status' =>
-                        [
-                            "message" => "User not authorised for resource",
-                            "code" => 403
-                        ],
-                    'errors' =>
-                        [
-                        ],
-                    'data' =>
-                        [
-
-                        ],
-                ],403
-            );
+            abort(403);
         }
 
     }
@@ -756,12 +687,7 @@ class ArticleController extends Controller
 
         if (!$user)
         {
-            return response()->json(
-                [
-                    "Status" => 401,
-                    "Message" => "User not authenticated.",
-                ],401
-            );
+            abort(401);
         }
 
         $articles = [];
@@ -773,8 +699,16 @@ class ArticleController extends Controller
 
         return response()->json(
             [
-                "Status" => 200,
-                "Articles" => $articles
+                "status" =>
+                [
+                    "message" => "Success",
+                    "code" => 200
+                ],
+                "errors" => false,
+                "data" =>
+                [
+                    "articles" => $articles
+                ]
             ]
         );
     }
@@ -847,34 +781,13 @@ class ArticleController extends Controller
 
         if (!$user)
         {
-            return response()->json(
-                [
-                    "Status" => 401,
-                    "Message" => "User not authenticated.",
-                ],401
-            );
+            abort(401);
         }
 
         $sharedArticle = $user->sharedArticles->find($request->article_id);
         if (!$sharedArticle)
         {
-            return response()->json(
-                [
-                    'status' =>
-                        [
-                            "message" => "Resource not found",
-                            "code" => 404
-                        ],
-                    'errors' =>
-                        [
-                            'message' => "Article could not be found"
-                        ],
-                    'data' =>
-                        [
-
-                        ],
-                ],404
-            );
+            abort(404);
         }
 
         $user->articles()->attach($request->article_id);
@@ -883,9 +796,16 @@ class ArticleController extends Controller
 
         return response()->json(
             [
-                "Status" => 200,
-                "Message" => "Article accepted",
-                "Articles" => $user->articles
+                "status" =>
+                [
+                    "message" => "Article accepted",
+                    "code" => 200
+                ],
+                "errors" => false,
+                "data" =>
+                [
+                    "articles" => $user->articles
+                ]
             ]
         );
     }
@@ -919,42 +839,29 @@ class ArticleController extends Controller
 
         if (!$user)
         {
-            return response()->json(
-                [
-                    "Status" => 401,
-                    "Message" => "User not authenticated.",
-                ],401
-            );
+            abort(401);
         }
 
         $sharedArticle = $user->sharedArticles->find($request->article_id);
         if (!$sharedArticle)
         {
-            return response()->json(
-                [
-                    'status' =>
-                        [
-                            "message" => "Resource not found",
-                            "code" => 404
-                        ],
-                    'errors' =>
-                        [
-                            'message' => "Article could not be found"
-                        ],
-                    'data' =>
-                        [
-
-                        ],
-                ],404
-            );
+            abort(404);
         }
 
         $user->sharedArticles()->detach($request->article_id);
 
         return response()->json(
             [
-                "Status" => 200,
-                "Message" => "Article rejected",
+                "status" =>
+                [
+                    "message" => "Article rejected",
+                    "code" => 200
+                ],
+                "errors" => false,
+                "data" =>
+                [
+
+                ]
             ]
         );
     }

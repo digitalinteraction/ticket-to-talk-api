@@ -6,6 +6,9 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ArticleTest extends TestCase
 {
+
+    var $article_id;
+
     public function testUserCanViewArticles()
     {
         $response = $this->json('GET', '/api/articles/all',
@@ -24,6 +27,9 @@ class ArticleTest extends TestCase
 
     public function testUserCanStoreArticle()
     {
+
+        global $article_id;
+
         $response = $this->json('POST', '/api/articles/store',
             [
                 'token' => $_ENV['TEST_TOKEN'],
@@ -39,10 +45,15 @@ class ArticleTest extends TestCase
             ->seeJson([
                 'errors' => false,
             ]);
+
+        $d = $response->decodeResponseJson();
+        $article_id = $d['data']['article']['id'];
     }
 
     public function testUserCanUpdateArticle()
     {
+
+        global $article_id;
 
         $rand = rand(1000000, 2000000);
 
@@ -50,7 +61,7 @@ class ArticleTest extends TestCase
             [
                 'token' => $_ENV['TEST_TOKEN'],
                 'api_key' => $_ENV['TEST_API_KEY'],
-                'article_id' => 1,
+                'article_id' => $article_id,
                 'title' => "test article",
                 'link' => "tickettotalk.openlab.ncl.ac.uk",
                 'notes' => 'this is a test article --' . $rand
@@ -69,11 +80,14 @@ class ArticleTest extends TestCase
 
     public function testUserCanGetTheirArticle()
     {
+
+        global $article_id;
+
         $response = $this->json('GET', '/api/articles/show',
             [
                 'token' => $_ENV['TEST_TOKEN'],
                 'api_key' => $_ENV['TEST_API_KEY'],
-                'article_id' => 5
+                'article_id' => $article_id
             ]
         );
 
@@ -99,6 +113,25 @@ class ArticleTest extends TestCase
             ->assertResponseStatus(403)
             ->seeJson([
                 'errors' => true,
+            ]);
+    }
+
+    public function testUserCanDeleteArticle()
+    {
+        global $article_id;
+
+        $response = $this->json('DELETE', '/api/articles/destroy',
+            [
+                'token' => $_ENV['TEST_TOKEN'],
+                'api_key' => $_ENV['TEST_API_KEY'],
+                'article_id' => $article_id
+            ]
+        );
+
+        $response
+            ->assertResponseOk()
+            ->seeJson([
+                'errors' => false,
             ]);
     }
 }
