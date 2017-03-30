@@ -3,6 +3,37 @@ services:
     web:
         build: .
         ports:
-        - "8000:80"
+        - "8080:80"
+        depends_on:
+        - mysql
         volumes:
-        - ".:/data"
+#        - ".:/app"
+        - ./app:/app/app
+        - ./bootstrap:/app/bootstrap
+        - ./config:/app/config
+        - ./database:/app/database
+        - ./public:/app/public
+        - ./resources:/app/resources
+        - ./storage:/app/storage
+        - ./tests:/app/tests
+        - ./phpunit.xml:/app/phpunit.xml
+        - ./test_log.txt:/app/test_log.xml
+        - ./test_output.txt:/app/test_output.xml
+        links:
+        - mysql
+
+    mysql:
+        image: mysql:latest
+        ports:
+          - "3306:3306"
+        environment:
+          MYSQL_ROOT_PASSWORD: secret
+          MYSQL_DATABASE: ticket_to_talk
+          MYSQL_USER: root
+          MYSQL_PASSWORD: secret
+        volumes:
+         - db_data:/var/lib/mysql
+
+volumes:
+  db_data:
+    driver: local

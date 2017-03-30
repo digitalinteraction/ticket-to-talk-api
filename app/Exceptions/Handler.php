@@ -72,14 +72,25 @@ class Handler extends ExceptionHandler
                         $message = 'Something went wrong';
                 }
             }
-            return response()->json([
-                'message' => $message,
-                'error' => true
-            ], $code);
+            return response()->json(
+                [
+                    'status' =>
+                        [
+                            'message' => $message,
+                            'code' => $code
+                        ],
+                    'errors' => true,
+                    'data' => []
+                ], $code);
         } else {
             $response = [
-                'message' => 'Something went wrong',
-                'error' => true,
+                'status' =>
+                    [
+                        'message' => "Something went wrong",
+                        'code' => 500
+                    ],
+                'errors' => true,
+                'data' => []
             ];
             if (config('app.debug')) {
                 $response['debug'] = [

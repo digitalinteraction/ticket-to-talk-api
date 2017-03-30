@@ -62,20 +62,20 @@ class AuthController extends Controller
         try {
             $newUser = $this->user->create(
                 [
-                    'name' => $request->get('name'),
-                    'email' => $request->get('email'),
-                    'password' => bcrypt($request->get('password'))
+                    'name' => $request->name,
+                    'email' => $request->email,
+                    'password' => bcrypt($request->password)
                 ]
             );
-        } catch (QueryException $ex) {
+        }
+        catch (QueryException $ex) {
             return response()->json(
                 [
-                    'message' => [
-                        'status' => '500'
+                    'status' => [
+                        'message' => 'This email is already registered with Ticket to Talk',
+                        'code' => 500
                     ],
-                    'errors' => [
-                        'This email is already registered with Ticket to Talk'
-                    ],
+                    'errors' => true,
                     'data' => []
                 ], 500
             );
@@ -85,8 +85,12 @@ class AuthController extends Controller
         if ($request->pathToPhoto != null) {
             $newUser->pathToPhoto = $request->pathToPhoto;
         } else {
+
+            $file_name = "" . $newUser->id . $newUser->name . date("YmdHis");
+            $file_name = sha1($file_name);
+
             $data = base64_decode($request->image);
-            $file_path = "ticket_to_talk/storage/profile/u_" . $newUser->id . ".jpg";
+            $file_path = "ticket_to_talk/storage/profile/u_" . $file_name . ".jpg";
 
             Storage::disk('s3')->put($file_path, $data);
 
@@ -127,10 +131,11 @@ class AuthController extends Controller
 
         return response()->json(
             [
-                'message' => [
-                    "User created."
+                'status' => [
+                    "message" => "User created.",
+                    "code" => 200
                 ],
-                'errors' => [],
+                'errors' => false,
                 'data' => [
                     'user' => $newUser,
                     'api_key' => $api_key,
@@ -166,27 +171,10 @@ class AuthController extends Controller
         try {
             $val = $this->jwtauth->attempt($credentials);
             if (!$val) {
-                return response()->json(
-                    [
-                        'status' => [
-                            'message' => "Incorrect email or password",
-                            'code' => 401
-                        ],
-                        'errors' => [
-                            "message" => "Incorrect authentication details"
-                        ],
-                        'data' => [
-                        ], 401
-                    ]
-                );
+                abort(401);
             }
         } catch (JWTException $e) {
-            return response()->json(
-                [
-                    "code" => "500",
-                    "message" => 'Failed to create token'
-                ]
-            );
+            abort(500);
         }
 
         $user = $this->jwtauth->authenticate($val);
@@ -195,14 +183,7 @@ class AuthController extends Controller
         // Send their api key.
         if (strcmp($request->api_key, $this->default_api_key) == 0) {
             if ($user->revoked) {
-                return response()->json(
-                    [
-                        "code" => "401",
-                        "message" => "error",
-                        "user" => $user,
-                        "token" => $val
-                    ], 500
-                );
+                abort(401);
             }
 
             return response()->json(
@@ -211,7 +192,7 @@ class AuthController extends Controller
                         'message' => "success",
                         'code' => 200
                     ],
-                    'errors' => [],
+                    'errors' => false,
                     'data' => [
                         "user" => $user,
                         "token" => $val,
@@ -220,21 +201,7 @@ class AuthController extends Controller
                 ]
             );
         } elseif ($request->api_key == null) {
-            return response()->json(
-                [
-                    'status' => [
-                        'message' => "error",
-                        'code' => 401
-                    ],
-                    'errors' =>
-                        [
-                            'No API key given'
-                        ],
-                    'data' => [
-                    ],
-                    401
-                ]
-            );
+            abort(401);
         } elseif (strcmp($request->api_key, $user->api_key) == 0) {
             return response()->json(
                 [
@@ -242,7 +209,7 @@ class AuthController extends Controller
                         'message' => "success",
                         'code' => 200
                     ],
-                    'errors' => [],
+                    'errors' => false,
                     'data' => [
                         "user" => $user,
                         "token" => $val
@@ -250,20 +217,7 @@ class AuthController extends Controller
                 ]
             );
         } else {
-            return response()->json(
-                [
-                    'status' => [
-                        'message' => "error",
-                        'code' => 401
-                    ],
-                    'errors' =>
-                        [
-                            'Invalid API key'
-                        ],
-                    'data' => [
-                    ]
-                ], 401
-            );
+            abort(401);
         }
     }
 
@@ -273,21 +227,18 @@ class AuthController extends Controller
         $user = $this->jwtauth->authenticate($token);
 
         if (!$user) {
-            return response()->json(
-                [
-                    "Status" => 401,
-                    'errors' => true,
-                    "Message" => "User not authenticated."
-                ], 401
-            );
+            abort(401);
         }
 
         if ($user->verified) {
             return response()->json(
                 [
-                    'status' => 501,
+                    'status' => [
+                        'message' => "Not implemented",
+                        'code' => 501
+                    ],
                     'errors' => true,
-                    'message' => 'Not implemented'
+                    'data' => []
                 ], 501
             );
         }
@@ -303,9 +254,11 @@ class AuthController extends Controller
                     $user->save();
                     return response()->json(
                         [
-                            'status' => 200,
+                            'status' => [
+                                'message' => "verified",
+                                'code' => 200
+                            ],
                             'errors' => false,
-                            'message' => 'verified',
                             'data' =>
                                 [
                                     'verified' => true
@@ -315,7 +268,10 @@ class AuthController extends Controller
                 } else {
                     return response()->json(
                         [
-                            'status' => 400,
+                            'status' => [
+                                'message' => "verified",
+                                'code' => 400
+                            ],
                             'errors' => true,
                             'message' => 'Registration code has expired.'
                         ], 400
@@ -326,10 +282,13 @@ class AuthController extends Controller
         if (!$found) {
             return response()->json(
                 [
-                    'status' => 501,
+                    'status' => [
+                        'message' => "Not implemented",
+                        'code' => 501
+                    ],
                     'errors' => true,
-                    'message' => 'Registration code does not exist'
-                ]
+                    'data' => []
+                ], 501
             );
         }
     }
@@ -346,12 +305,7 @@ class AuthController extends Controller
 
         if (!$user)
         {
-            return response()->json(
-                [
-                    "Status" => 401,
-                    "Message" => "User not authenticated.",
-                ],401
-            );
+            abort(401);
         }
 
         $code = '';
@@ -380,9 +334,16 @@ class AuthController extends Controller
 
         return response()->json(
             [
-                "status" => 200,
-                "errors" => true,
-                "messages" => "If this account exists an email has been sent to it."
+                "status" =>
+                [
+                    "message" => "If this account exists an email has been sent to it.",
+                    "code" => 200
+                ],
+                "errors" => false,
+                "data" =>
+                [
+
+                ]
             ]
         );
     }
