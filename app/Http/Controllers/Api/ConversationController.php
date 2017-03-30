@@ -130,33 +130,34 @@ class ConversationController extends Controller
         $person = Person::find($request->person_id);
         if ($user->can('view', $person))
         {
-            $dt = explode(" ", $request->datetime);
-
-            $date = explode("/", $dt[0]);
-            $time = explode(":", $dt[1]);
-
-            $date[0] = (int)$date[0];
-
-            for($i = 0; $i < count($date); $i++)
-            {
-                $date[$i] = (int)$date[$i];
-            }
-
-            for($i = 0; $i < count($time); $i++)
-            {
-                $time[$i] = (int)$time[$i];
-            }
+//            $dt = explode(" ", $request->datetime);
+//
+//            $date = explode("/", $dt[0]);
+//            $time = explode(":", $dt[1]);
+//
+//            $date[0] = (int)$date[0];
+//
+//            for($i = 0; $i < count($date); $i++)
+//            {
+//                $date[$i] = (int)$date[$i];
+//            }
+//
+//            for($i = 0; $i < count($time); $i++)
+//            {
+//                $time[$i] = (int)$time[$i];
+//            }
 
             $conversation = new Conversation();
-            if (strcmp("Android", $request->platform) == 0)
-            {
-                $conversation->date = $request->datetime;
-            }
-            else
-            {
-                $conversation->date = $request->datetime;
-            }
+//            if (strcmp("Android", $request->platform) == 0)
+//            {
+//                $conversation->date = $request->datetime;
+//            }
+//            else
+//            {
+//                $conversation->date = $request->datetime;
+//            }
 
+            $conversation->date = $request->datetime;
             $conversation->notes = $request->notes;
             $conversation->person_id = $request->person_id;
             $conversation->save();
@@ -241,6 +242,7 @@ class ConversationController extends Controller
         if ($user->can('view', $person))
         {
             $conversation->notes = $request->notes;
+            $conversation->date = $request->datetime;
             $conversation->save();
 
             return response()->json(

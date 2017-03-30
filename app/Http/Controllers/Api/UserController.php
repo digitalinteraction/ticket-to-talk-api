@@ -445,19 +445,18 @@ class UserController extends Controller
 
         if($user->can('update', $user))
         {
-            $fileName = "ticket_to_talk/storage/profile/u_" . $user->id .".jpg";
             $file_type = 'image/jpeg';
 
-            $exists = Storage::disk('s3')->exists($fileName);
+            $exists = Storage::disk('s3')->exists($user->pathToPhoto);
             if ($exists)
             {
                 // FROM: https://laracasts.com/discuss/channels/laravel/download-file-from-cloud-disk-s3-with-laravel-51
-                $file_contents = Storage::disk('s3')->get($fileName);
+                $file_contents = Storage::disk('s3')->get($user->pathToPhoto);
 
                 $response = response($file_contents, 200, [
                     'Content-Type' => $file_type,
                     'Content-Description' => 'File Transfer',
-                    'Content-Disposition' => "attachment; filename={$fileName}",
+                    'Content-Disposition' => "attachment; filename={$user->pathToPhoto}",
                     'Content-Transfer-Encoding' => 'binary',
                 ]);
 

@@ -396,9 +396,9 @@ Route::group(
             ]
         );
 
-        Route::get('picture',
+        Route::get('picture/get',
             [
-                'as' => 'user.picture',
+                'as' => 'user.picture.get',
                 'uses' => 'UserController@getProfilePicture'
             ]
         );
