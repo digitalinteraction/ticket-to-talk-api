@@ -17,6 +17,8 @@ use Tymon\JWTAuth\JWTAuth;
 class UserController extends Controller
 {
 
+    // TODO WRITE UNIT TESTS FOR
+
     private $user;
     private $jwtauth;
 
@@ -113,12 +115,7 @@ class UserController extends Controller
 
         if (!$user)
         {
-            return response()->json(
-                [
-                    "Status" => 401,
-                    "Message" => "User not authenticated.",
-                ],401
-            );
+            abort(401);
         }
 
         if ($user->can('update', $user))
@@ -143,31 +140,23 @@ class UserController extends Controller
             {
                 return response()->json(
                     [
-                        "Status" => 200,
-                        "Message" => "User updated.",
-                        "User" => $user
-
+                        "status" =>
+                        [
+                            "message" => "User updated",
+                            "code" => 200
+                        ],
+                        "errors" => false,
+                        "data" =>
+                        [
+                            "user" => $user
+                        ]
                     ]
                 );
             }
         }
         else
         {
-            return response()->json(
-                [
-                    'status' =>
-                        [
-                            "message" => "User not authorised for resource",
-                            "code" => 403
-                        ],
-                    'errors' =>
-                        [
-                        ],
-                    'data' =>
-                        [
-                        ],
-                ],403
-            );
+            abort(403);
         }
     }
 
@@ -204,12 +193,7 @@ class UserController extends Controller
 
         if (!$user)
         {
-            return response()->json(
-                [
-                    "Status" => 401,
-                    "Message" => "User not authenticated.",
-                ],401
-            );
+            abort(401);
         }
 
         $people = [];
@@ -229,9 +213,18 @@ class UserController extends Controller
 
         return response()->json(
             [
-                "people" => $people,
-                "periods" => $periods
-            ], 200
+                "status" =>
+                [
+                    "message" => "",
+                    "code" => 200
+                ],
+                "errors" => false,
+                "data" =>
+                [
+                    "people" => $people,
+                    "periods" => $periods
+                ]
+            ]
         );
     }
 
@@ -260,12 +253,7 @@ class UserController extends Controller
 
         if (!$user)
         {
-            return response()->json(
-                [
-                    "Status" => 401,
-                    "Message" => "User not authenticated.",
-                ],401
-            );
+            abort(401);
         }
 
         $person = Person::find($request->person_id);
@@ -280,8 +268,16 @@ class UserController extends Controller
 
         return response()->json(
             [
-                "status" => 200,
-                "added" => true
+                "status" =>
+                [
+                    "message" => "",
+                    "code" => 200
+                ],
+                "errors" => false,
+                "data" =>
+                [
+                    "added" => true
+                ]
             ]
         );
     }
@@ -306,12 +302,7 @@ class UserController extends Controller
 
         if (!$user)
         {
-            return response()->json(
-                [
-                    "Status" => 401,
-                    "Message" => "User not authenticated.",
-                ],401
-            );
+            abort(401);
         }
 
         $invites = [];
@@ -334,7 +325,16 @@ class UserController extends Controller
 
         return response()->json(
             [
-                "invites" => $invites
+                "status" =>
+                [
+                    "message" => "",
+                    "code" => 200
+                ],
+                "errors" => false,
+                "data" =>
+                [
+                    "invites" => $invites
+                ]
             ]
         );
     }
@@ -364,12 +364,7 @@ class UserController extends Controller
 
         if (!$user)
         {
-            return response()->json(
-                [
-                    "Status" => 401,
-                    "Message" => "User not authenticated.",
-                ],401
-            );
+            abort(401);
         }
 
         $invite = Invite::where('recipient_email', $user->email)->where('person_id', $request->person_id)->get()->first();
@@ -379,8 +374,16 @@ class UserController extends Controller
 
         return response()->json(
             [
-                "Status" => 200,
-                "person" => $user->people()->find($request->person_id)
+                "status" =>
+                [
+                    "message" => "",
+                    "code" => 200
+                ],
+                "errors" => false,
+                "data" =>
+                [
+                    "person" => $user->people()->find($request->person_id)
+                ]
             ]
         );
     }
@@ -408,12 +411,7 @@ class UserController extends Controller
 
         if (!$user)
         {
-            return response()->json(
-                [
-                    "Status" => 401,
-                    "Message" => "User not authenticated.",
-                ],401
-            );
+            abort(401);
         }
 
         $invite = Invite::where('recipient_email', $user->email)->where('person_id', $request->person_id)->get()->first();
@@ -421,8 +419,16 @@ class UserController extends Controller
 
         return response()->json(
             [
-                "Status" => 200,
-                "Message" => "Invitation rejected"
+                "status" =>
+                [
+                    "message" => "invitation rejected",
+                    "code" => 200
+                ],
+                "errors" => false,
+                "data" =>
+                [
+
+                ]
             ]
         );
     }
@@ -439,19 +445,18 @@ class UserController extends Controller
 
         if($user->can('update', $user))
         {
-            $fileName = "ticket_to_talk/storage/profile/u_" . $user->id .".jpg";
             $file_type = 'image/jpeg';
 
-            $exists = Storage::disk('s3')->exists($fileName);
+            $exists = Storage::disk('s3')->exists($user->pathToPhoto);
             if ($exists)
             {
                 // FROM: https://laracasts.com/discuss/channels/laravel/download-file-from-cloud-disk-s3-with-laravel-51
-                $file_contents = Storage::disk('s3')->get($fileName);
+                $file_contents = Storage::disk('s3')->get($user->pathToPhoto);
 
                 $response = response($file_contents, 200, [
                     'Content-Type' => $file_type,
                     'Content-Description' => 'File Transfer',
-                    'Content-Disposition' => "attachment; filename={$fileName}",
+                    'Content-Disposition' => "attachment; filename={$user->pathToPhoto}",
                     'Content-Transfer-Encoding' => 'binary',
                 ]);
 
@@ -461,23 +466,12 @@ class UserController extends Controller
             }
             else
             {
-              return response()->json(
-                  [
-                      "status" => 404,
-                      'errors' => true,
-                      "message" => "Unauthorised for resource"
-                  ],404
-              );
+              abort(404);
             }
         }
         else
         {
-            return response()->json(
-                [
-                    "Status" => 403,
-                    "Message" => "Unauthorised for resource"
-                ],403
-            );
+            abort(403);
         }
     }
 }

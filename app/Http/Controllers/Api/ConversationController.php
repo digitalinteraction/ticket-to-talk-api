@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Input;
 use Tymon\JWTAuth\JWTAuth;
 
@@ -48,12 +49,7 @@ class ConversationController extends Controller
 
         if (!$user)
         {
-            return response()->json(
-                [
-                    "Status" => 401,
-                    "Message" => "User not authenticated.",
-                ],401
-            );
+            abort(401);
         }
 
         $person = Person::find(Input::get('person_id'));
@@ -74,29 +70,22 @@ class ConversationController extends Controller
 
             return response()->json(
                 [
-                    "status" => 200,
-                    "conversations" => $conversations
+                    "status" =>
+                    [
+                        "message" => "",
+                        "code" => 200
+                    ],
+                    "errors" => false,
+                    "data" =>
+                    [
+                        "conversations" => $conversations
+                    ]
                 ]
             );
         }
         else
         {
-            return response()->json(
-                [
-                    'status' =>
-                        [
-                            "message" => "User not authorised for resource",
-                            "code" => 403
-                        ],
-                    'errors' =>
-                        [
-                        ],
-                    'data' =>
-                        [
-
-                        ],
-                ],403
-            );
+            abort(403);
         }
     }
 
@@ -135,72 +124,62 @@ class ConversationController extends Controller
 
         if (!$user)
         {
-            return response()->json(
-                [
-                    "Status" => 401,
-                    "Message" => "User not authenticated.",
-                ],401
-            );
+            abort(401);
         }
 
+        $person = Person::find($request->person_id);
         if ($user->can('view', $person))
         {
-            $dt = explode(" ", $request->datetime);
-
-            $date = explode("/", $dt[0]);
-            $time = explode(":", $dt[1]);
-
-            $date[0] = (int)$date[0];
-
-            for($i = 0; $i < count($date); $i++)
-            {
-                $date[$i] = (int)$date[$i];
-            }
-
-            for($i = 0; $i < count($time); $i++)
-            {
-                $time[$i] = (int)$time[$i];
-            }
+//            $dt = explode(" ", $request->datetime);
+//
+//            $date = explode("/", $dt[0]);
+//            $time = explode(":", $dt[1]);
+//
+//            $date[0] = (int)$date[0];
+//
+//            for($i = 0; $i < count($date); $i++)
+//            {
+//                $date[$i] = (int)$date[$i];
+//            }
+//
+//            for($i = 0; $i < count($time); $i++)
+//            {
+//                $time[$i] = (int)$time[$i];
+//            }
 
             $conversation = new Conversation();
-            if (strcmp("Android", $request->platform) == 0)
-            {
-                $conversation->date = $request->datetime;
-            }
-            else
-            {
-                $conversation->date = $request->datetime;
-            }
+//            if (strcmp("Android", $request->platform) == 0)
+//            {
+//                $conversation->date = $request->datetime;
+//            }
+//            else
+//            {
+//                $conversation->date = $request->datetime;
+//            }
 
+            $conversation->date = $request->datetime;
             $conversation->notes = $request->notes;
             $conversation->person_id = $request->person_id;
             $conversation->save();
 
             return response()->json(
                 [
-                    "status" => 200,
-                    "conversation" => $conversation
+                    "status" =>
+                    [
+                        "message" => "",
+                        "code" => 200
+                    ],
+                    "errors" => false,
+                    "data" =>
+                    [
+                        "conversation" => $conversation
+                    ]
                 ]
             );
         }
         else
         {
-            return response()->json(
-                [
-                    'status' =>
-                        [
-                            "message" => "User not authorised for resource",
-                            "code" => 403
-                        ],
-                    'errors' =>
-                        [
-                        ],
-                    'data' =>
-                        [
-
-                        ],
-                ],403
-            );
+            abort(403);
         }
     }
 
@@ -250,57 +229,40 @@ class ConversationController extends Controller
 
         if (!$user)
         {
-            return response()->json(
-                [
-                    "Status" => 401,
-                    "Message" => "User not authenticated.",
-                ],401
-            );
+            abort(401);
         }
 
         $conversation = Conversation::find($request->conversation_id);
         if (!$conversation)
         {
-            return response()->json(
-                [
-                    "Status" => 404,
-                    "Message" => "Conversation not found",
-                ],404
-            );
+            abort(404);
         }
 
         $person = Person::find($conversation->person_id);
         if ($user->can('view', $person))
         {
             $conversation->notes = $request->notes;
+            $conversation->date = $request->datetime;
             $conversation->save();
 
             return response()->json(
                 [
-                    "Status" => 200,
-                    "Message" => "Conversation updated",
-                    "Conversation" => $conversation
+                    "status" =>
+                    [
+                        "message" => "Conversation updated",
+                        "code" => 200
+                    ],
+                    "errors" => false,
+                    "data" =>
+                    [
+                        "conversation" => $conversation
+                    ]
                 ]
             );
         }
         else
         {
-            return response()->json(
-                [
-                    'status' =>
-                        [
-                            "message" => "User not authorised for resource",
-                            "code" => 403
-                        ],
-                    'errors' =>
-                        [
-                        ],
-                    'data' =>
-                        [
-
-                        ],
-                ],403
-            );
+            abort(403);
         }
     }
 
@@ -327,12 +289,7 @@ class ConversationController extends Controller
 
         if (!$user)
         {
-            return response()->json(
-                [
-                    "Status" => 401,
-                    "Message" => "User not authenticated.",
-                ],401
-            );
+            abort(401);
         }
 
         $conversation = Conversation::find(Input::get('conversation_id'));
@@ -344,29 +301,22 @@ class ConversationController extends Controller
 
             return response()->json(
                 [
-                    "status" => 200,
-                    "message" => "conversation deleted."
+                    "status" =>
+                    [
+                        "message" => "conversation deleted.",
+                        "code" => 200
+                    ],
+                    "errors" => false,
+                    "data" =>
+                    [
+
+                    ]
                 ]
             );
         }
         else
         {
-            return response()->json(
-                [
-                    'status' =>
-                        [
-                            "message" => "User not authorised for resource",
-                            "code" => 403
-                        ],
-                    'errors' =>
-                        [
-                        ],
-                    'data' =>
-                        [
-
-                        ],
-                ],403
-            );
+            abort(403);
         }
     }
 
@@ -394,12 +344,7 @@ class ConversationController extends Controller
 
         if (!$user)
         {
-            return response()->json(
-                [
-                    "Status" => 401,
-                    "Message" => "User not authenticated.",
-                ],401
-            );
+            abort(401);
         }
 
         $conversation = Conversation::find($request->conversation_id);
@@ -411,29 +356,22 @@ class ConversationController extends Controller
 
             return response()->json(
                 [
-                    "status" => 200,
-                    "message" => "ticket added to conversation"
+                    "status" =>
+                    [
+                        "message" => "ticket added to conversation",
+                        "code" => 200
+                    ],
+                    "errors" => false,
+                    "data" =>
+                    [
+
+                    ]
                 ]
             );
         }
         else
         {
-            return response()->json(
-                [
-                    'status' =>
-                        [
-                            "message" => "User not authorised for resource",
-                            "code" => 403
-                        ],
-                    'errors' =>
-                        [
-                        ],
-                    'data' =>
-                        [
-
-                        ],
-                ],403
-            );
+            abort(403);
         }
     }
 
@@ -461,12 +399,7 @@ class ConversationController extends Controller
 
         if (!$user)
         {
-            return response()->json(
-                [
-                    "Status" => 401,
-                    "Message" => "User not authenticated.",
-                ],401
-            );
+            abort(401);
         }
 
         $conversation = Conversation::find($request->conversation_id);
@@ -479,29 +412,22 @@ class ConversationController extends Controller
 
             return response()->json(
                 [
-                    "status" => 200,
-                    "message" => "ticket removed from conversation"
+                    "status" =>
+                    [
+                        "message" => "ticket removed from conversation",
+                        "code" => 200
+                    ],
+                    "errors" => false,
+                    "data" =>
+                    [
+
+                    ]
                 ]
             );
         }
         else
         {
-            return response()->json(
-                [
-                    'status' =>
-                        [
-                            "message" => "User not authorised for resource",
-                            "code" => 403
-                        ],
-                    'errors' =>
-                        [
-                        ],
-                    'data' =>
-                        [
-
-                        ],
-                ],403
-            );
+            abort(403);
         }
     }
 }

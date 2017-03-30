@@ -75,12 +75,7 @@ class TicketController extends Controller
 
         if (!$user)
         {
-            return response()->json(
-                [
-                    "Status" => 401,
-                    "Message" => "User not authenticated."
-                ],401
-            );
+            abort(401);
         }
 
         $person = Person::find($request['ticket']['person_id']);
@@ -108,7 +103,11 @@ class TicketController extends Controller
             $ticket->person_id = $request['ticket']['person_id'];
             $ticket->area = $request['ticket']['area'];
             $ticket->period_id = $period->id;
+
             $ticket->save();
+
+            $file_name = "" . $ticket->id . $ticket->title . date("YmdHis");
+            $file_name = sha1($file_name);
 
             $ticket->users()->attach($user->id, ['user_type' => 'admin']);
 
@@ -123,10 +122,10 @@ class TicketController extends Controller
                 switch ($request['ticket']['mediaType'])
                 {
                     case "Sound":
-                        $file_path = "ticket_to_talk/storage/audio/t_" . $ticket->id .".wav";
+                        $file_path = "ticket_to_talk/storage/audio/t_" . $file_name .".wav";
                         break;
                     case "Picture":
-                        $file_path = "ticket_to_talk/storage/photo/t_" . $ticket->id .".jpg";
+                        $file_path = "ticket_to_talk/storage/photo/t_" . $file_name .".jpg";
                         break;
                     case "Video":
                         break;
@@ -140,32 +139,26 @@ class TicketController extends Controller
             }
 
             if ($ticket->id != 0) {
+
                 return response()->json(
                     [
-                        "status" => 200,
-                        "message" => "Ticket saved",
-                        "ticket" => $ticket,
-                        'owner' => $user,
+                        "status" =>
+                        [
+                            "message" => "Ticket saved",
+                            "code" => 200
+                        ],
+                        "errors" => false,
+                        "data" =>
+                        [
+                            "ticket" => $ticket,
+                            'owner' => $user,
+                        ]
                     ]
                 );
             }
         } else
         {
-            return response()->json(
-                [
-                    'status' =>
-                        [
-                            "message" => "User not authorised for resource",
-                            "code" => 403
-                        ],
-                    'errors' =>
-                        [
-                        ],
-                    'data' =>
-                        [
-                        ],
-                ],403
-            );
+            abort(403);
         }
     }
 
@@ -222,23 +215,13 @@ class TicketController extends Controller
 
         if (!$user)
         {
-            return response()->json(
-                [
-                    "Status" => 401,
-                    "Message" => "User not authenticated."
-                ],401
-            );
+            abort(401);
         }
 
         $ticket = Ticket::find($request->ticket_id);
         if (!$ticket)
         {
-            return response()->json(
-                [
-                    "Status" => 404,
-                    "Message" => "Ticket not found"
-                ],404
-            );
+            abort(403);
         }
 
         if ($user->can('view', $ticket))
@@ -265,31 +248,25 @@ class TicketController extends Controller
             $saved = $ticket->save();
             if ($saved)
             {
+
                 return response()->json(
                     [
-                        "Status" => 200,
-                        "Message" => "Ticket updated",
-                        "Ticket" => $ticket,
+                        "status" =>
+                        [
+                            "message" => "",
+                            "code" => 200
+                        ],
+                        "errors" => false,
+                        "data" =>
+                        [
+                            'ticket' => $ticket
+                        ]
                     ]
                 );
             }
         } else
         {
-            return response()->json(
-                [
-                    'status' =>
-                        [
-                            "message" => "User not authorised for resource",
-                            "code" => 403
-                        ],
-                    'errors' =>
-                        [
-                        ],
-                    'data' =>
-                        [
-                        ],
-                ],403
-            );
+            abort(403);
         }
     }
 
@@ -316,12 +293,7 @@ class TicketController extends Controller
 
         if (!$user)
         {
-            return response()->json(
-                [
-                    "Status" => 401,
-                    "Message" => "User not authenticated."
-                ],401
-            );
+            abort(401);
         }
 
         $ticket = Ticket::find(Input::get('ticket_id'));
@@ -331,28 +303,22 @@ class TicketController extends Controller
 
             return response()->json(
                 [
-                    "status" => 200,
-                    "message" => "Ticket deleted"
+                    "status" =>
+                    [
+                        "message" => "Ticket deleted",
+                        "code" => 200
+                    ],
+                    "errors" => false,
+                    "data" =>
+                    [
+
+                    ]
                 ]
             );
         }
         else
         {
-            return response()->json(
-                [
-                    'status' =>
-                        [
-                            "message" => "User not authorised for resource",
-                            "code" => 403
-                        ],
-                    'errors' =>
-                        [
-                        ],
-                    'data' =>
-                        [
-                        ],
-                ],403
-            );
+            abort(403);
         }
     }
 
@@ -408,12 +374,7 @@ class TicketController extends Controller
         }
         else
         {
-            return response()->json(
-                [
-                    "Status" => 403,
-                    "Message" => "User not authorised for resource."
-                ],403
-            );
+            abort(403);
         }
     }
 }

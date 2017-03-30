@@ -26,5 +26,9 @@
         <env name="CACHE_DRIVER" value="array"/>
         <env name="SESSION_DRIVER" value="array"/>
         <env name="QUEUE_DRIVER" value="sync"/>
+        <env name='TEST_EMAIL' value='d.welsh@ncl.ac.uk'/>
+        <env name="TEST_TOKEN" value="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEsImlzcyI6Imh0dHA6XC9cL2xvY2FsaG9zdDo4MDgwXC9hcGlcL2F1dGhcL2xvZ2luIiwiaWF0IjoxNDkwNzQzNDE5LCJleHAiOjE0OTA3NDcwMTksIm5iZiI6MTQ5MDc0MzQxOSwianRpIjoiOTE5NWZlNWIxMjlhNWY5YTU1MWUwMDg5N2MwMTA4YmYifQ.hUKKjUchTbnZ1J8CshgMU3zMrosZ0SkXXNhSN6pZb0I"/>
+        <env name="TEST_API_KEY" value="9220a61e2de15c95a3ed4a5a04121339adcdede453c9506b8eab76d56db56316"/>
+        <env name="TEST_PASSWORD" value="2BB80D537B1DA3E38BD30361AA855686BDE0EACD7162FEF6A25FE97BF527A25B"/>
     </php>
 </phpunit>

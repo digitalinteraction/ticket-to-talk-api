@@ -6,9 +6,9 @@ server {
 
     index index.html index.htm index.php;
 
-    if ( $http_x_forwarded_proto != 'https' ) {
-        return 301 https://$host$request_uri;
-    }
+#    if ( $http_x_forwarded_proto != 'https' ) {
+#        return 301 https://$host$request_uri;
+#    }
 
     charset utf-8;
 

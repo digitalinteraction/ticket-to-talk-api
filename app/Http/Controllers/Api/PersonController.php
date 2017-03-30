@@ -22,7 +22,7 @@ class PersonController extends Controller
     private $user;
     private $jwtauth;
 
-    public function  __construct(User $user, JWTAuth $jwtauth)
+    public function __construct(User $user, JWTAuth $jwtauth)
     {
         $this->user = $user;
         $this->jwtauth = $jwtauth;
@@ -81,17 +81,12 @@ class PersonController extends Controller
         $token = Input::get('token');
         $user = $this->jwtauth->authenticate($token);
 
-        if (!$user)
-        {
-            return response()->json(
-                [
-                    "Status" => 401,
-                    "Message" => "User not authenticated.",
-                ],401
-            );
+        if (!$user) {
+            abort(401);
         }
 
         // AES-256-CBC
+
         $iv = bin2hex(openssl_random_pseudo_bytes(8));
         $notes = openssl_encrypt($request->notes, env('ENC_SCHEME'), env('AES_KEY'), 0, $iv);
         $year = openssl_encrypt($request->birthYear, env('ENC_SCHEME'), env('AES_KEY'), 0, $iv);
@@ -108,16 +103,15 @@ class PersonController extends Controller
         $person->area = $area;
         $person->iv = $iv;
 
+
         $area = new Area();
         $area->townCity = $request->townCity;
 
         $stored = $area->checkAreaExists($area);
 
-        if(!$stored)
-        {
+        if (!$stored) {
             $area->save();
-        } else
-        {
+        } else {
             $area = $stored;
         }
 
@@ -125,13 +119,14 @@ class PersonController extends Controller
         $person->save();
         $person->users()->attach($user->id, ['user_type' => 'Admin', "relation" => $request->relation]);
 
-        if ($request->pathToPhoto != null)
-        {
+        if ($request->pathToPhoto != null) {
             $person->pathToPhoto = $request->pathToPhoto;
-        }
-        else
-        {
-            $file_path = "ticket_to_talk/storage/profile/p_" . $person->id .".jpg";
+        } else {
+
+            $file_name = "" . $person->id . $person->name . date("YmdHis");
+            $file_name = sha1($file_name);
+
+            $file_path = "ticket_to_talk/storage/profile/p_" . $file_name . ".jpg";
             $person->pathToPhoto = $file_path;
             $data = base64_decode($request->image);
 
@@ -142,37 +137,35 @@ class PersonController extends Controller
 
         $saved = $person->save();
 
-        if (count(Period::find([1,2,3,4])) == 0)
-        {
+        if (count(Period::find([1, 2, 3, 4])) == 0) {
             $texts = ["Childhood", "Teenager", "Adult", "Retirement"];
-            foreach ($texts as $text)
-            {
+            foreach ($texts as $text) {
                 $period = new Period();
                 $period->text = $text;
                 $period->save();
             }
         }
 
-        $person->periods()->attach([1,2,3,4]);
+        $person->periods()->attach([1, 2, 3, 4]);
 
         if ($saved) {
             return response()->json(
                 [
-                    "status" => 200,
-                    "message" => "Person saved",
-                    "person" => $person->decryptPerson(),
-                    'owner' => $user
+                    "status" =>
+                        [
+                            "message" => "Person saved",
+                            "code" => 200
+                        ],
+                    "errors" => false,
+                    "data" =>
+                        [
+                            "person" => $person->decryptPerson(),
+                            'owner' => $user
+                        ]
                 ]
             );
-        } else
-        {
-            return response()->json(
-                [
-                    "status" => 500,
-                    "message" => "Error saving person",
-                    "person" => $person
-                ],500
-            );
+        } else {
+            abort(500);
         }
     }
 
@@ -197,61 +190,39 @@ class PersonController extends Controller
         $token = Input::get('token');
         $user = $this->jwtauth->authenticate($token);
 
-        if (!$user)
-        {
-            return response()->json(
-                [
-                    "Status" => 401,
-                    "Message" => "User not authenticated.",
-                ],401
-            );
+        if (!$user) {
+            abort(401);
         }
 
         $person = Person::find(Input::get('person_id'));
 
-        if(!$person)
-        {
-            return response()->json(
-                [
-                    "status" => 404,
-                    "message" => "Person not found",
-                ],404
-            );
+        if (!$person) {
+            abort(404);
         }
-        if($user->can('view', $person))
-        {
+        if ($user->can('view', $person)) {
             return response()->json(
                 [
-                    "status" => 200,
-                    "message" => "Person Found",
-                    "person" => $person->decryptPerson(),
+                    "status" =>
+                        [
+                            "message" => "Person Found",
+                            "code" => 200,
+                        ],
+                    "errors" => false,
+                    "data" =>
+                        [
+                            "person" => $person->decryptPerson()
+                        ],
                 ]
             );
-        } else
-        {
-            return response()->json(
-                [
-                    'status' =>
-                        [
-                            "message" => "User not authorised for resource",
-                            "code" => 403
-                        ],
-                    'errors' =>
-                        [
-                        ],
-                    'data' =>
-                        [
-
-                        ],
-                ],403
-            );
+        } else {
+            abort(403);
         }
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -290,21 +261,19 @@ class PersonController extends Controller
         $token = Input::get('token');
         $user = $this->jwtauth->authenticate($token);
 
-        if (!$user)
-        {
-            return response()->json(
-                [
-                    "Status" => 401,
-                    "Message" => "User not authenticated.",
-                ],401
-            );
+        if (!$user) {
+            abort(401);
         }
 
-        $person = Person::find($request->person_id);
+        $person = $user->people->find($request->person_id);
 
-        if ($user->can('view', $person))
-        {
-            $person = $person->decryptPerson();
+
+        $person = $person->decryptPerson();
+
+
+
+        if ($user->can('view', $person)) {
+
             $person->name = $request->name;
             $person->birthYear = $request->birthYear;
             $person->birthPlace = $request->birthPlace;
@@ -313,10 +282,13 @@ class PersonController extends Controller
 
             $user->people()->updateExistingPivot($person->id, ['user_type' => $user->people()->find($request->person_id)->pivot->user_type, 'relation' => $request->relation], true);
 
-            if ($request->imageHash != null)
-            {
+            if ($request->imageHash != null) {
                 $person->imageHash = $request->imageHash;
-                $file_path = "ticket_to_talk/storage/profile/p_" . $person->id . ".jpg";
+
+                $file_name = "" . $person->id . $person->name . date("YmdHis");
+                $file_name = sha1($file_name);
+
+                $file_path = "ticket_to_talk/storage/profile/p_" . $file_name . ".jpg";
                 $data = base64_decode($request->image);
 
                 Storage::disk('s3')->put($file_path, $data);
@@ -328,22 +300,24 @@ class PersonController extends Controller
             $p_enc->save();
 
             $person->pivot->relation = $request->relation;
+
+
             return response()->json(
                 [
-                    "Status" => 200,
-                    "Message" => "Person updated",
-                    "Person" => $person
+                    "status" =>
+                        [
+                            "message" => "Person updated",
+                            "code" => 200
+                        ],
+                    "errors" => false,
+                    "data" =>
+                        [
+                            "person" => $person->decryptPerson()
+                        ]
                 ]
             );
-        }
-        else
-        {
-            return response()->json(
-                [
-                    "Status" => 403,
-                    "Message" => "Unauthorised for resource"
-                ],403
-            );
+        } else {
+            abort(403);
         }
     }
 
@@ -369,45 +343,30 @@ class PersonController extends Controller
         $token = Input::get('token');
         $user = $this->jwtauth->authenticate($token);
 
-        if (!$user)
-        {
-            return response()->json(
-                [
-                    "Status" => 401,
-                    "Message" => "User not authenticated.",
-                ],401
-            );
+        if (!$user) {
+            abort(401);
         }
 
         $person = Person::find(Input::get("person_id"));
-        if (!$person)
-        {
-            return response()->json(
-                [
-                    "Status" => 404,
-                    "Message" => "Resource not found",
-                ],404
-            );
+        if (!$person) {
+            abort(404);
         }
-        if ($user->can('delete', $person))
-        {
+        if ($user->can('delete', $person)) {
             $person->delete();
 
             return response()->json(
                 [
-                    "status" => 200,
-                    "message" => "person deleted."
-                ]
+                    "status" =>
+                        [
+                            "message" => "Person deleted",
+                            "code" => 200
+                        ],
+                    'errors' => false,
+                    "data" => []
+                ], 200
             );
-        }
-        else
-        {
-            return response()->json(
-                [
-                    "Status" => 403,
-                    "Message" => "Unauthorised for resource"
-                ],403
-            );
+        } else {
+            abort(403);
         }
     }
 
@@ -430,45 +389,33 @@ class PersonController extends Controller
         $token = Input::get('token');
         $user = $this->jwtauth->authenticate($token);
 
-        if (!$user)
-        {
-            return response()->json(
-                [
-                    "Status" => 401,
-                    "Message" => "User not authenticated.",
-                ],401
-            );
+        if (!$user) {
+            abort(401);
         }
 
-        $person = Person::find((int) Input::get('person_id'));
-        if(!$person)
-        {
-            return response()->json(
-                [
-                    "Status" => 404,
-                    'errors' => "yes",
-                    "Message" => "Resource not found",
-                ],404
-            );
+        $person = Person::find((int)Input::get('person_id'));
+        if (!$person) {
+            abort(404);
         }
 
-        if($user->can('view', $person))
-        {
+        if ($user->can('view', $person)) {
             $users = $person->users;
             return response()->json(
                 [
-                    "status" => 200,
-                    "users" => $users
+                    "status" =>
+                        [
+                            "message" => "Users found",
+                            "code" => 200
+                        ],
+                    "errors" => false,
+                    "data" =>
+                        [
+                            "users" => $users
+                        ]
                 ]
             );
-        } else
-        {
-            return response()->json(
-                [
-                    "Status" => 403,
-                    "Message" => "Unauthorised for resource"
-                ],403
-            );
+        } else {
+            abort(403);
         }
     }
 
@@ -493,56 +440,31 @@ class PersonController extends Controller
         $token = Input::get('token');
         $user = $this->jwtauth->authenticate($token);
 
-        if (!$user)
-        {
-            return response()->json(
-                [
-                    "Status" => 401,
-                    "Message" => "User not authenticated.",
-                ],401
-            );
+        if (!$user) {
+            abort(401);
         }
 
-        $person_id = (int) Input::get('person_id');
-        $person = $user->people->find($person_id);
+        $person = Person::find(Input::get('person_id'));
 
-        if (!$person)
-        {
-            return response()->json(
-                [
-                    'message' => [
-                        'status' => 'error'
-                    ],
-                    'errors' => [
-                        'Resources could not be found'
-                    ],
-                    'data' => []
-                ],404
-            );
+        if (!$person) {
+            abort(404);
         }
 
-        if($user->can('view', $person))
-        {
+        if ($user->can('view', $person)) {
             $tickets = [];
             $tags = [];
             $ticket_tags = [];
-            foreach($person->tickets as $ticket)
-            {
-                if ($user->can('view', $ticket))
-                {
+            foreach ($person->tickets as $ticket) {
+                if ($user->can('view', $ticket)) {
                     array_push($tickets, $ticket);
-                    foreach($ticket->tags as $tag)
-                    {
+                    foreach ($ticket->tags as $tag) {
                         $already_added = false;
-                        foreach($tags as $t)
-                        {
-                            if ($t == $tag)
-                            {
+                        foreach ($tags as $t) {
+                            if ($t == $tag) {
                                 $already_added = true;
                             }
                         }
-                        if (!$already_added)
-                        {
+                        if (!$already_added) {
                             array_push($tags, $tag);
                         }
                         $ticket_tag =
@@ -558,20 +480,23 @@ class PersonController extends Controller
 
             return response()->json(
                 [
-                    "status" => 200,
-                    "tickets" => $tickets,
-                    "tags" => $tags,
-                    "ticket_tags" => $ticket_tags
+                    "status" =>
+                        [
+                            "message" => "success",
+                            "code" => 200,
+                        ],
+                    "errors" => false,
+                    "data" =>
+                    [
+                        "tickets" => $tickets,
+                        "tags" => $tags,
+                        "ticket_tags" => $ticket_tags
+                    ],
+                    200
                 ]
             );
-        } else
-        {
-            return response()->json(
-                [
-                    "Status" => 403,
-                    "Message" => "Unauthorised for resource"
-                ],403
-            );
+        } else {
+            abort(403);
         }
     }
 
@@ -587,15 +512,13 @@ class PersonController extends Controller
 
         $id = Input::get('person_id');
 
-        if($user->can('view', Person::find($id)))
-        {
-            $fileName = 'p_'.$id.'.jpg';
+        if ($user->can('view', Person::find($id))) {
+            $fileName = 'p_' . $id . '.jpg';
 
             $file_type = 'image/jpeg';
 
             $exists = Storage::disk('s3')->exists($fileName);
-            if ($exists)
-            {
+            if ($exists) {
                 // FROM: https://laracasts.com/discuss/channels/laravel/download-file-from-cloud-disk-s3-with-laravel-51
                 $file_contents = Storage::disk('s3')->get($fileName);
 
@@ -610,15 +533,8 @@ class PersonController extends Controller
 
                 return $response;
             }
-        }
-        else
-        {
-            return response()->json(
-                [
-                    "Status" => 403,
-                    "Message" => "Unauthorised for resource"
-                ],403
-            );
+        } else {
+            abort(403);
         }
     }
 }

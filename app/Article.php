@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Article extends Model
 {
+
     /**
      * Attributes that are mass assignable.
      *
