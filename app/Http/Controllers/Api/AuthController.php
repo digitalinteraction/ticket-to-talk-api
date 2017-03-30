@@ -85,8 +85,12 @@ class AuthController extends Controller
         if ($request->pathToPhoto != null) {
             $newUser->pathToPhoto = $request->pathToPhoto;
         } else {
+
+            $file_name = "" . $newUser->id . $newUser->name . date("YmdHis");
+            $file_name = sha1($file_name);
+
             $data = base64_decode($request->image);
-            $file_path = "ticket_to_talk/storage/profile/u_" . $newUser->id . ".jpg";
+            $file_path = "ticket_to_talk/storage/profile/u_" . $file_name . ".jpg";
 
             Storage::disk('s3')->put($file_path, $data);
 
