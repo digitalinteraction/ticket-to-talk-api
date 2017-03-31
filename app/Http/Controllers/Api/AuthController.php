@@ -171,7 +171,21 @@ class AuthController extends Controller
         try {
             $val = $this->jwtauth->attempt($credentials);
             if (!$val) {
-                abort(401);
+
+                return response()->json(
+                    [
+                        "status" =>
+                        [
+                            "message" => "Invalid credentials",
+                            "code" => 200
+                        ],
+                        "errors" => true,
+                        "data" =>
+                        [
+
+                        ]
+                    ]
+                );
             }
         } catch (JWTException $e) {
             abort(500);
