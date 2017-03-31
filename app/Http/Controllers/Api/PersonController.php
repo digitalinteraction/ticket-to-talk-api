@@ -512,20 +512,22 @@ class PersonController extends Controller
 
         $id = Input::get('person_id');
 
-        if ($user->can('view', Person::find($id))) {
+        $person = Person::find($id);
+
+        if ($user->can('view', $person)) {
             $fileName = 'p_' . $id . '.jpg';
 
             $file_type = 'image/jpeg';
 
-            $exists = Storage::disk('s3')->exists($fileName);
+            $exists = Storage::disk('s3')->exists($person->pathToPhoto);
             if ($exists) {
                 // FROM: https://laracasts.com/discuss/channels/laravel/download-file-from-cloud-disk-s3-with-laravel-51
-                $file_contents = Storage::disk('s3')->get($fileName);
+                $file_contents = Storage::disk('s3')->get($person->pathToPhoto);
 
                 $response = response($file_contents, 200, [
                     'Content-Type' => $file_type,
                     'Content-Description' => 'File Transfer',
-                    'Content-Disposition' => "attachment; filename={$fileName}",
+                    'Content-Disposition' => "attachment; filename={$person->pathToPhoto}",
                     'Content-Transfer-Encoding' => 'binary',
                 ]);
 
