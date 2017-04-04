@@ -447,6 +447,13 @@ Route::group(
             ]
         );
 
+        Route::get('/get/tickets',
+            [
+                'as' => 'conversation.get.tickets',
+                'uses' => 'ConversationController@getTicketsInConversation'
+            ]
+        );
+
         Route::post('/store',
             [
                 'as' => 'conversation.store',
