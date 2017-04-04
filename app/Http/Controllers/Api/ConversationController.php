@@ -130,32 +130,7 @@ class ConversationController extends Controller
         $person = Person::find($request->person_id);
         if ($user->can('view', $person))
         {
-//            $dt = explode(" ", $request->datetime);
-//
-//            $date = explode("/", $dt[0]);
-//            $time = explode(":", $dt[1]);
-//
-//            $date[0] = (int)$date[0];
-//
-//            for($i = 0; $i < count($date); $i++)
-//            {
-//                $date[$i] = (int)$date[$i];
-//            }
-//
-//            for($i = 0; $i < count($time); $i++)
-//            {
-//                $time[$i] = (int)$time[$i];
-//            }
-
             $conversation = new Conversation();
-//            if (strcmp("Android", $request->platform) == 0)
-//            {
-//                $conversation->date = $request->datetime;
-//            }
-//            else
-//            {
-//                $conversation->date = $request->datetime;
-//            }
 
             $conversation->date = $request->datetime;
             $conversation->notes = $request->notes;
@@ -403,9 +378,8 @@ class ConversationController extends Controller
         }
 
         $conversation = Conversation::find($request->conversation_id);
-
-
         $person = Person::find($conversation->person_id);
+
         if ($user->can('view', $person))
         {
             $conversation->tickets()->detach($request->ticket_id);
@@ -422,6 +396,57 @@ class ConversationController extends Controller
                     [
 
                     ]
+                ]
+            );
+        }
+        else
+        {
+            abort(403);
+        }
+    }
+
+    /**
+     * Return tickets in conversation
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getTicketsInConversation()
+    {
+        $token = Input::get('token');
+        $user = $this->jwtauth->authenticate($token);
+
+        if (!$user)
+        {
+            abort(401);
+        }
+
+        $conversation = Conversation::find(Input::get('conversation_id'));
+        $person = Person::find($conversation->person_id);
+
+        $tickets = [];
+
+        foreach ($conversation->tickets as $ticket)
+        {
+            if ($user->can('view', $ticket)) {
+                array_push($tickets, $ticket);
+            }
+        }
+
+        if ($user->can('view', $person))
+        {
+
+            return response()->json(
+                [
+                    "status" =>
+                        [
+                            "message" => "returned tickets in conversation",
+                            "code" => 200
+                        ],
+                    "errors" => false,
+                    "data" =>
+                        [
+                            'tickets' => $tickets
+                        ]
                 ]
             );
         }
