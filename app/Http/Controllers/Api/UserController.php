@@ -10,7 +10,9 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Tymon\JWTAuth\JWTAuth;
 
@@ -266,6 +268,36 @@ class UserController extends Controller
 
         $invite->save();
 
+        $email = $request->email;
+
+        $recipient = DB::table('users')->where('email', $request->email)->first();
+
+        if ($recipient)
+        {
+            $data =
+                [
+                    'sender' => $user->name,
+                    'person' => $person->name,
+                    'name' => $recipient->name
+                ];
+
+            Mail::send('emails.invitations.registered', $data, function ($message) use ($email) {
+                $message->to($email)->subject('You Have Been Sent an Invitation');
+            });
+        }
+        else
+        {
+            $data =
+                [
+                    'sender' => $user->name,
+                    'person' => $person->name
+                ];
+
+            Mail::send('emails.invitations.standard', $data, function ($message) use ($email) {
+                $message->to($email)->subject('You Have Been Invited to Join Ticket to Talk');
+            });
+        }
+
         return response()->json(
             [
                 "status" =>
@@ -316,7 +348,7 @@ class UserController extends Controller
             $group = $invite->group;
 
             $invite = new Invitation();
-            $invite->person = $person;
+            $invite->person = $person->decryptPerson();
             $invite->name = $name;
             $invite->group = $group;
 

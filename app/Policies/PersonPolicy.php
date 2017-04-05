@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Invite;
 use App\Person;
 use App\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
@@ -37,6 +38,11 @@ class PersonPolicy
         }
         else
         {
+            $invite = Invite::where('recipient_email', $user->email)->where('person_id', $person->id)->get()->first();
+            if ($invite)
+            {
+                return true;
+            }
             return false;
         }
     }
