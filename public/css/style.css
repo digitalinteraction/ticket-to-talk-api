@@ -1,0 +1,33 @@
+/*
+    white:  #FFFFFA
+    red:    #FF5E5B
+    blue:   #00CECB
+    yellow: #FFED66
+    dark:   #233D4D
+    grey:   #DAE2DF
+ */
+
+body
+{
+    background: #FF5E5B;
+    color: #DAE2DF;
+}
+
+#title-block
+{
+    /*text-align: center;*/
+    color: #848484;
+}
+
+#title-description
+{
+    font-size: 1.25em;
+}
+
+#title
+{
+    color: #FFFFFA;
+    font-size: 7em;
+    font-family: 'PT Mono', monospace;
+    /*font-weight: bold;*/
+}
