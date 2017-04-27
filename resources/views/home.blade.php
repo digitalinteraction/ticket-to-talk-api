@@ -105,7 +105,7 @@
     <footer class="page-footer">
         <div class="container valign-wrapper">
             <div id="logos" class="row valign">
-                <img src="/images/newcastleUni_white.png" class="col s2 responsive-img" alt="Newcastle University"/>
+                <img src="/images/NewcastleUni_white.png" class="col s2 responsive-img" alt="Newcastle University"/>
                 <img src="/images/ESRC_white.png" class="col s2 responsive-img" alt="ESRC"/>
                 <img src="/images/EPSRC_white.png" class="col s2 responsive-img" alt="EPSRC"/>
                 <img src="/images/NewcastleUniNISR_white.png" class="col s2 responsive-img" alt="Newcastle University ISR"/>
