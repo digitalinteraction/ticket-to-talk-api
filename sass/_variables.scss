@@ -1,0 +1,14 @@
+$white: #FFFFFA;
+$red: #FF5E5B;
+$blue: #00CECB;
+$yellow: #FFED66;
+$dark: #233D4D;
+$grey: #DAE2DF;
+
+@import url('https://fonts.googleapis.com/css?family=PT+Mono');
+@fa-font-path: "./../fonts/font-awesome-4.7.0/";
+
+$mono: 'PT Mono', monospace;
+
+$mobileBreak: 600px;
+$tabletBreak: 992px;

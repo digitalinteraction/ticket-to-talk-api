@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-echo "HELLO WORLD"
 
 # php artisan optimize
 
