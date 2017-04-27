@@ -3,5 +3,23 @@
  */
 
 $(document).ready(function(){
-    $('.parallax').parallax();
+
+    $("#subscribe").click(function()
+    {
+        let email = $("#email").val();
+
+        if (email.length > 1 && email.includes('@'))
+        {
+            $.post( "/subscribe", { email: $("#email").val()}, function(response)
+            {
+                console.log(response);
+
+                if (response.status.code === 200)
+                {
+                    $("#subscribe").addClass('disabled');
+                    $("#subscribe").text('Thanks!');
+                }
+            });
+        }
+    });
 });

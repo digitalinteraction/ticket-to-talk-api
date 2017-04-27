@@ -53,9 +53,9 @@
                     <label for="email">Email</label>
                 </div>
                 <div class="input-field col s4">
-                    <button class="btn waves-effect waves-light" type="submit" name="action">
-                        Join!
-                        <i class="material-icons right">send</i>
+                    <button class="btn waves-effect waves-light" id="subscribe">
+                        Subscribe
+                        <i class="material-icons right">mail</i>
                     </button>
                 </div>
             </div>
