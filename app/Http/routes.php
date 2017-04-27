@@ -22,6 +22,8 @@ Route::get("/docs", function() {
     return File::get(public_path() . "/docs/index.html");
 });
 
+Route::post("/subscribe", "MailingListController@subscriberToMailingList");
+
 
 // API - AUTHENTICATION
 Route::group(
