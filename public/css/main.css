@@ -1,0 +1,108 @@
+/**/
+@import url("https://fonts.googleapis.com/css?family=PT+Mono");
+@fa-font-path : "./../fonts/font-awesome-4.7.0/";
+body {
+  background-color: #FFFFFA; }
+
+a p {
+  text-align: left; }
+
+.btn {
+  background-color: #00CECB; }
+
+#title-block {
+  background: #FF5E5B;
+  padding-bottom: 2.5%;
+  margin-bottom: 0; }
+  #title-block #title-bar h1 {
+    color: #FFFFFA;
+    font-size: 5em;
+    font-family: "PT Mono", monospace;
+    margin-bottom: 2%; }
+  #title-block #title-bar h3 {
+    color: #EEEEEE;
+    font-size: 2em;
+    font-family: "PT Mono", monospace;
+    font-weight: lighter;
+    margin-top: 0; }
+  #title-block .card-panel {
+    background: #FFFFFA;
+    color: #233D4D; }
+
+#sign-up {
+  padding-top: 1.25%;
+  padding-bottom: 1.25%;
+  margin-top: 0;
+  background-color: #233D4D;
+  color: #FFFFFA; }
+
+#info {
+  color: #233D4D; }
+
+#when #available {
+  font-family: "PT Mono", monospace;
+  font-size: 3em; }
+
+#when i {
+  font-size: 3em;
+  padding: 2%;
+  color: #00CECB; }
+
+footer {
+  background-color: #FF5E5B;
+  color: #FFFFFA;
+  margin-bottom: 0;
+  padding-top: 2.5%; }
+  footer a {
+    color: #FFFFFA;
+    text-decoration: underline; }
+
+.page-footer {
+  background-color: #FF5E5B; }
+
+@media screen and (max-width: 600px) {
+  .info-box .info-box-header {
+    font-family: "PT Mono", monospace;
+    font-size: 1.5em;
+    padding-left: 5.5%; }
+  .info-box .info-box-text {
+    border-left-style: solid;
+    border-color: #00CECB;
+    margin-left: 0;
+    padding-left: 5%;
+    padding-right: 5%;
+    width: 100%; } }
+
+@media screen and (max-width: 992px) {
+  .info-box .info-box-header {
+    font-family: "PT Mono", monospace;
+    font-size: 1.5em;
+    padding-left: 5.5%; }
+  .info-box .info-box-text {
+    border-left-style: solid;
+    border-color: #00CECB;
+    margin-left: 0;
+    padding-left: 5%;
+    padding-right: 5%; } }
+
+@media screen and (min-width: 992px) {
+  .info-box .info-box-header {
+    font-family: "PT Mono", monospace;
+    font-size: 1.5em; }
+  .info-box .info-box-text {
+    border-left-style: solid;
+    border-color: #00CECB;
+    margin-left: 0;
+    padding-left: 5%;
+    padding-right: 5%; } }
+
+#links a {
+  color: #FFFFFA; }
+
+#links i {
+  padding-left: 2.5%;
+  padding-right: 2.5%;
+  font-size: 2em; }
+
+#links i:hover {
+  color: #00CECB; }

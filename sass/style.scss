@@ -1,0 +1,202 @@
+/**/
+@import "variables";
+
+body {
+	background-color: $white;
+}
+
+a
+{
+	p
+	{
+		text-align: left;
+	}
+}
+
+.btn
+{
+	background-color: $blue;
+}
+
+#title-block
+{
+	background: $red;
+	padding-bottom: 2.5%;
+	margin-bottom: 0;
+
+	#title-bar
+	{
+		h1
+		{
+			color: $white;
+			font-size: 5em;
+			font-family: $mono;
+			margin-bottom: 2%;
+		}
+
+		h3
+		{
+			color: #EEEEEE;
+			font-size: 2em;
+			font-family: $mono;
+			font-weight: lighter;
+			margin-top: 0;
+		}
+	}
+
+	.card-panel
+	{
+		background: $white;
+		color: $dark;
+	}
+}
+
+#sign-up
+{
+	padding-top: 1.25%;
+	padding-bottom: 1.25%;
+	margin-top: 0;
+	background-color: $dark;
+	color: $white;
+}
+
+#info
+{
+	color: $dark;
+}
+
+#when
+{
+	#available
+	{
+		font-family: $mono;
+		font-size: 3em;
+	}
+
+	i
+	{
+		font-size: 3em;
+		padding: 2%;
+		color: $blue;
+	}
+}
+
+footer
+{
+
+	background-color: $red;
+	color: $white;
+	margin-bottom: 0;
+	padding-top: 2.5%;
+
+	a
+	{
+		color: $white;
+		text-decoration: underline;
+	}
+
+	// p
+	// {
+	// 	margin-bottom: 0;
+	// }
+}
+
+.page-footer
+{
+	background-color: $red;
+}
+
+@media screen and (max-width: $mobileBreak) {
+	.info-box
+	{
+		// color: $white;
+
+		.info-box-header
+		{
+			font-family: $mono;
+			font-size: 1.5em;
+			padding-left: 5.5%;
+		}
+
+		.info-box-text
+		{
+			border-left-style: solid;
+			border-color: $blue;
+			margin-left: 0;
+			padding-left: 5%;
+			padding-right: 5%;
+			width: 100%;
+
+			#when-text
+			{
+
+			}
+		}
+	}
+}
+
+@media screen and (max-width: $tabletBreak) {
+	.info-box
+	{
+		// color: $white;
+
+		.info-box-header
+		{
+			font-family: $mono;
+			font-size: 1.5em;
+			padding-left: 5.5%;
+		}
+
+		.info-box-text
+		{
+			border-left-style: solid;
+			border-color: $blue;
+			margin-left: 0;
+			padding-left: 5%;
+			padding-right: 5%;
+		}
+	}
+}
+
+@media screen and (min-width: $tabletBreak) {
+	.info-box
+	{
+		// color: $white;
+
+		.info-box-header
+		{
+			font-family: $mono;
+			font-size: 1.5em;
+		}
+
+		.info-box-text
+		{
+			border-left-style: solid;
+			border-color: $blue;
+			margin-left: 0;
+			padding-left: 5%;
+			padding-right: 5%;
+		}
+	}
+}
+
+#links
+{
+
+	a
+	{
+		color: $white;
+	}
+
+	i
+	{
+		padding-left: 2.5%;
+		padding-right: 2.5%;
+		font-size: 2em;
+	}
+
+	i:hover
+	{
+		color: $blue;
+	}
+}
