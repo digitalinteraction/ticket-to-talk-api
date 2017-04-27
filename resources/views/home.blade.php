@@ -12,7 +12,7 @@
     <!--Let browser know website is optimized for mobile-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-    <meta title="Ticket to Talk"/>
+    <title>Ticket to Talk</title>
     <meta author="Daniel Welsh"/>
     <meta charset="UTF-8">
     <meta name="description" content="Ticket to Talk: an application helping to scaffold interactions between younger people and older relatives with dementia.">
@@ -105,12 +105,12 @@
     <footer class="page-footer">
         <div class="container valign-wrapper">
             <div id="logos" class="row valign">
-                <img src="/images/newcastleUni_white.png" class="col s2 responsive-img" alt="Newcastle University">
-                <img src="/images/ESRC_white.png" class="col s2 responsive-img" alt="ESRC">
-                <img src="/images/EPSRC_white.png" class="col s2 responsive-img" alt="EPSRC">
-                <img src="/images/NewcastleUniNISR_white.png" class="col s2 responsive-img" alt="Newcastle University ISR">
-                <img src="/images/DigitalEconomy_white.png" class="col s2 responsive-img" alt="Digital Economy">
-                <img src="/images/YFNE_white.png" class="col s2 responsive-img" alt="Youth Focus North East">
+                <img src="/images/newcastleUni_white.png" class="col s2 responsive-img" alt="Newcastle University"/>
+                <img src="/images/ESRC_white.png" class="col s2 responsive-img" alt="ESRC"/>
+                <img src="/images/EPSRC_white.png" class="col s2 responsive-img" alt="EPSRC"/>
+                <img src="/images/NewcastleUniNISR_white.png" class="col s2 responsive-img" alt="Newcastle University ISR"/>
+                <img src="/images/DigitalEconomy_white.png" class="col s2 responsive-img" alt="Digital Economy"/>
+                <img src="/images/YFNE_white.png" class="col s2 responsive-img" alt="Youth Focus North East"/>
             </div>
         </div>
         <div class="footer-copyright">
