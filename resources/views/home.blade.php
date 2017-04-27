@@ -5,9 +5,9 @@
     <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=PT+Mono" rel="stylesheet">
     <!--Import materialize.css-->
-    {!! Html::style('css/materialize.css', ['media' => 'screen,projection']) !!}
-    {!! Html::style('fonts/font-awesome/css/font-awesome.min.css')!!}
-    {!! Html::style('css/main.css') !!}
+    <link media="screen,projection" type="text/css" rel="stylesheet" href="/css/materialize.css">
+    <link media="all" type="text/css" rel="stylesheet" href="/fonts/font-awesome/css/font-awesome.min.css">
+    <link media="all" type="text/css" rel="stylesheet" href="/css/main.css">
 
     <!--Let browser know website is optimized for mobile-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -105,12 +105,12 @@
     <footer class="page-footer">
         <div class="container valign-wrapper">
             <div id="logos" class="row valign">
-                {{ HTML::image('images/newcastleUni_white.png', 'Newcastle University', array('class' => 'col s2')) }}
-                {{ HTML::image('images/ESRC_white.png', 'Newcastle University', array('class' => 'col s2')) }}
-                {{ HTML::image('images/EPSRC_white.png', 'Newcastle University', array('class' => 'col s2')) }}
-                {{ HTML::image('images/NewcastleUniNISR_white.png', 'Newcastle University', array('class' => 'col s2')) }}
-                {{ HTML::image('images/DigitalEconomy_white.png', 'Newcastle University', array('class' => 'col s2')) }}
-                {{ HTML::image('images/YFNE_white.png', 'Newcastle University', array('class' => 'col s2')) }}
+                <img src="/images/newcastleUni_white.png" class="col s2 responsive-img" alt="Newcastle University">
+                <img src="/images/ESRC_white.png" class="col s2 responsive-img" alt="ESRC">
+                <img src="/images/EPSRC_white.png" class="col s2 responsive-img" alt="EPSRC">
+                <img src="/images/NewcastleUniNISR_white.png" class="col s2 responsive-img" alt="Newcastle University ISR">
+                <img src="/images/DigitalEconomy_white.png" class="col s2 responsive-img" alt="Digital Economy">
+                <img src="/images/YFNE_white.png" class="col s2 responsive-img" alt="Youth Focus North East">
             </div>
         </div>
         <div class="footer-copyright">
@@ -122,7 +122,8 @@
 
 <!--Import jQuery before materialize.js-->
 <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-{!! Html::script('js/materialize.js') !!}
-{!! Html::script('js/script.js') !!}
+<script src="/js/materialize.js"></script>
+<script src="/js/script.js"></script>
+
 </body>
 </html>
