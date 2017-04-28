@@ -10,9 +10,9 @@ use App\Subscriber;
 class MailingListController extends Controller
 {
 
-	public function subscriberToMailingList(Request $request)
+	public function subscriberToMailingList($email)
 	{
-		$subscriber = Subscriber::where('email', $request->email)->get()->first();
+		$subscriber = Subscriber::where('email', $email)->get()->first();
 
 		// dd($subscriber);
 
@@ -34,7 +34,7 @@ class MailingListController extends Controller
 		else
 		{
 			$subscriber = new Subscriber();
-			$subscriber->email = $request->email;
+			$subscriber->email = $email;
 
 			$subscriber->save();
 
