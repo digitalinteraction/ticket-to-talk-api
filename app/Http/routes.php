@@ -22,7 +22,7 @@ Route::get("/docs", function() {
     return File::get(public_path() . "/docs/index.html");
 });
 
-Route::post("/subscribe", "MailingListController@subscriberToMailingList");
+Route::get("/subscribe/{email}", "MailingListController@subscriberToMailingList");
 
 
 // API - AUTHENTICATION

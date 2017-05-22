@@ -10,7 +10,7 @@ $(document).ready(function(){
 
         if (email.length > 1 && email.includes('@'))
         {
-            $.post( "https://tickettotalk.openlab.ncl.ac.uk/subscribe", { email: $("#email").val()}, function(response)
+            $.get( "subscribe/" + email, function(response)
             {
                 console.log(response);
 

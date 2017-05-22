@@ -24,7 +24,7 @@
 
         <div class="container">
     		<div id="title-bar" class="row">
-    			<h1 class="col s12 center-align">ticket to talk</h1>
+    			<h1 class="col s12 center-align">Ticket to Talk</h1>
     			<h3 class="col s12 center-align">Bridge the Generational Gap</h3>
     		</div>
     	</div>
@@ -42,10 +42,12 @@
 
     </div>
 
+    <!-- <div id="sign-up" class="row" style="display:none"> -->
     <div id="sign-up" class="row">
+
         <div class="container">
             <p>
-                Please enter an email address below if you would like to receive updates on Ticket to Talk or are interested in oppurtunities to take part in future research projects on intergenerational communication within dementia.
+                Please enter an email address below if you would like to receive updates on Ticket to Talk or are interested in opportunities to take part in future research projects on intergenerational communication within dementia.
             </p>
             <div class="col s8 offset-s2 left-align">
                 <div class="input-field col s8">
@@ -55,7 +57,6 @@
                 <div class="input-field col s4">
                     <button class="btn waves-effect waves-light" id="subscribe">
                         Subscribe
-                        <i class="material-icons right">mail</i>
                     </button>
                 </div>
             </div>
@@ -73,7 +74,7 @@
                     Upon opening the app for the first time, you are asked to create a profile about you and a profile about the person with whom you’d like to talk with. You can also add other family members, close friends, or caregivers to the app so they can have access to, or contribute, content to peoples profiles. After this the app guides you to add bits of media - we call these “Tickets”. Tickets are things that can be used as prompts in conversations. Tickets are created in-app by selecting photos from the phone’s library, taking new photos or videos with the camera, or by using the microphone to record songs and sounds.
                 </p>
                 <p>
-                    If you are struggling to come up with ideas for Tickets the app gives some small bits of inspiration to respond to, i.e. “Can you find a picture of Sarah’s old car?”. This helps you to build up a collection quickly. To use the tickets as prompts you are encouraged by the app to curate these into a “Conversation”. This is essentially a playlist of Tickets to be used as a shared resource in conversation. During an in-person conversation with a loved one or the person you care for, you would press play and the tickets would be presented to cycle through (5). At the end of the conversation the app will prompt you to make some short notes on how the conversation went. This can be useful to keep track of conversation topics that they went particularly well, and use these to develop new Tickets for future visits.
+                    If you are struggling to come up with ideas for Tickets the app gives some small bits of inspiration to respond to, e.g. “Can you find a picture of Sarah’s old car?”. This helps you to build up a collection quickly. To use the tickets as prompts you are encouraged by the app to curate these into a “Conversation”. This is essentially a playlist of Tickets to be used as a shared resource in conversation. During an in-person conversation with a loved one or the person you care for, you would press play and the tickets would be presented to cycle through. At the end of the conversation the app will prompt you to make some short notes on how the conversation went. This can be useful to keep track of conversation topics that they went particularly well, and use these to develop new Tickets for future visits.
                 </p>
             </div>
         </div>
@@ -91,7 +92,7 @@
             <h3 class="info-box-header col l2 offset-l1 s12">When</h3>
             <div class="col l8 m12 info-box-text">
                 <div id="when-text" class="center-align">
-                    <span id="available">spring 2017</span>
+                    <span id="available">SPRING 2017</span>
                     <div id="store-icons">
                         <i class="fa fa-apple" aria-hidden="true"></i>
                         <i class="fa fa-android" aria-hidden="true"></i>
