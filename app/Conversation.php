@@ -26,4 +26,14 @@ class Conversation extends Model
         return $this->belongsToMany('App\Ticket', 'conversation_ticket');
     }
 
+    /**
+     * Returns all logs for a conversation
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function logs()
+    {
+        return $this->hasMany('App\ConversationLog');
+    }
+
 }

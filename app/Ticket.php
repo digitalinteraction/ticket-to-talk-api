@@ -69,4 +69,9 @@ class Ticket extends Model
     {
         return $this->belongsToMany('App\Conversation', 'conversation_ticket');
     }
+
+    public function logs()
+    {
+        return $this->hasMany('App\TicketLog');
+    }
 }
