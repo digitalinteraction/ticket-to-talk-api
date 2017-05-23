@@ -490,5 +490,11 @@ Route::group(
                 'uses' => 'ConversationController@destroy'
             ]
         );
+
+        Route::post('/logs/store',
+            [
+                'as' => 'conversation.logs.store',
+                'uses' => 'ConversationLogController@store'
+            ]);
     }
 );
