@@ -506,4 +506,35 @@ class UserController extends Controller
             abort(403);
         }
     }
+
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function acceptStudy()
+    {
+        $token = Input::get('token');
+        $user = $this->jwtauth->authenticate($token);
+
+        if (!$user)
+        {
+            abort(401);
+        }
+
+        $user->in_study = true;
+        $user->save();
+
+        return response()->json(
+            [
+                "status" =>
+                    [
+                        "message" => "",
+                        "code" => 200
+                    ],
+                "errors" => false,
+                "data" =>
+                    [
+                    ]
+            ]
+        );
+    }
 }

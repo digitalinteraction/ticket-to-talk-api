@@ -404,6 +404,12 @@ Route::group(
                 'uses' => 'UserController@getProfilePicture'
             ]
         );
+
+        Route::get('participate/',
+            [
+                'as' => 'user.participate',
+                'uses' => 'UserController@acceptStudy'
+            ]);
     }
 );
 
