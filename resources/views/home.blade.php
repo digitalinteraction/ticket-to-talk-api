@@ -115,8 +115,18 @@
             </div>
         </div>
         <div class="footer-copyright">
-            <div class="container">
-            For queries or more information email <a href="mailto:d.welsh@ncl.ac.uk">Daniel Welsh</a>
+            <div class="container" style="text-decoration: none;">
+				<a class="col s2" href="https://ticket-to-talk.com/privacy">
+					Privacy
+				</a>
+				|
+				<a class="col s2" href="https://ticket-to-talk.com/terms">
+					Terms
+				</a>
+				|
+            	<a class="col s2" href="mailto:d.welsh@ncl.ac.uk">
+					Contact
+				</a>
             </div>
           </div>
     </footer>
