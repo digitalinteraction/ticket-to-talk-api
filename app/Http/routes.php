@@ -18,6 +18,14 @@ Route::get('/', function() {
     return view('home');
 });
 
+Route::get('/privacy', function() {
+    return view('privacy');
+});
+
+Route::get('/terms', function() {
+    return view('terms');
+});
+
 Route::get("/docs", function() {
     return File::get(public_path() . "/docs/index.html");
 });
