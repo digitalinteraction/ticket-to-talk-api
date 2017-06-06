@@ -342,6 +342,7 @@ class TicketController extends Controller
             $file_suffix = strstr($fileName, '.');
             $file_type = '';
 
+            // Check extension and set appropriate mimetype
             switch ($file_suffix)
             {
                 case ('.jpg') :
