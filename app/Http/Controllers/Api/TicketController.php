@@ -122,7 +122,7 @@ class TicketController extends Controller
                 switch ($request['ticket']['mediaType'])
                 {
                     case "Sound":
-                        $file_path = "ticket_to_talk/storage/audio/t_" . $file_name .".wav";
+                        $file_path = "ticket_to_talk/storage/audio/t_" . $file_name .".m4a";
                         break;
                     case "Picture":
                         $file_path = "ticket_to_talk/storage/photo/t_" . $file_name .".jpg";
@@ -351,6 +351,10 @@ class TicketController extends Controller
                 case ('.wav') :
 
                     $file_type = 'audio/wav';
+                    break;
+                case ('.m4a') :
+
+                    $file_type = 'audio/mp4';
                     break;
             }
 
