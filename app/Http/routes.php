@@ -26,6 +26,10 @@ Route::get('/terms', function() {
     return view('terms');
 });
 
+Route::get('/participate', function() {
+    return view('information');
+});
+
 Route::get("/docs", function() {
     return File::get(public_path() . "/docs/index.html");
 });
