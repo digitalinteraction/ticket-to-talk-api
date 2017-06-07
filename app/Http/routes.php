@@ -16,21 +16,21 @@ use Illuminate\Support\Facades\Redirect;
 
 Route::get('/', function() {
     return view('home');
-});
+})->middleware(['log']);
 
 Route::get('/privacy', function() {
     return view('privacy');
-});
+})->middleware(['log']);
 
 Route::get('/terms', function() {
     return view('terms');
-});
+})->middleware(['log']);
 
 Route::get("/docs", function() {
     return File::get(public_path() . "/docs/index.html");
-});
+})->middleware(['log']);
 
-Route::get("/subscribe/{email}", "MailingListController@subscriberToMailingList");
+Route::get("/subscribe/{email}", "MailingListController@subscriberToMailingList")->middleware(['log']);
 
 
 // API - AUTHENTICATION
