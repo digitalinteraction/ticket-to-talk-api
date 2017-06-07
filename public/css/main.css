@@ -48,6 +48,9 @@ a p {
   padding: 2%;
   color: #00CECB; }
 
+#when a:hover i {
+  color: #233D4D; }
+
 footer {
   background-color: #FF5E5B;
   color: #FFFFFA;
@@ -103,6 +106,3 @@ footer {
   padding-left: 2.5%;
   padding-right: 2.5%;
   font-size: 2em; }
-
-#links i:hover {
-  color: #00CECB; }
