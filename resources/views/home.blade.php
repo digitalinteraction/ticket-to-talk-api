@@ -89,13 +89,18 @@
         </div>
 
         <div id="when" class="info-box row">
-            <h3 class="info-box-header col l2 offset-l1 s12">When</h3>
+            <h3 class="info-box-header col l2 offset-l1 s12">Availability</h3>
             <div class="col l8 m12 info-box-text">
                 <div id="when-text" class="center-align">
-                    <span id="available">SPRING 2017</span>
                     <div id="store-icons">
-                        <i class="fa fa-apple" aria-hidden="true"></i>
-                        <i class="fa fa-android" aria-hidden="true"></i>
+                        <div class="col s6">
+                            <a class="row store-link" href="https://itunes.apple.com/us/app/ticket-to-talk/id1203783044?ls=1&mt=8"><i class="fa fa-apple" aria-hidden="true"></i></a>
+                            <h5 class="row">Available Now</h5>
+                        </div>
+                        <div class="col s6">
+                            <a class="row store-link"><i class="fa fa-android" aria-hidden="true"></i></a>
+                            <h5 class="row">Coming Soon!</h5>
+                        </div>
                     </div>
                 </div>
             </div>
