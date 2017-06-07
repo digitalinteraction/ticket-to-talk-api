@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Http\Requests\Request;
 use App\Log;
 use Closure;
 use Illuminate\Support\Facades\Input;
@@ -17,6 +18,12 @@ class LogRequest
      */
     public function handle($request, Closure $next)
     {
+        Request::setTrustedProxies(
+            [
+                '172.18.0.1',
+                '128.240.212.41'
+            ]
+    );
 
         $log = new Log();
         $log->ip = $request->ip();
