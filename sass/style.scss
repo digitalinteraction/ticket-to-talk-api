@@ -79,6 +79,13 @@ a
 		padding: 2%;
 		color: $blue;
 	}
+	a:hover
+	{
+		i
+		{
+			color: $dark;
+		}
+	}
 }
 
 footer
@@ -94,11 +101,6 @@ footer
 		color: $white;
 		text-decoration: underline;
 	}
-
-	// p
-	// {
-	// 	margin-bottom: 0;
-	// }
 }
 
 .page-footer
@@ -193,10 +195,5 @@ footer
 		padding-left: 2.5%;
 		padding-right: 2.5%;
 		font-size: 2em;
-	}
-
-	i:hover
-	{
-		color: $blue;
 	}
 }
