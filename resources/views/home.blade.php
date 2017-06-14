@@ -111,8 +111,8 @@
                             <h5 class="row">Available Now</h5>
                         </div>
                         <div class="col s6">
-                            <a class="row store-link"><i class="fa fa-android" aria-hidden="true"></i></a>
-                            <h5 class="row">Coming Soon!</h5>
+                            <a class="row store-link" href="https://play.google.com/store/apps/details?id=uk.ac.ncl.openlab.tickettotalk&hl=en_GB"><i class="fa fa-android" aria-hidden="true"></i></a>
+                            <h5 class="row">Available Now</h5>
                         </div>
                     </div>
                 </div>
