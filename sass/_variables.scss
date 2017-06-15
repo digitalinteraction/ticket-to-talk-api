@@ -5,10 +5,11 @@ $yellow: #FFED66;
 $dark: #233D4D;
 $grey: #DAE2DF;
 
-@import url('https://fonts.googleapis.com/css?family=PT+Mono');
+//@import url('https://fonts.googleapis.com/css?family=PT+Mono');
+@import url('https://fonts.googleapis.com/css?family=Nunito:700');
 @fa-font-path: "./../fonts/font-awesome-4.7.0/";
 
-$mono: 'PT Mono', monospace;
+$mono: 'Nunito', sans-serif;
 
 $mobileBreak: 600px;
 $tabletBreak: 992px;

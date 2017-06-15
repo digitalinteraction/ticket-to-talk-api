@@ -6,7 +6,7 @@ $(document).ready(function(){
 
     $("#subscribe").click(function()
     {
-        let email = $("#email").val();
+        var email = $("#email").val();
 
         if (email.length > 1 && email.includes('@'))
         {
@@ -22,4 +22,15 @@ $(document).ready(function(){
             });
         }
     });
+
+    $('.screenshot-gallery').slick({
+        dots: true,
+        infinite: true,
+        speed: 300,
+        slidesToShow: 1,
+        adaptiveHeight: true,
+        autoplay: true,
+        autoplaySpeed: 5000
+    });
+
 });
