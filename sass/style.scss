@@ -160,6 +160,7 @@ footer
 	}
 }
 
+// Fullscreen
 @media screen and (min-width: $tabletBreak) {
 	.info-box
 	{
@@ -180,6 +181,12 @@ footer
 			padding-right: 5%;
 		}
 	}
+
+	#mobile-store-icons
+	{
+		background: $red;
+		display: none;
+	}
 }
 
 #links
@@ -195,5 +202,38 @@ footer
 		padding-left: 2.5%;
 		padding-right: 2.5%;
 		font-size: 2em;
+	}
+}
+
+#store-icons
+{
+	margin-left: 10%;
+}
+
+.store-icon
+{
+	height: 5em;
+}
+
+.screenshot-gallery
+{
+	img
+	{
+		max-height: 736px;
+	}
+}
+
+#screenshots
+{
+	background: $red;
+}
+
+#logos
+{
+	img
+	{
+		max-height: 100px;
+		max-width: 100px;
+		width: auto;
 	}
 }

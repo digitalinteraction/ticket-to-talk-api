@@ -1,5 +1,5 @@
 /**/
-@import url("https://fonts.googleapis.com/css?family=PT+Mono");
+@import url("https://fonts.googleapis.com/css?family=Nunito:700");
 @fa-font-path : "./../fonts/font-awesome-4.7.0/";
 body {
   background-color: #FFFFFA; }
@@ -17,12 +17,12 @@ a p {
   #title-block #title-bar h1 {
     color: #FFFFFA;
     font-size: 5em;
-    font-family: "PT Mono", monospace;
+    font-family: "Nunito", sans-serif;
     margin-bottom: 2%; }
   #title-block #title-bar h3 {
     color: #EEEEEE;
     font-size: 2em;
-    font-family: "PT Mono", monospace;
+    font-family: "Nunito", sans-serif;
     font-weight: lighter;
     margin-top: 0; }
   #title-block .card-panel {
@@ -40,7 +40,7 @@ a p {
   color: #233D4D; }
 
 #when #available {
-  font-family: "PT Mono", monospace;
+  font-family: "Nunito", sans-serif;
   font-size: 3em; }
 
 #when i {
@@ -65,7 +65,7 @@ footer {
 
 @media screen and (max-width: 600px) {
   .info-box .info-box-header {
-    font-family: "PT Mono", monospace;
+    font-family: "Nunito", sans-serif;
     font-size: 1.5em;
     padding-left: 5.5%; }
   .info-box .info-box-text {
@@ -78,7 +78,7 @@ footer {
 
 @media screen and (max-width: 992px) {
   .info-box .info-box-header {
-    font-family: "PT Mono", monospace;
+    font-family: "Nunito", sans-serif;
     font-size: 1.5em;
     padding-left: 5.5%; }
   .info-box .info-box-text {
@@ -90,14 +90,17 @@ footer {
 
 @media screen and (min-width: 992px) {
   .info-box .info-box-header {
-    font-family: "PT Mono", monospace;
+    font-family: "Nunito", sans-serif;
     font-size: 1.5em; }
   .info-box .info-box-text {
     border-left-style: solid;
     border-color: #00CECB;
     margin-left: 0;
     padding-left: 5%;
-    padding-right: 5%; } }
+    padding-right: 5%; }
+  #mobile-store-icons {
+    background: #FF5E5B;
+    display: none; } }
 
 #links a {
   color: #FFFFFA; }
@@ -106,3 +109,20 @@ footer {
   padding-left: 2.5%;
   padding-right: 2.5%;
   font-size: 2em; }
+
+#store-icons {
+  margin-left: 10%; }
+
+.store-icon {
+  height: 5em; }
+
+.screenshot-gallery img {
+  max-height: 736px; }
+
+#screenshots {
+  background: #FF5E5B; }
+
+#logos img {
+  max-height: 100px;
+  max-width: 100px;
+  width: auto; }
