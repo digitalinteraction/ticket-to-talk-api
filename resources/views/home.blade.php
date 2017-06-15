@@ -21,6 +21,8 @@
     <link media="screen,projection" type="text/css" rel="stylesheet" href="/css/materialize.css">
     <link media="all" type="text/css" rel="stylesheet" href="/fonts/font-awesome/css/font-awesome.min.css">
     <link media="all" type="text/css" rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" type="text/css" href="/slick/slick/slick.css"/>
+    <link rel="stylesheet" type="text/css" href="/slick/slick/slick-theme.css"/>
 
     <!--Let browser know website is optimized for mobile-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -46,31 +48,72 @@
         <div class="container">
             <div id="title-description" class="card-panel center-align row">
                 <p>
-                    An application helping to support conversation between younger people and older relatives with dementia.
-                    <br/>
-                    Use Ticket to Talk to create talking points with older relatives through crafting a collection of pictures, sounds, and YouTube videos.
+                    Ticket to Talk hopes to encourage conversation between younger people and grandparents, friends or people they care for who are experiencing dementia. The app is designed to help collect and curate digital media (”tickets”) to be used to prompt and stimulate talk, conversation and reminiscence between younger people and those they are close to with dementia.
                 </p>
             </div>
         </div>
 
     </div>
 
-    <!-- <div id="sign-up" class="row" style="display:none"> -->
-    <div id="sign-up" class="row">
+    <div id="screenshots" class="row valign-wrapper">
 
-        <div class="container">
-            <p>
-                Please enter an email address below if you would like to receive updates on Ticket to Talk or are interested in opportunities to take part in future research projects on intergenerational communication within dementia.
-            </p>
-            <div class="col s8 offset-s2 left-align">
-                <div class="input-field col s8">
-                    <input id="email" type="email" class="validate">
-                    <label for="email">Email</label>
+            <div class="screenshot-gallery col s12 m4 offset-m2">
+                <div class="screenshot center-align">
+                    <img class="" src="/images/screenshots/01.png"> <!-- random image -->
                 </div>
-                <div class="input-field col s4">
-                    <button class="btn waves-effect waves-light" id="subscribe">
-                        Subscribe
-                    </button>
+                <div class="screenshot">
+                    <img src="/images/screenshots/02.png"> <!-- random image -->
+                </div>
+                <div class="screenshot">
+                    <img src="/images/screenshots/03.png"> <!-- random image -->
+                </div>
+                <div class="screenshot">
+                    <img src="/images/screenshots/04.png"> <!-- random image -->
+                </div>
+                <div class="screenshot">
+                    <img src="/images/screenshots/05.png"> <!-- random image -->
+                </div>
+            </div>
+
+        <div id="store-icons" class="col s12 m4 valign">
+            <div class="container">
+                <div class="col s12 left-align">
+                    <a class="row store-link" href="https://itunes.apple.com/us/app/ticket-to-talk/id1203783044?ls=1&mt=8" style="display: block; z-index: 1;">
+                        <object class="store-icon" type="image/svg+xml" data="/images/app_store.svg" style="z-index: -1; pointer-events: none;">
+                            Your browser does not support SVG
+
+                        </object>
+                    </a>
+                </div>
+                <div class="col s12 left-align">
+                    <a class="row store-link" href="https://play.google.com/store/apps/details?id=uk.ac.ncl.openlab.tickettotalk&hl=en_GB&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1" style="display: block; z-index: 1;">
+                        <object class="store-icon" type="image/svg+xml" data="/images/google_play.svg" style="z-index: -1; pointer-events: none;">
+                            Your browser does not support SVG
+                        </object>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="mobile-store-icons" class="row valign-wrapper">
+
+        <div id="store-icons" class="col s12 m4 valign">
+            <div class="container">
+                <div class="col s12 left-align">
+                    <a class="row store-link" href="https://itunes.apple.com/us/app/ticket-to-talk/id1203783044?ls=1&mt=8" style="display: block; z-index: 1;">
+                        <object class="store-icon" type="image/svg+xml" data="/images/app_store.svg" style="z-index: -1; pointer-events: none;">
+                            Your browser does not support SVG
+
+                        </object>
+                    </a>
+                </div>
+                <div class="col s12 left-align">
+                    <a class="row store-link" href="https://play.google.com/store/apps/details?id=uk.ac.ncl.openlab.tickettotalk&hl=en_GB&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1" style="display: block; z-index: 1;">
+                        <object class="store-icon" type="image/svg+xml" data="/images/google_play.svg" style="z-index: -1; pointer-events: none;">
+                            Your browser does not support SVG
+                        </object>
+                    </a>
                 </div>
             </div>
         </div>
@@ -106,13 +149,20 @@
             <div class="col l8 m12 info-box-text">
                 <div id="when-text" class="center-align">
                     <div id="store-icons">
-                        <div class="col s6">
-                            <a class="row store-link" href="https://itunes.apple.com/us/app/ticket-to-talk/id1203783044?ls=1&mt=8"><i class="fa fa-apple" aria-hidden="true"></i></a>
-                            <h5 class="row">Available Now</h5>
+                        <div class="col s12 m6">
+                            <a class="row store-link" href="https://itunes.apple.com/us/app/ticket-to-talk/id1203783044?ls=1&mt=8" style="display: block; z-index: 1;">
+                                <object class="store-icon" type="image/svg+xml" data="/images/app_store.svg" style="z-index: -1; pointer-events: none;">
+                                    Your browser does not support SVG
+
+                                </object>
+                            </a>
                         </div>
-                        <div class="col s6">
-                            <a class="row store-link" href="https://play.google.com/store/apps/details?id=uk.ac.ncl.openlab.tickettotalk&hl=en_GB"><i class="fa fa-android" aria-hidden="true"></i></a>
-                            <h5 class="row">Available Now</h5>
+                        <div class="col s12 m6">
+                            <a class="row store-link" href="https://play.google.com/store/apps/details?id=uk.ac.ncl.openlab.tickettotalk&hl=en_GB&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1" style="display: block; z-index: 1;">
+                                <object class="store-icon" type="image/svg+xml" data="/images/google_play.svg" style="z-index: -1; pointer-events: none;">
+                                    Your browser does not support SVG
+                                </object>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -122,9 +172,9 @@
     </div>
 
     <footer class="page-footer">
-        <div class="container valign-wrapper">
-            <div id="logos" class="row valign">
-                <img src="/images/NewcastleUni_white.png" class="col s2 responsive-img" alt="Newcastle University"/>
+        <div class="container valign-wrapper center-align">
+            <div id="logos" class="row valign ">
+                <img class="logo" src="/images/NewcastleUni_white.png" class="col s2 responsive-img" alt="Newcastle University"/>
                 <img src="/images/ESRC_white.png" class="col s2 responsive-img" alt="ESRC"/>
                 <img src="/images/EPSRC_white.png" class="col s2 responsive-img" alt="EPSRC"/>
                 <img src="/images/NewcastleUniNISR_white.png" class="col s2 responsive-img" alt="Newcastle University ISR"/>
@@ -149,10 +199,11 @@
           </div>
     </footer>
 
-<!--Import jQuery before materialize.js-->
-<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-<script src="/js/materialize.js"></script>
-<script src="/js/script.js"></script>
+    <!--Import jQuery before materialize.js-->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="/js/materialize.js"></script>
+    <script src="/js/script.js"></script>
+    <script type="text/javascript" src="/slick/slick/slick.min.js"></script>
 
 </body>
 </html>
