@@ -52,6 +52,21 @@
 </div>
 
 <div id="info" class="row">
+
+    <div id="about" class="info-box row">
+        <h3 class="info-box-header col l2 offset-l1 s12">Who We Are Looking For</h3>
+        <div class="col l8 m12 info-box-text">
+            <br />
+            <p>
+                We are looking for younger people who have a friend or relative living with dementia.
+                <br/>
+                <strong>
+                    We are explicitly looking for people who are 18 or older.
+                </strong>
+            </p>
+        </div>
+    </div>
+
     <div id="about" class="info-box row">
         <h3 class="info-box-header col l2 offset-l1 s12">Why We Need Your Help</h3>
         <div class="col l8 m12 info-box-text">
