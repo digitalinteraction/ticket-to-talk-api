@@ -8,3 +8,4 @@ Homestead.json
 !vendor/laravel/framework/src/Illuminate/Routing/Middleware/ThrottleRequests.php
 app/public/docs
 nginx-default
+conversation-analysis/node_modules
