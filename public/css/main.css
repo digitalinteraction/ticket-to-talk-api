@@ -1,128 +1,35 @@
-/**/
+/*
+
+ */
 @import url("https://fonts.googleapis.com/css?family=Nunito:700");
 @fa-font-path : "./../fonts/font-awesome-4.7.0/";
 body {
-  background-color: #FFFFFA; }
-
-a p {
-  text-align: left; }
-
-.btn {
-  background-color: #00CECB; }
-
-#title-block {
-  background: #FF5E5B;
-  padding-bottom: 2.5%;
-  margin-bottom: 0; }
-  #title-block #title-bar h1 {
-    color: #FFFFFA;
-    font-size: 5em;
-    font-family: "Nunito", sans-serif;
-    margin-bottom: 2%; }
-  #title-block #title-bar h3 {
-    color: #EEEEEE;
-    font-size: 2em;
-    font-family: "Nunito", sans-serif;
-    font-weight: lighter;
-    margin-top: 0; }
-  #title-block .card-panel {
-    background: #FFFFFA;
-    color: #233D4D; }
-
-#sign-up {
-  padding-top: 1.25%;
-  padding-bottom: 1.25%;
-  margin-top: 0;
-  background-color: #233D4D;
-  color: #FFFFFA; }
-
-#info {
-  color: #233D4D; }
-
-#when #available {
-  font-family: "Nunito", sans-serif;
-  font-size: 3em; }
-
-#when i {
-  font-size: 3em;
-  padding: 2%;
-  color: #00CECB; }
-
-#when a:hover i {
-  color: #233D4D; }
-
-footer {
-  background-color: #FF5E5B;
-  color: #FFFFFA;
-  margin-bottom: 0;
-  padding-top: 2.5%; }
-  footer a {
-    color: #FFFFFA;
-    text-decoration: underline; }
-
-.page-footer {
-  background-color: #FF5E5B; }
-
-@media screen and (max-width: 600px) {
-  .info-box .info-box-header {
-    font-family: "Nunito", sans-serif;
-    font-size: 1.5em;
-    padding-left: 5.5%; }
-  .info-box .info-box-text {
-    border-left-style: solid;
-    border-color: #00CECB;
-    margin-left: 0;
-    padding-left: 5%;
-    padding-right: 5%;
-    width: 100%; } }
-
-@media screen and (max-width: 992px) {
-  .info-box .info-box-header {
-    font-family: "Nunito", sans-serif;
-    font-size: 1.5em;
-    padding-left: 5.5%; }
-  .info-box .info-box-text {
-    border-left-style: solid;
-    border-color: #00CECB;
-    margin-left: 0;
-    padding-left: 5%;
-    padding-right: 5%; } }
-
-@media screen and (min-width: 992px) {
-  .info-box .info-box-header {
-    font-family: "Nunito", sans-serif;
-    font-size: 1.5em; }
-  .info-box .info-box-text {
-    border-left-style: solid;
-    border-color: #00CECB;
-    margin-left: 0;
-    padding-left: 5%;
-    padding-right: 5%; }
-  #mobile-store-icons {
-    background: #FF5E5B;
-    display: none; } }
-
-#links a {
-  color: #FFFFFA; }
-
-#links i {
-  padding-left: 2.5%;
-  padding-right: 2.5%;
-  font-size: 2em; }
-
-#store-icons {
-  margin-left: 10%; }
-
-.store-icon {
-  height: 5em; }
-
-.screenshot-gallery img {
-  max-height: 736px; }
-
-#screenshots {
-  background: #FF5E5B; }
-
-#logos img {
-  max-height: 100px;
-  max-width: 100px;
-  width: auto; }
+  font-family: "Nunito", sans-serif; }
+  body #screenshots {
+    background-color: #FF5E5B; }
+    body #screenshots img {
+      max-height: 500px;
+      margin: 0 auto; }
+    body #screenshots .screenshot-desc {
+      vertical-align: middle;
+      height: 100%; }
+  body #store-icons {
+    margin-top: 5%; }
+    body #store-icons .store-icon {
+      height: 4em; }
+  body #feature-desc p {
+    text-align: center;
+    font-weight: bold; }
+  body #feature-desc .emoji {
+    font-size: 4rem; }
+  body #about .title {
+    margin-top: 2.5%; }
+  body .footer {
+    background-color: #444444; }
+    body .footer a {
+      color: white; }
+    body .footer img {
+      max-width: 100px; }
+    body .footer #copyright {
+      margin-top: 2.5%;
+      color: white; }
