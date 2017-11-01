@@ -12,7 +12,7 @@ let c =
 	 */
 	getConversations: async function(con)
 	{
-		let query = "SELECT * FROM conversation_logs";
+		let query = "SELECT * FROM conversation_logs LEFT JOIN conversations ON conversation_logs.conversation_id = conversations.id ORDER BY conversation_logs.id";
 
 		let result = await dbHelper.executeQuery(con, query);
 
@@ -26,7 +26,9 @@ let c =
 			{
 				id: r.id,
 				conversation_id:r.conversation_id,
-				duration: conv_length
+				duration: conv_length,
+				user_id: r.user_id,
+				person_id: r.person_id
 			}
 
 			conversations.push(c);
@@ -76,6 +78,30 @@ let c =
 	    return unique_convs.size;
 	},
 
+	uniqueUsersCount: function(conversations)
+	{
+		let uniqueUsers = new Set();
+
+	    for (let c of conversations)
+	    {
+	        uniqueUsers.add(c.user_id);
+	    }
+
+	    return uniqueUsers.size;
+	},
+
+	uniquePeopleCount: function(conversations)
+	{
+		let uniquePeople = new Set();
+
+	    for (let c of conversations)
+	    {
+	        uniquePeople.add(c.person_id);
+	    }
+
+	    return uniquePeople.size;
+	},
+
 	durationToArray: function(conversations)
 	{
 		let durs = [];
@@ -88,18 +114,38 @@ let c =
 		return durs;
 	},
 
-	generateReport: function(conversations)
+	printReport: function(r)
 	{
 		console.log("-------------------------------------");
 	    console.log("CONVERSATIONS");
 	    console.log("-------------------------------------");
-	    console.log("NUMBER OF CONVERSATION LOGS:", conversations.length);
-	    console.log("UNIQUE CONVERSATIONS:       ", this.uniqueConversationsCount(conversations));
-	    console.log("DURATION:");
-	    console.log("\tMIN:\t", this.durationMin(conversations)),
-	    console.log("\tMAX:\t", this.durationMax(conversations)),
-	    console.log("\tMEAN:\t", this.durationAverage(conversations));
-	    console.log("\tSD:\t", this.durationSD(conversations));
+	    console.log("Total Conversations:        ", r.total);
+	    console.log("Unique Conversations:       ", r.unique);
+		console.log("Unique Users:               ", r.uniqueUsers);
+		console.log("Unique People:              ", r.uniquePeople);
+	    console.log("Duration (Seconds):");
+	    console.log("\tMin:\t", r.minDuration),
+	    console.log("\tMax:\t", r.maxDuration),
+	    console.log("\tMean:\t", r.meanDuration);
+	    console.log("\tSD:\t", r.durationSD);
+	},
+
+	generateReport: function(conversations)
+	{
+
+		let r =
+		{
+			total: conversations.length,
+			unique: this.uniqueConversationsCount(conversations),
+			uniqueUsers: this.uniqueUsersCount(conversations),
+			uniquePeople: this.uniquePeopleCount(conversations),
+			minDuration: this.durationMin(conversations),
+			maxDuration: this.durationMax(conversations),
+			meanDuration: this.durationAverage(conversations),
+			durationSD: this.durationSD(conversations)
+		};
+
+		return r;
 	}
 };
 
