@@ -9,3 +9,4 @@ Homestead.json
 app/public/docs
 nginx-default
 conversation-analysis/node_modules
+analytic_logs.json

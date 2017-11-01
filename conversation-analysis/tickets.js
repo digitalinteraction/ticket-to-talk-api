@@ -61,6 +61,18 @@ let t  =
 		return ss.standardDeviation(durations).toFixed(2);
 	},
 
+	uniqueTicketsCount: function(tickets)
+	{
+	    let uniqueTickets = new Set();
+
+	    for (let t of tickets)
+	    {
+	        uniqueTickets.add(t.ticket_id);
+	    }
+
+	    return uniqueTickets.size;
+	},
+
 	ticketTypeDistribution: function(tickets)
 	{
 	    let ticketTypes = new Set();
@@ -77,16 +89,12 @@ let t  =
 	        distCounts[t.type] += 1;
 	    }
 
-	    let dists = "";
 	    for(key in distCounts){
-	        let dist = (distCounts[key] / tickets.length) * 100;
-	        dist = dist.toFixed(2);
-
-	        let str = "\t" + key + ":\t" + dist + "%\n";
-	        dists += str;
+	        distCounts[key] = (distCounts[key] / tickets.length) * 100;
+	        distCounts[key] = distCounts[key].toFixed(2);
 	    }
 
-	    return dists;
+	    return distCounts;
 	},
 
 	durationToArray: function(tickets)
@@ -101,20 +109,41 @@ let t  =
 		return durs;
 	},
 
-	generateReport: function(tickets)
+	printReport: function(tickets)
 	{
 		console.log("-------------------------------------");
 	    console.log("TICKETS");
 	    console.log("-------------------------------------");
-	    console.log("TICKETS USED:               ", tickets.length);
-	    console.log("DURATION:");
-		console.log("\tMIN:\t", this.durationMin(tickets)),
-	    console.log("\tMAX:\t", this.durationMax(tickets)),
-	    console.log("\tMEAN:\t", this.durationAverage(tickets));
+	    console.log("Tickets Used:               ", tickets.length);
+		console.log("Unique Tickets:             ", tickets.length);
+	    console.log("Duration (Seconds):");
+		console.log("\tMin:\t", this.durationMin(tickets)),
+	    console.log("\tMax:\t", this.durationMax(tickets)),
+	    console.log("\tMean:\t", this.durationAverage(tickets));
 	    console.log("\tSD:\t", this.durationSD(tickets));
 	    let dists = this.ticketTypeDistribution(tickets);
-	    console.log("TICKET DISTRIBUTION:");
+	    console.log("Type Distribution:");
 	    console.log(dists);
+	},
+
+	generateReport: function(tickets)
+	{
+
+		let r =
+		{
+			total: tickets.length,
+			unique: this.uniqueTicketsCount(tickets),
+			duration:
+			{
+				min: this.durationMin(tickets),
+				max: this.durationMax(tickets),
+				mean: this.durationAverage(tickets),
+				sd: this.durationSD(tickets)
+			},
+			distribution: this.ticketTypeDistribution(tickets)
+		};
+
+		return r;
 	}
 };
 
