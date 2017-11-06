@@ -5,6 +5,13 @@
 @fa-font-path : "./../fonts/font-awesome-4.7.0/";
 body {
   font-family: "Nunito", sans-serif; }
+  body .title-banner {
+    color: white;
+    background-color: #FF5E5B; }
+    body .title-banner .title {
+      color: white; }
+    body .title-banner .subtitle {
+      color: white; }
   body #screenshots {
     background-color: #FF5E5B; }
     body #screenshots img {

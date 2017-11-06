@@ -22,8 +22,6 @@
     <link media="all" type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.0/css/bulma.min.css">
     <link media="all" type="text/css" rel="stylesheet" href="/fonts/font-awesome/css/font-awesome.min.css">
     <link media="all" type="text/css" rel="stylesheet" href="/css/main.css">
-    <link rel="stylesheet" type="text/css" href="/slick/slick/slick.css"/>
-    <link rel="stylesheet" type="text/css" href="/slick/slick/slick-theme.css"/>
 
     <!--Let browser know website is optimized for mobile-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -167,49 +165,49 @@
     </div>
   </section>
 
-<footer class="footer">
-  <div class="container">
-    <div class="content has-text-centered">
-      <div id="logos" class="columns">
-        <div class="column is-2">
-          <img src="/images/NewcastleUni_white.png" class="col s2 responsive-img" alt="Newcastle University"/>
-        </div>
-        <div class="column is-2">
-          <img src="/images/ESRC_white.png" class="col s2 responsive-img" alt="ESRC"/>
-        </div>
-        <div class="column is-2">
-          <img src="/images/EPSRC_white.png" class="col s2 responsive-img" alt="EPSRC"/>
-        </div>
-        <div class="column is-2">
-          <img src="/images/NewcastleUniNISR_white.png" class="col s2 responsive-img" alt="Newcastle University ISR"/>
-        </div>
-        <div class="column is-2">
-          <img src="/images/DigitalEconomy_white.png" class="col s2 responsive-img" alt="Digital Economy"/>
-        </div>
-        <div class="column is-2">
-          <img src="/images/YFNE_white.png" class="col s2 responsive-img" alt="Youth Focus North East"/>
-        </div>
-      </div>
-      <div class="footer-copyright">
-          <div class="container" style="text-decoration: none;">
-      <a class="col s2" href="https://ticket-to-talk.com/privacy">
-        Privacy
-      </a>
-      |
-      <a class="col s2" href="https://ticket-to-talk.com/terms">
-        Terms
-      </a>
-      |
-            <a class="col s2" href="mailto:d.welsh@ncl.ac.uk">
-        Contact
-      </a>
+  <footer class="footer">
+    <div class="container">
+      <div class="content has-text-centered">
+        <div id="logos" class="columns">
+          <div class="column is-2">
+            <img src="/images/NewcastleUni_white.png" class="col s2 responsive-img" alt="Newcastle University"/>
+          </div>
+          <div class="column is-2">
+            <img src="/images/ESRC_white.png" class="col s2 responsive-img" alt="ESRC"/>
+          </div>
+          <div class="column is-2">
+            <img src="/images/EPSRC_white.png" class="col s2 responsive-img" alt="EPSRC"/>
+          </div>
+          <div class="column is-2">
+            <img src="/images/NewcastleUniNISR_white.png" class="col s2 responsive-img" alt="Newcastle University ISR"/>
+          </div>
+          <div class="column is-2">
+            <img src="/images/DigitalEconomy_white.png" class="col s2 responsive-img" alt="Digital Economy"/>
+          </div>
+          <div class="column is-2">
+            <img src="/images/YFNE_white.png" class="col s2 responsive-img" alt="Youth Focus North East"/>
           </div>
         </div>
-        <div id="copyright">
-          &copy; Open Lab, Newcastle University 2017
-        </div>
+        <div class="footer-copyright">
+            <div class="container" style="text-decoration: none;">
+        <a class="col s2" href="https://ticket-to-talk.com/privacy">
+          Privacy
+        </a>
+        |
+        <a class="col s2" href="https://ticket-to-talk.com/terms">
+          Terms
+        </a>
+        |
+              <a class="col s2" href="mailto:d.welsh@ncl.ac.uk">
+          Contact
+        </a>
+            </div>
+          </div>
+          <div id="copyright">
+            &copy; Open Lab, Newcastle University 2017
+          </div>
+      </div>
     </div>
-  </div>
-</footer>
+  </footer>
 </body>
 </html>
