@@ -5,6 +5,20 @@
 
 body {
   font-family: $nunito;
+
+  .title-banner {
+    color: white;
+    background-color: $red;
+
+    .title {
+      color: white;
+    }
+
+    .subtitle {
+      color: white;
+    }
+  }
+
   #screenshots {
     background-color: $red;
     img {
