@@ -1,12 +1,11 @@
-# Ticket to Talk
-### API
-##### **ticket-to-talk.com**
+# Ticket to Talk - API
+##### **[ticket-to-talk.com](http://ticket-to-talk.com)**
 
-![Version: 1.0.1](https://img.shields.io/badge/Version-1.0.1-brightgreen.svg) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 **Ticket to Talk hopes to encourage conversation between younger people and grandparents, friends or people they care for who are experiencing dementia. The app is designed to help collect and curate digital media (”tickets”) to be used to prompt and stimulate talk, conversation and reminiscence between younger people and those they are close to with dementia.**
 
-##About
+## About
 
 Ticket to Talk is a smartphone application that aims to help encourage conversation between younger people and grandparents, friends or people they care for who are experiencing dementia. The app is designed to help collect and curate digital media (”tickets”) to be used to prompt and stimulate talk, conversation and reminiscence between younger people and those they are close to with dementia.
 
