@@ -1,5 +1,5 @@
 # From Rob's Debain-PHP-ssmtp dockerfile
-FROM openlab.ncl.ac.uk:4567/b30282237/composer-image:1.0.4
+FROM openlab.ncl.ac.uk:4567/rob/composer-image:1.1.0
 
 
 # Set timezone
@@ -45,4 +45,3 @@ RUN chmod -R 775 storage/
 
 # Expose the port
 EXPOSE 80
-
