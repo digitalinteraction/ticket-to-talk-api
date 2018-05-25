@@ -39,9 +39,9 @@
     "position": "bottom-right",
     "type": "opt-in",
     "content": {
-        "message": "This website uses a cookie for Google Analytics to aid our understanding of how people use video.",
+        "message": "This website uses a cookie for Google Analytics to aid our understanding of how people use Ticket to Talk.",
         "link": "Learn More",
-        "href": "INSERT URL TO POLICY HERE",
+        "href": "/cookies",
         "dismiss":"Decline"
     },
     onInitialise: function (status) {

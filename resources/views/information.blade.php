@@ -1,17 +1,79 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <!-- Google Analytics -->
-    <script>
-        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-                (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-        })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  <script async src="https://www.googletagmanager.com/gtag/js"></script>
+  <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.css" />
+  <script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.js"></script>
 
-        ga('create', 'UA-99833865-1', 'auto');
-        ga('send', 'pageview');
-    </script>
-    <!-- End Google Analytics -->
+  <script>
+    var tracker = 'UA-99833865-1';
+    window['ga-disable-'+tracker] = true;
+
+    function enableGA()
+    {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', tracker, { 'anonymize_ip': true });
+        window['ga-disable-'+tracker] = false;
+    }
+
+    function disableGA()
+    {
+        window['ga-disable-'+tracker] = true;
+    }
+
+    window.addEventListener("load", function(){
+    window.cookieconsent.initialise({
+    "palette": {
+        "popup": {
+        "background": "#00CECB",
+        "text": "#fff"
+        },
+        "button": {
+        "background": "#fff",
+        "text": "#00CECB"
+        }
+    },
+    "position": "bottom-right",
+    "type": "opt-in",
+    "content": {
+        "message": "This website uses a cookie for Google Analytics to aid our understanding of how people use Ticket to Talk.",
+        "link": "Learn More",
+        "href": "/cookies",
+        "dismiss":"Decline"
+    },
+    onInitialise: function (status) {
+    var type = this.options.type;
+    var didConsent = this.hasConsented();
+    if (type == 'opt-in' && status=='allow' && didConsent) {
+        // enable cookies
+        enableGA();
+    }
+
+    },
+
+    onStatusChange: function(status, chosenBefore) {
+        var type = this.options.type;
+        var didConsent = this.hasConsented();
+
+        if (type == 'opt-in' && status=='allow' && didConsent) {
+            // enable cookies
+            enableGA();
+        }
+    },
+
+    onRevokeChoice: function() {
+        // console.log("revoke");
+
+    var type = this.options.type;
+        if (type == 'opt-in') {
+            // disable cookies
+            disableGA();
+        }
+    },
+    })});
+  </script>
 
     <!--Import Google Icon Font-->
     <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
