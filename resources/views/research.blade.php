@@ -171,11 +171,11 @@
         </div>
         <div class="footer-copyright">
             <div class="container" style="text-decoration: none;">
-        <a class="col s2" href="https://ticket-to-talk.com/privacy">
+        <a class="col s2" href="/privacy">
           Privacy
         </a>
         |
-        <a class="col s2" href="https://ticket-to-talk.com/terms">
+        <a class="col s2" href="/terms">
           Terms
         </a>
         |
