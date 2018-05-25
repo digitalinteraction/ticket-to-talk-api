@@ -1,17 +1,79 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <!-- Google Analytics -->
-    <script>
-        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-                (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-        })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  <script async src="https://www.googletagmanager.com/gtag/js"></script>
+  <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.css" />
+  <script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.js"></script>
 
-        ga('create', 'UA-99833865-1', 'auto');
-        ga('send', 'pageview');
-    </script>
-    <!-- End Google Analytics -->
+  <script>
+    var tracker = 'UA-99833865-1';
+    window['ga-disable-'+tracker] = true;
+
+    function enableGA()
+    {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', tracker, { 'anonymize_ip': true });
+        window['ga-disable-'+tracker] = false;
+    }
+
+    function disableGA()
+    {
+        window['ga-disable-'+tracker] = true;
+    }
+
+    window.addEventListener("load", function(){
+    window.cookieconsent.initialise({
+    "palette": {
+        "popup": {
+        "background": "#00CECB",
+        "text": "#fff"
+        },
+        "button": {
+        "background": "#fff",
+        "text": "#00CECB"
+        }
+    },
+    "position": "bottom-right",
+    "type": "opt-in",
+    "content": {
+        "message": "This website uses a cookie for Google Analytics to aid our understanding of how people use Ticket to Talk.",
+        "link": "Learn More",
+        "href": "/cookies",
+        "dismiss":"Decline"
+    },
+    onInitialise: function (status) {
+    var type = this.options.type;
+    var didConsent = this.hasConsented();
+    if (type == 'opt-in' && status=='allow' && didConsent) {
+        // enable cookies
+        enableGA();
+    }
+
+    },
+
+    onStatusChange: function(status, chosenBefore) {
+        var type = this.options.type;
+        var didConsent = this.hasConsented();
+
+        if (type == 'opt-in' && status=='allow' && didConsent) {
+            // enable cookies
+            enableGA();
+        }
+    },
+
+    onRevokeChoice: function() {
+        // console.log("revoke");
+
+    var type = this.options.type;
+        if (type == 'opt-in') {
+            // disable cookies
+            disableGA();
+        }
+    },
+    })});
+  </script>
 
     <!--Import Google Icon Font-->
     <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -135,32 +197,53 @@
     </div>
 </div>
 
-<footer class="page-footer">
-    <div class="container valign-wrapper">
-        <div id="logos" class="row valign">
-            <img src="/images/NewcastleUni_white.png" class="col s2 responsive-img" alt="Newcastle University"/>
-            <img src="/images/ESRC_white.png" class="col s2 responsive-img" alt="ESRC"/>
-            <img src="/images/EPSRC_white.png" class="col s2 responsive-img" alt="EPSRC"/>
-            <img src="/images/NewcastleUniNISR_white.png" class="col s2 responsive-img" alt="Newcastle University ISR"/>
-            <img src="/images/DigitalEconomy_white.png" class="col s2 responsive-img" alt="Digital Economy"/>
-            <img src="/images/YFNE_white.png" class="col s2 responsive-img" alt="Youth Focus North East"/>
+<footer class="footer">
+  <div class="container">
+    <div class="content has-text-centered">
+      <div id="logos" class="columns">
+        <div class="column is-2">
+          <img src="/images/NewcastleUni_white.png" class="col s2 responsive-img" alt="Newcastle University"/>
+        </div>
+        <div class="column is-2">
+          <img src="/images/ESRC_white.png" class="col s2 responsive-img" alt="ESRC"/>
+        </div>
+        <div class="column is-2">
+          <img src="/images/EPSRC_white.png" class="col s2 responsive-img" alt="EPSRC"/>
+        </div>
+        <div class="column is-2">
+          <img src="/images/NewcastleUniNISR_white.png" class="col s2 responsive-img" alt="Newcastle University ISR"/>
+        </div>
+        <div class="column is-2">
+          <img src="/images/DigitalEconomy_white.png" class="col s2 responsive-img" alt="Digital Economy"/>
+        </div>
+        <div class="column is-2">
+          <img src="/images/YFNE_white.png" class="col s2 responsive-img" alt="Youth Focus North East"/>
+        </div>
+      </div>
+      <div class="footer-copyright">
+          <div class="container" style="text-decoration: none;">
+      <a class="col s2" href="/privacy">
+        Privacy
+      </a>
+      |
+      <a class="col s2" href="/terms">
+        Terms
+      </a>
+      |
+      <a class="col s2" href="mailto:d.welsh@ncl.ac.uk">
+        Contact
+      </a>
+      |
+      <a class="col s2" href="/research">
+        Research
+      </a>
+          </div>
+        </div>
+        <div id="copyright">
+          &copy; Open Lab, Newcastle University 2017
         </div>
     </div>
-    <div class="footer-copyright">
-        <div class="container" style="text-decoration: none;">
-            <a class="col s2" href="https://ticket-to-talk.com/privacy">
-                Privacy
-            </a>
-            |
-            <a class="col s2" href="https://ticket-to-talk.com/terms">
-                Terms
-            </a>
-            |
-            <a class="col s2" href="mailto:d.welsh@ncl.ac.uk">
-                Contact
-            </a>
-        </div>
-    </div>
+  </div>
 </footer>
 
 <!--Import jQuery before materialize.js-->
