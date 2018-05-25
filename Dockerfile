@@ -2,6 +2,11 @@
 FROM openlab.ncl.ac.uk:4567/rob/composer-image:1.1.0
 
 
+RUN curl -sL https://deb.nodesource.com/setup_8.x | bash -
+RUN apt-get install -y nodejs
+RUN npm install -g apidoc
+
+
 # Set timezone
 RUN echo 'date.timezone="Europe/London"' >> /etc/php5/fpm/php.ini
 
@@ -32,6 +37,9 @@ COPY bootstrap.sh /app/
 
 # Add the rest of the project files
 ADD . /app
+
+
+RUN apidoc -i app/Http/Controllers/ -o public/docs/
 
 
 # Set folder permissions
