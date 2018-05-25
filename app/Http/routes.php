@@ -30,6 +30,16 @@ Route::get('/participate', function() {
     return view('information');
 })->middleware(['log']);
 
+// View the cookies page
+Route::get('/cookies', function() {
+    return view('cookies');
+});
+
+// View the research page
+Route::get('/research', function() {
+    return view('research');
+});
+
 Route::get("/docs", function() {
     return File::get(public_path() . "/docs/index.html");
 })->middleware(['log']);

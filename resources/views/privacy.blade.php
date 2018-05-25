@@ -90,34 +90,11 @@
 
 <body>
 
-  <section class="hero is-medium">
+  <section class="hero is-medium title-banner">
     <div class="hero-body">
       <div class="container">
-        <h1 class="title">Ticket to Talk | Privacy Policy</h1>
-
-        <div class="content">
-          <h2 class="subtitle">Key Points</h2>
-
-          <p>
-            Your privacy is important to us and we believe you should always know what data we collect from you and the ways in which we use it. Our aim is to give you meaningful control and empower you to make the best decisions about the information you share with us.
-          </p>
-          <p>
-            <strong>Here are some key points from the policy, but please read the full document:</strong>
-          </p>
-          <p>
-            Ticket to Talk is a public service and anything you post is available instantly to anyone around the world.
-            Ticket to Talk has been developed at Open Lab, Newcastle University as a research project. Any information we collect from you will be stored securely in the EU and may be subject to processing. We often publish findings based on user activity, these publications will never contain information or data that could be used to identify you as an individual.
-          </p>
-          <p>
-            When you use Ticket to Talk, even if you are just browsing through the content, we receive some personal information about you like your IP address and the type of device you are using. When you sign up you may be asked for additional information such as your email address, name and a public profile which we use to keep your account secure and improve the experience for yourself and other users.
-            If you have any questions about this policy, how we collect or process your personal data or anything else related to our privacy practices, you can contact us at any time.
-          </p>
-          <p>
-            Ticket to Talk may share personal data with businesses outside of the EU in order to provide a better service. Ticket to Talk is hosted on Newcastle University servers, uses Amazon S3 for storing data securely and Newcastle University emails to distribute emails.
-            Ticket to Talk complies with GDPR and any external services that are not based in the EU comply with the EU-US Privacy Shield Frameworks as set forth by the U.S. Department of Commerce regarding the collection, use, and retention of personal data from the EU and Switzerland. For more information about the Privacy Shield generally, and to view the certificates online, please visit https://www.privacyshield.gov.
-          </p>
-        </div>
-
+        <h1 class="title">Ticket to Talk</h1>
+        <h2 class="subtitle">Privacy Policy</h2>
       </div>
     </div>
   </section>
@@ -125,7 +102,33 @@
   <section class="section">
     <div class="container">
       <div class="content">
-        <h1 class="is-size-2">Full Privacy Policy</h1>
+        <h1>Key Points</h1>
+        <p>
+          Your privacy is important to us and we believe you should always know what data we collect from you and the ways in which we use it. Our aim is to give you meaningful control and empower you to make the best decisions about the information you share with us.
+        </p>
+        <p>
+          <strong>Here are some key points from the policy, but please read the full document:</strong>
+        </p>
+        <p>
+          Ticket to Talk is a public service and anything you post is available instantly to anyone around the world.
+          Ticket to Talk has been developed at Open Lab, Newcastle University as a research project. Any information we collect from you will be stored securely in the EU and may be subject to processing. We often publish findings based on user activity, these publications will never contain information or data that could be used to identify you as an individual.
+        </p>
+        <p>
+          When you use Ticket to Talk, even if you are just browsing through the content, we receive some personal information about you like your IP address and the type of device you are using. When you sign up you may be asked for additional information such as your email address, name and a public profile which we use to keep your account secure and improve the experience for yourself and other users.
+          If you have any questions about this policy, how we collect or process your personal data or anything else related to our privacy practices, you can contact us at any time.
+        </p>
+        <p>
+          Ticket to Talk may share personal data with businesses outside of the EU in order to provide a better service. Ticket to Talk is hosted on Newcastle University servers, uses Amazon S3 for storing data securely and Newcastle University emails to distribute emails.
+          Ticket to Talk complies with GDPR and any external services that are not based in the EU comply with the EU-US Privacy Shield Frameworks as set forth by the U.S. Department of Commerce regarding the collection, use, and retention of personal data from the EU and Switzerland. For more information about the Privacy Shield generally, and to view the certificates online, please visit https://www.privacyshield.gov.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="content">
+        <h1>Full Privacy Policy</h1>
         <p>
           Please read this privacy policy carefully before using the services offered by Open Lab, University of Newcastle Upon Tyne (“Open Lab, Newcastle University”, "Open Lab, University of Newcastle Upon Tyne", “we”, “us”). We recognise the importance of your privacy. Therefore, we have created this Privacy Policy so that you know how we use and disclose your information when you make it available to us. This Privacy Policy applies solely to information collected at this Site. By using or accessing the Site, you signify your agreement to be bound by our Privacy Policy.
         </p>
@@ -145,7 +148,7 @@
 
         <h2>Information Usage:</h2>
         <p>
-          We will only use your personal information as described below, unless you have specifically consented to another type of use, either at the time the personal information is collected from you or through some other form of consent from you or notification to you. We may use your personal information as follows: (i) to respond to your inquires or requests; (ii) to send you emails and newsletters from time to time with information about our Site; (iii) to share with our partners, by allowing them to link to and collect your information from the Site; (iv) we may permit our vendors and subcontractors to access your personal information, but they are only permitted to do so in connection with performing services for us; (v) we may disclose personal information as required by law or legal process; (vi) to investigate suspected fraud, harassment or other violations of any law, rule or regulation, or the terms or policies for our services or our sponsors and (vii) we may transfer your personal information in connection with the sale or merger or change of control of the services.
+          We will only use your personal information as described below, unless you have specifically consented to another type of use, either at the time the personal information is collected from you or through some other form of consent from you or notification to you. We may use your personal information as follows: (i) to respond to your inquiries or requests; (ii) to send you emails and newsletters from time to time with information about our Site; (iii) to share with our partners, by allowing them to link to and collect your information from the Site; (iv) we may permit our vendors and subcontractors to access your personal information, but they are only permitted to do so in connection with performing services for us; (v) we may disclose personal information as required by law or legal process; (vi) to investigate suspected fraud, harassment or other violations of any law, rule or regulation, or the terms or policies for our services or our sponsors and (vii) we may transfer your personal information in connection with the sale or merger or change of control of the services.
         </p>
 
         <h2>Cookies:</h2>
@@ -211,6 +214,32 @@
 
         <p>
           Transfers of Personal Data Outside the EEA: The personal data that we collect from you may be transferred to, and stored at, a destination outside the European Economic Area ("EEA"). It may also be processed by staff operating outside the EEA who work for us or for one of our suppliers. By submitting your personal data, you agree to this transfer, storing or processing. We will take all steps reasonably necessary to ensure that your data is treated securely and in accordance with this privacy policy.
+        </p>
+
+        <h2>Contact Information:</h2>
+        <p>
+          Should you have any questions, contact us:
+        </p>
+
+        <p>
+          <strong>Address:</strong><br  />
+          Open Lab<br  />
+          Floor 1<br  />
+          Urban Sciences Building<br  />
+          1 Science Square<br  />
+          Science Central<br  />
+          Newcastle Upon Tyne<br  />
+          NE4 5TG<br  />
+        </p>
+
+        <p>
+          <strong>Phone:</strong> +44 191 20 84642 | 84630 <br />
+          <strong>Email:</strong> <a href="mailto:openlab-admin@newcastle.ac.uk">openlab-admin@newcastle.ac.uk</a>
+        </p>
+
+        <h2>Effective Date:</h2>
+        <p>
+          May 25, 2018
         </p>
       </div>
     </div>
