@@ -2,34 +2,92 @@
 <html>
 <head>
 
-    <!-- Google Analytics -->
-    <script>
-        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-                (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-        })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  <script async src="https://www.googletagmanager.com/gtag/js"></script>
+  <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.css" />
+  <script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.js"></script>
 
-        ga('create', 'UA-99833865-1', 'auto');
-        ga('send', 'pageview');
-    </script>
-    <!-- End Google Analytics -->
+  <script>
+    var tracker = 'UA-99833865-1';
+    window['ga-disable-'+tracker] = true;
 
-    <!--Import Google Icon Font-->
-    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=PT+Mono" rel="stylesheet">
+    function enableGA()
+    {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', tracker, { 'anonymize_ip': true });
+        window['ga-disable-'+tracker] = false;
+    }
 
-    <!--Import Bulma -->
-    <link media="all" type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.0/css/bulma.min.css">
-    <link media="all" type="text/css" rel="stylesheet" href="/fonts/font-awesome/css/font-awesome.min.css">
-    <link media="all" type="text/css" rel="stylesheet" href="/css/main.css">
+    function disableGA()
+    {
+        window['ga-disable-'+tracker] = true;
+    }
 
-    <!--Let browser know website is optimized for mobile-->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    window.addEventListener("load", function(){
+    window.cookieconsent.initialise({
+    "palette": {
+        "popup": {
+        "background": "#00CECB",
+        "text": "#fff"
+        },
+        "button": {
+        "background": "#fff",
+        "text": "#00CECB"
+        }
+    },
+    "position": "bottom-right",
+    "type": "opt-in",
+    "content": {
+        "message": "This website uses a cookie for Google Analytics to aid our understanding of how people use video.",
+        "link": "Learn More",
+        "href": "INSERT URL TO POLICY HERE",
+        "dismiss":"Decline"
+    },
+    onInitialise: function (status) {
+    var type = this.options.type;
+    var didConsent = this.hasConsented();
+    if (type == 'opt-in' && status=='allow' && didConsent) {
+        // enable cookies
+        enableGA();
+    }
 
-    <title>Ticket to Talk</title>
-    <meta author="Daniel Welsh"/>
-    <meta charset="UTF-8">
-    <meta name="description" content="Ticket to Talk: supporting interactions between younger people and older relatives with dementia.">
+    },
+
+    onStatusChange: function(status, chosenBefore) {
+        var type = this.options.type;
+        var didConsent = this.hasConsented();
+
+        if (type == 'opt-in' && status=='allow' && didConsent) {
+            // enable cookies
+            enableGA();
+        }
+    },
+
+    onRevokeChoice: function() {
+        // console.log("revoke");
+
+    var type = this.options.type;
+        if (type == 'opt-in') {
+            // disable cookies
+            disableGA();
+        }
+    },
+    })});
+  </script>
+
+  <!--Import Bulma -->
+  <link media="all" type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.0/css/bulma.min.css">
+  <link media="all" type="text/css" rel="stylesheet" href="/fonts/font-awesome/css/font-awesome.min.css">
+  <link media="all" type="text/css" rel="stylesheet" href="/css/main.css">
+
+  <!--Let browser know website is optimized for mobile-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <title>Ticket to Talk</title>
+  <meta author="Daniel Welsh"/>
+  <meta charset="UTF-8">
+  <meta name="description" content="Ticket to Talk: supporting interactions between younger people and older relatives with dementia.">
 </head>
 
 <body>
@@ -142,7 +200,7 @@
       <div>
         <h1 class="title is-3">Origin</h1>
         <p>
-            The app has been developed as part of the DemYouth project, where we have been working with groups of young people with personal experiences of dementia. The DemYouth project has been supported through grants from the ESRC, EPSRC and Newcastle University’s Institute for Social Renewal. It is an ongoing collaboration between researchers at Newcastle and Northumbria Universities and partners at the Alzheimer’s Society and Youth Focus North East as part of the larger DemTalk project (www.demtalk.org.uk). The Ticket-to-Talk project has been contributed to by: Tony Young (Newcastle University), Daniel Welsh (Newcastle University), John Vines (Northumbria University), Roisin McNaney (Lancaster University), Kellie Morrissey (Newcastle University), Tom Schofield (Newcastle University), Leon Mexter (Youth Focus North East) and Jamie Mercer (Youth Focus North East).
+            The app has been developed as part of the DemYouth project, where we have been working with groups of young people with personal experiences of dementia. The DemYouth project has been supported through grants from the ESRC, EPSRC and Newcastle University’s Institute for Social Renewal. It is an ongoing collaboration between researchers at Newcastle and Northumbria Universities and partners at the Alzheimer’s Society and Youth Focus North East as part of the larger DemTalk project (www.demtalk.org.uk). The Ticket-to-Talk project has been contributed to by: Daniel Welsh (Newcastle University), John Vines (Northumbria University), Roisin McNaney (Lancaster University), Kellie Morrissey (Newcastle University), Tom , Leon Mexter (Youth Focus North East), Jamie Mercer (Youth Focus North East), and Tony Young (Newcastle University).
         </p>
       </div>
       <div>
