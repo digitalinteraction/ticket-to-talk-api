@@ -15,33 +15,33 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Redirect;
 
 Route::get('/', function () {
-  return view('home');
+    return view('home');
 });
 
 Route::get('/privacy', function () {
-  return view('privacy');
+    return view('privacy');
 });
 
 Route::get('/terms', function () {
-  return view('terms');
+    return view('terms');
 });
 
 Route::get('/participate', function () {
-  return view('information');
+    return view('information');
 });
 
 // View the cookies page
 Route::get('/cookies', function () {
-  return view('cookies');
+    return view('cookies');
 });
 
 // View the research page
 Route::get('/research', function () {
-  return view('research');
+    return view('research');
 });
 
 Route::get("/docs", function () {
-  return File::get(public_path() . "/docs/index.html");
+    return File::get(public_path() . "/docs/index.html");
 });
 
 Route::get("/subscribe/{email}", "MailingListController@subscriberToMailingList");
@@ -54,28 +54,28 @@ Route::group(
     'namespace' => 'Api',
     "https" => true
   ], function () {
-    Route::post('register/',
+      Route::post('register/',
       [
           'as' => 'auth.register',
           'uses' => 'AuthController@register'
       ]
     );
 
-    Route::post('login/',
+      Route::post('login/',
       [
           'as' => 'auth.login',
           'uses' => 'AuthController@login'
       ]
     );
 
-    Route::post('verify/',
+      Route::post('verify/',
       [
         'as' => 'auth.verify',
         'uses' => 'AuthController@verify'
       ]
     );
 
-    Route::get('verify/resend',
+      Route::get('verify/resend',
       [
           'as' => 'auth.verify.resend',
           'uses' => 'AuthController@resendVerificationEmail'
@@ -92,81 +92,81 @@ Route::group([
   "https" => true
 ],
 function () {
-  Route::post('store/', [
+    Route::post('store/', [
       'as' => 'article.store',
       'uses' => 'ArticleController@store'
     ]);
 
-  Route::get('show/', [
+    Route::get('show/', [
     'as' => 'article.show',
     'uses' => 'ArticleController@show'
   ]);
 
-  Route::get('all/', [
+    Route::get('all/', [
     'as' => 'article.getUserArticles',
     'uses' => 'ArticleController@getUserArticles'
   ]);
 
-  Route::post('update/', [
+    Route::post('update/', [
     'as' => 'article.update',
     'uses' => 'ArticleController@update'
   ]);
 
-  Route::delete('destroy/', [
+    Route::delete('destroy/', [
     'as' => 'article.destroy',
     'uses' => 'ArticleController@destroy'
   ]);
 
-  Route::post('share/send', [
+    Route::post('share/send', [
     'as' => 'article.share.send',
     'uses' => 'ArticleController@shareArticle'
   ]);
 
-  Route::get('share/get', [
+    Route::get('share/get', [
     'as' => 'article.share.get',
     'uses' => 'ArticleController@getSharedArticles'
   ]);
 
-  Route::post('share/accept', [
+    Route::post('share/accept', [
     'as' => 'article.share.accept',
     'uses' => 'ArticleController@acceptArticle'
   ]);
 
-  Route::post('share/reject', [
+    Route::post('share/reject', [
     'as' => 'article.share.reject',
     'uses' => 'ArticleController@rejectArticle'
   ]);
 });
 
 // API - TAGS
-Route::group( [
+Route::group([
   'prefix' => 'api/tags',
   'namespace' => 'Api',
   'middleware' => [ 'api' ],
   "https" => true
 ],
 function () {
-  Route::post('store/', [
+    Route::post('store/', [
     'as' => 'tag.store',
     'uses' => 'TagController@store'
   ]);
 
-  Route::get('show/', [
+    Route::get('show/', [
     'as' => 'tag.show',
     'uses' => 'TagController@show'
   ]);
 
-  Route::get('all/', [
+    Route::get('all/', [
     'as' => 'tag.getUserTags',
     'uses' => 'TagController@getUserTags'
   ]);
 
-  Route::post('update/', [
+    Route::post('update/', [
     'as' => 'tag.update',
     'uses' => 'TagController@update'
   ]);
 
-  Route::delete('destroy/', [
+    Route::delete('destroy/', [
     'as' => 'tag.destroy',
     'uses' => 'TagController@destroy'
   ]);
@@ -180,32 +180,32 @@ Route::group([
   "https" => true
 ],
 function () {
-  Route::post('store/', [
+    Route::post('store/', [
     'as' => 'ticket.store',
     'uses' => 'TicketController@store'
   ]);
 
-  Route::get('show/', [
+    Route::get('show/', [
     'as' => 'ticket.show',
     'uses' => 'TicketController@show'
   ]);
 
-  Route::get('all/', [
+    Route::get('all/', [
     'as' => 'ticket.getUserTickets',
     'uses' => 'TicketController@getUserTickets'
   ]);
 
-  Route::post('update/', [
+    Route::post('update/', [
     'as' => 'ticket.update',
     'uses' => 'TicketController@update'
   ]);
 
-  Route::delete('destroy/', [
+    Route::delete('destroy/', [
     'as' => 'ticket.destroy',
     'uses' => 'TicketController@destroy'
   ]);
 
-  Route::get('download', [
+    Route::get('download', [
     'as' => 'ticket.download',
     'uses' => 'TicketController@downloadTicket'
   ]);
@@ -219,42 +219,42 @@ Route::group([
   "https" => true
 ],
 function () {
-  Route::post('store/', [
+    Route::post('store/', [
     'as' => 'person.store',
     'uses' => 'PersonController@store'
   ]);
 
-  Route::get('show/', [
+    Route::get('show/', [
     'as' => 'person.show',
     'uses' => 'PersonController@show'
   ]);
 
-  Route::get('all/', [
+    Route::get('all/', [
     'as' => 'person.getUserPeople',
     'uses' => 'PersonController@getUserPeople'
   ]);
 
-  Route::post('update/', [
+    Route::post('update/', [
     'as' => 'people.update',
     'uses' => 'PersonController@update'
   ]);
 
-  Route::delete('destroy/', [
+    Route::delete('destroy/', [
     'as' => 'people.destroy',
     'uses' => 'PersonController@destroy'
   ]);
 
-  Route::get('getusers/', [
+    Route::get('getusers/', [
     'as' => 'people.get_users',
     'uses' => 'PersonController@getUsers'
   ]);
 
-  Route::get('tickets/', [
+    Route::get('tickets/', [
     'as' => 'people.tickets',
     'uses' => 'PersonController@getTickets'
   ]);
 
-  Route::get('picture', [
+    Route::get('picture', [
     'as' => 'people.picture',
     'uses' => 'PersonController@getProfilePicture'
   ]);
@@ -268,52 +268,52 @@ Route::group([
   "https" => true
 ],
 function () {
-  Route::get('show/', [
+    Route::get('show/', [
     'as' => 'user.show',
     'uses' => 'PersonController@show'
   ]);
 
-  Route::post('update/', [
+    Route::post('update/', [
     'as' => 'user.update',
     'uses' => 'UserController@update'
   ]);
 
-  Route::delete('destroy/', [
+    Route::delete('destroy/', [
     'as' => 'user.destroy',
     'uses' => 'PersonController@destroy'
   ]);
 
-  Route::get('getpeople/', [
+    Route::get('getpeople/', [
     'as' => 'user.getpeople',
     'uses' => 'UserController@getAssociatedPeople'
   ]);
 
-  Route::get('invitations/get', [
+    Route::get('invitations/get', [
     'as' => 'user.invitations.get',
     'uses' => 'UserController@getInvitations'
   ]);
 
-  Route::post('invitations/send', [
+    Route::post('invitations/send', [
     'as' => 'user.invitations.send',
     'uses' => 'UserController@sendInvitation'
   ]);
 
-  Route::post('invitations/accept', [
+    Route::post('invitations/accept', [
     'as' => 'user.invitations.accept',
     'uses' => 'UserController@acceptInvitation'
   ]);
 
-  Route::post('invitations/reject', [
+    Route::post('invitations/reject', [
     'as' => 'user.invitations.reject',
     'uses' => 'UserController@rejectInvitation'
   ]);
 
-  Route::get('picture/get', [
+    Route::get('picture/get', [
     'as' => 'user.picture.get',
     'uses' => 'UserController@getProfilePicture'
   ]);
 
-  Route::get('participate/', [
+    Route::get('participate/', [
     'as' => 'user.participate',
     'uses' => 'UserController@acceptStudy'
   ]);
@@ -327,7 +327,7 @@ Route::group([
   "https" => true
 ],
 function () {
-  Route::get('/get', [
+    Route::get('/get', [
     'as' => 'inspiration.get',
     'uses' => 'InspirationController@index'
   ]);
@@ -341,43 +341,62 @@ Route::group([
   "https" => true
 ],
 function () {
-  Route::get('/get', [
+    Route::get('/get', [
     'as' => 'conversation.get',
     'uses' => 'ConversationController@index'
   ]);
 
-  Route::get('/get/tickets', [
+    Route::get('/get/tickets', [
     'as' => 'conversation.get.tickets',
     'uses' => 'ConversationController@getTicketsInConversation'
   ]);
 
-  Route::post('/store', [
+    Route::post('/store', [
     'as' => 'conversation.store',
     'uses' => 'ConversationController@store'
   ]);
 
-  Route::post('/update', [
+    Route::post('/update', [
     'as' => 'conversation.update',
     'uses' => 'ConversationController@update'
   ]);
 
-  Route::post('/tickets/add', [
+    Route::post('/tickets/add', [
     'as' => 'conversation.tickets.add',
     'uses' => 'ConversationController@addTicket'
   ]);
 
-  Route::post('/tickets/remove', [
+    Route::post('/tickets/remove', [
     'as' => 'conversation.tickets.remove',
     'uses' => 'ConversationController@removeTicket'
   ]);
 
-  Route::get('/destroy', [
+    Route::get('/destroy', [
     'as' => 'conversation.destroy',
     'uses' => 'ConversationController@destroy'
   ]);
 
-  Route::post('/logs/store', [
+    Route::post('/logs/store', [
     'as' => 'conversation.logs.store',
     'uses' => 'ConversationLogController@store'
+  ]);
+});
+
+// API - CONVERSATIONS
+Route::group([
+  'prefix' => 'api/consent',
+  'namespace' => 'Api',
+  'middleware' => [ 'api' ],
+  "https" => true
+],
+function () {
+    Route::get('/get', [
+    'as' => 'consent.get',
+    'uses' => 'ConsentController@index'
+  ]);
+
+    Route::post('/store', [
+    'as' => 'consent.store',
+    'uses' => 'ConsentController@store'
   ]);
 });
