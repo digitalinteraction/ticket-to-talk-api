@@ -399,4 +399,14 @@ function () {
     'as' => 'consent.store',
     'uses' => 'ConsentController@store'
   ]);
+
+    Route::post('/update', [
+    'as' => 'consent.update',
+    'uses' => 'ConsentController@update'
+  ]);
+
+    Route::delete('/destroy', [
+    'as' => 'consent.update',
+    'uses' => 'ConsentController@destroy'
+  ]);
 });

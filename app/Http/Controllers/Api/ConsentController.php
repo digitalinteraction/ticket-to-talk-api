@@ -37,7 +37,7 @@ class ConsentController extends Controller
             abort(401);
         }
 
-        $consents = Consent::where('userID', $user->id)->orderBy('created_at', 'desc')->first()->get();
+        $consents = $user->consents()->first();
 
         return response()->json([
             "status" => [
@@ -76,11 +76,11 @@ class ConsentController extends Controller
         }
 
         $consent = new Consent;
-        $consent->core = true;
-        $consent->subscribed = true;
-        $consent->research = true;
-        $consent->googleAnalytics = true;
-        $consent->userID = $user->id;
+        $consent->core = ($request->core === 'true');
+        $consent->subscribed = ($request->subscribed === 'true');
+        $consent->research = ($request->research === 'true');
+        $consent->googleAnalytics = ($request->google_analytics === 'true');
+        $consent->user_id = $user->id;
 
         $consent->save();
 
@@ -125,9 +125,46 @@ class ConsentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
         //
+        $token = Input::get('token');
+        $user = $this->jwtauth->authenticate($token);
+
+        // Reject if no user
+        if (!$user) {
+            abort(401);
+        }
+
+        // Reject if no consent is found
+        $consent = Consent::find($request->consent_id);
+        if (!$consent) {
+            abort(404);
+        }
+
+        // Abort if user does not own consent.
+        if ($consent->user_id != $user->id) {
+            abort(403);
+        }
+
+        // Cast strings to boolean
+        $consent->core = ($request->core === 'true');
+        $consent->subscribed = ($request->subscribed === 'true');
+        $consent->research = ($request->research === 'true');
+        $consent->googleAnalytics = ($request->google_analytics === 'true');
+
+        $consent->save();
+
+        return response()->json([
+            "status" => [
+                "message" => "Consent updated",
+                "code" => 200
+            ],
+            "errors" => false,
+            "data" => [
+                "consent" => $consent
+            ]
+        ]);
     }
 
     /**
@@ -136,8 +173,37 @@ class ConsentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
         //
+        $token = Input::get('token');
+        $user = $this->jwtauth->authenticate($token);
+
+        // Reject if no user
+        if (!$user) {
+            abort(401);
+        }
+
+        // Reject if no consent is found
+        $consent = Consent::find($request->consent_id);
+        if (!$consent) {
+            abort(404);
+        }
+
+        // Abort if user does not own consent.
+        if ($consent->user_id != $user->id) {
+            abort(403);
+        }
+
+        $consent->delete();
+
+        return response()->json([
+            "status" => [
+                "message" => "Consent deleted",
+                "code" => 200
+            ],
+            "errors" => false,
+            "data" => []
+        ]);
     }
 }
