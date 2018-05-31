@@ -52,6 +52,7 @@ Route::group(
   [
     'prefix' => 'api/auth',
     'namespace' => 'Api',
+    'middleware' => [ 'log' ],
     "https" => true
   ], function () {
       Route::post('register/',
@@ -88,7 +89,7 @@ Route::group(
 Route::group([
   'prefix' => 'api/articles',
   'namespace' => 'Api',
-  'middleware' => [ 'api' ],
+  'middleware' => [ 'api', 'log' ],
   "https" => true
 ],
 function () {
@@ -142,7 +143,7 @@ function () {
 Route::group([
   'prefix' => 'api/tags',
   'namespace' => 'Api',
-  'middleware' => [ 'api' ],
+  'middleware' => [ 'api', 'log' ],
   "https" => true
 ],
 function () {
@@ -176,7 +177,7 @@ function () {
 Route::group([
   'prefix' => 'api/tickets',
   'namespace' => 'Api',
-  'middleware' => [ 'api' ],
+  'middleware' => [ 'api', 'log' ],
   "https" => true
 ],
 function () {
@@ -215,7 +216,7 @@ function () {
 Route::group([
   'prefix' => 'api/people',
   'namespace' => 'Api',
-  'middleware' => [ 'api'],
+  'middleware' => [ 'api', 'log'],
   "https" => true
 ],
 function () {
@@ -264,7 +265,7 @@ function () {
 Route::group([
   'prefix' => 'api/user',
   'namespace' => 'Api',
-  'middleware' => [ 'api' ],
+  'middleware' => [ 'api', 'log' ],
   "https" => true
 ],
 function () {
@@ -323,7 +324,7 @@ function () {
 Route::group([
   'prefix' => 'api/inspiration',
   'namespace' => 'Api',
-  'middleware' => [ 'api' ],
+  'middleware' => [ 'api', 'log' ],
   "https" => true
 ],
 function () {
@@ -337,7 +338,7 @@ function () {
 Route::group([
   'prefix' => 'api/conversations',
   'namespace' => 'Api',
-  'middleware' => [ 'api' ],
+  'middleware' => [ 'api', 'log' ],
   "https" => true
 ],
 function () {
@@ -386,7 +387,7 @@ function () {
 Route::group([
   'prefix' => 'api/consent',
   'namespace' => 'Api',
-  'middleware' => [ 'api' ],
+  'middleware' => [ 'api', 'log' ],
   "https" => true
 ],
 function () {
