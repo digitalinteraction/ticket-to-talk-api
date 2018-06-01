@@ -10,11 +10,10 @@ use Tymon\JWTAuth\JWTAuth;
 
 class CheckAPIKey
 {
-
     private $user;
     private $jwtauth;
 
-    public function  __construct(User $user, JWTAuth $jwtauth)
+    public function __construct(User $user, JWTAuth $jwtauth)
     {
         $this->user = $user;
         $this->jwtauth = $jwtauth;
@@ -29,56 +28,51 @@ class CheckAPIKey
      */
     public function handle($request, Closure $next)
     {
-
         $token = Input::get('token');
         $user = null;
 
-        try
-        {
+        try {
             $user = $this->jwtauth->authenticate($token);
-        }
-        catch (JWTException $e)
-        {
+        } catch (JWTException $e) {
             return response()->json(
                 [
-                    "Status" => 401,
-                    "Message" => "User not authenticated."
-                ],401
+                    "status" => 401,
+                    "errors" => true,
+                    "message" => "User not authenticated."
+                ], 401
             );
         }
 
-
-        if (!$user || $user->revoked)
-        {
+        // Check user has not been revoked from the system.
+        if (!$user || $user->revoked) {
             return response()->json(
                 [
-                    "Status" => 401,
-                    "Message" => "User not authenticated."
+                    "status" => 401,
+                    "errors" => true,
+                    "message" => "User not authenticated."
                 ]
             );
         }
 
-        if (!$user->verified)
-        {
-          return response()->json(
+        // Check user has verified their email address before allowing access to API routes.
+        if (!$user->verified) {
+            return response()->json(
             [
               'status' => 403,
               'errors' => true,
               'message' => 'Account not verified.'
-            ],403
+            ], 403
           );
         }
 
-        if (strcmp($user->api_key, Input::get('api_key')) == 0)
-        {
+        if (strcmp($user->api_key, Input::get('api_key')) == 0) {
             return $next($request);
-        }
-        else
-        {
+        } else {
             return response()->json(
                 [
-                    "Status" => 401,
-                    "Message" => "Incorrect API Key."
+                    "status" => 401,
+                    "errors" => true,
+                    "message" => "Incorrect API Key."
                 ]
             );
         }
