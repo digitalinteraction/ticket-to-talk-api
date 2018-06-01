@@ -4,9 +4,21 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## Installation
-1. Clone the repository from git: `git clone https://github.com/digitalinteraction/ticket-to-talk-api.git`
+1. Clone the repository from git:
+```bash
+git clone https://github.com/digitalinteraction/ticket-to-talk-api.git
+```
 
-2. In the root of the project create a `.env` file with the following variables:
+2. Install Laravel
+```bash
+composer.phar install
+php artisan vendor:publish --provider="Tymon\JWTAuth\Providers\LaravelServiceProvider"
+php artisan key:generate
+php artisan migrate
+php artisan db:seed --class=InspirationTableSeeder
+```
+
+3. In the root of the project create a `.env` file with the following variables:
 ```bash
 APP_ENV=local
 APP_DEBUG=true

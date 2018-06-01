@@ -64,7 +64,6 @@ class MediaController extends Controller
                 break;
         }
 
-
         $file_suffix = strstr($fileName, '.');
         $file_type = '';
 

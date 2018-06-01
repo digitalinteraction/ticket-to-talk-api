@@ -67,8 +67,7 @@ class AuthController extends Controller
                     'password' => bcrypt($request->password)
                 ]
             );
-        }
-        catch (QueryException $ex) {
+        } catch (QueryException $ex) {
             return response()->json(
                 [
                     'status' => [
@@ -85,7 +84,6 @@ class AuthController extends Controller
         if ($request->pathToPhoto != null) {
             $newUser->pathToPhoto = $request->pathToPhoto;
         } else {
-
             $file_name = "" . $newUser->id . $newUser->name . date("YmdHis");
             $file_name = sha1($file_name);
 
@@ -171,7 +169,6 @@ class AuthController extends Controller
         try {
             $val = $this->jwtauth->attempt($credentials);
             if (!$val) {
-
                 return response()->json(
                     [
                         "status" =>
@@ -317,8 +314,7 @@ class AuthController extends Controller
         $token = Input::get('token');
         $user = $this->jwtauth->authenticate($token);
 
-        if (!$user)
-        {
+        if (!$user) {
             abort(401);
         }
 

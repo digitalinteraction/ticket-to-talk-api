@@ -96,6 +96,11 @@ class User extends Authenticatable
 
     public function registrations()
     {
-      return $this->hasMany('App\Registration');
+        return $this->hasMany('App\Registration');
+    }
+
+    public function consents()
+    {
+        return $this->hasMany('App\Consent');
     }
 }
